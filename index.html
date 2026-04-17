@@ -2411,6 +2411,38 @@
   // Initial text-animation pass (EN baked into HTML — no setLang yet)
   applyTextAnimations();
   initMapInteractions();
+
+  /* ============================================================
+     DEMO MODE — query-string shortcuts for in-person demos
+     ?demo=1          → jump straight to Marea (skip scroll intro)
+     ?demo=story      → jump + auto-run "Emilio's story" scenario
+     ?demo=portugal   → jump + auto-run "Portugal" scenario
+     ?demo=scale      → jump + auto-run "what can Marea do" scenario
+     ?lang=es         → boot in Spanish
+     ============================================================ */
+  (function initDemoMode() {
+    const params = new URLSearchParams(location.search);
+    const lang = params.get('lang');
+    if (lang === 'es' || lang === 'en') setLang(lang);
+
+    const demo = params.get('demo');
+    if (!demo) return;
+
+    // Jump to ch5 (chat) without the scroll-snap animation
+    const ch5 = document.getElementById('ch5');
+    // Defer one frame so layout settles, then jump
+    requestAnimationFrame(() => {
+      ch5.scrollIntoView({ behavior: 'auto', block: 'start' });
+      setChapter(4);
+
+      const scenarioKeys = { story: 'story', portugal: 'portugal', scale: 'scale' };
+      const key = scenarioKeys[demo];
+      if (key) {
+        // Small delay so the welcome message lands before the user bubble appears
+        setTimeout(() => runScenario(key), 900);
+      }
+    });
+  })();
 </script>
 </body>
 </html>
