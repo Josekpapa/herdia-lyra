@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Heredia × Lyra — Concierge Demo</title>
+<title>Emilio Heredia × Lyra — Marea Concierge</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -464,7 +464,7 @@
 <body>
 
 <div class="intro" id="intro">
-  <div class="intro-eyebrow">Heredia × Lyra · Private Demo</div>
+  <div class="intro-eyebrow">Emilio Heredia × Lyra · Private Demo</div>
   <div class="intro-portrait" id="introPortrait">EH</div>
   <div class="intro-title">Emilio <em>Heredia</em></div>
   <div class="intro-quote">
@@ -472,13 +472,13 @@
     that has awoken their awareness of nature."
   </div>
   <div class="intro-attribution">— EMILIO HEREDIA · PAPAYA PLAYA · TULUM</div>
-  <button class="intro-cta" onclick="enterDemo()">Enter the Concierge</button>
+  <button class="intro-cta" onclick="enterDemo()">Meet Marea</button>
 </div>
 
 <div class="topbar">
   <div class="lyra-mark">L<span class="dot">·</span>Y<span class="dot">·</span>R<span class="dot">·</span>A</div>
   <div class="brand">HEREDIA <span class="x">×</span> <span class="lyra">LYRA</span></div>
-  <div class="demo-pill">DEMO · APR 2026</div>
+  <div class="demo-pill">MAREA · APR 2026</div>
 </div>
 
 <div class="stage">
@@ -515,8 +515,8 @@
     <div class="chat-head">
       <div class="avatar" id="avatar">EH</div>
       <div class="head-info">
-        <div class="head-name">Emilio Heredia</div>
-        <div class="head-sub">Heredia Concierge · Powered by Lyra</div>
+        <div class="head-name">Marea <span style="color:var(--text-faint);font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;">by Emilio Heredia</span></div>
+        <div class="head-sub">Emilio's AI Concierge · Powered by Lyra</div>
       </div>
       <button class="reset-btn" id="resetBtn" onclick="resetDemo()">↺ Reset</button>
     </div>
@@ -601,7 +601,7 @@
     intro.classList.add('gone');
     setTimeout(() => intro.style.display = 'none', 1200);
     setTimeout(() => {
-      addMessage('assistant', "Welcome. I carry Emilio's story, his grammar, his taste. Ask me anything — or choose a thread below.");
+      addMessage('assistant', "I'm *Marea* — Emilio Heredia's concierge. I carry his story, his grammar, his taste. Ask me anything, or choose a thread below.");
     }, 1500);
   }
 
@@ -615,7 +615,7 @@
     if (role === 'assistant') {
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.textContent = '— Emilio · via Lyra';
+      meta.textContent = '— Marea · by Emilio Heredia';
       msg.appendChild(meta);
     }
     messagesEl.appendChild(msg);
@@ -657,7 +657,7 @@
 
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.textContent = '— Emilio · via Lyra';
+      meta.textContent = '— Marea · by Emilio Heredia';
       msg.appendChild(meta);
       messagesEl.scrollTop = messagesEl.scrollHeight;
 
@@ -795,7 +795,7 @@
     hasStarted = false;
     busy = false;
     setTimeout(() => {
-      addMessage('assistant', "Welcome back. I carry Emilio's story, his grammar, his taste. Ask me anything — or choose a thread below.");
+      addMessage('assistant', "I'm *Marea* — Emilio Heredia's concierge. Ready again. What would you like to explore?");
     }, 200);
   }
 
