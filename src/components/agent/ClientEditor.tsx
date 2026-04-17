@@ -46,9 +46,7 @@ export default function ClientEditor({ initial, onSave, onCancel }: Props) {
       setErr("Name is required.");
       return;
     }
-    const base =
-      initial ??
-      createClient({ name: name.trim(), filingStatus });
+    const base = initial ?? createClient({ name: name.trim(), filingStatus });
     const updated: Client = {
       ...base,
       name: name.trim(),
@@ -78,171 +76,150 @@ export default function ClientEditor({ initial, onSave, onCancel }: Props) {
   };
 
   return (
-    <form onSubmit={save} className="card flex flex-col gap-5 p-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-white">
-          {initial ? `Edit ${initial.name}` : "New client"}
-        </h2>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="rounded-md px-3 py-1.5 text-xs text-ink-400 hover:bg-white/5 hover:text-white"
-        >
+    <form onSubmit={save} className="flex flex-col">
+      {/* Header */}
+      <div className="flex items-end justify-between gap-4 border-b border-white/[0.06] px-8 py-6">
+        <div className="flex flex-col gap-2">
+          <span className="kicker">{initial ? "Edit client" : "New client"}</span>
+          <h2 className="font-display text-[1.75rem] font-light leading-none tracking-tight text-white">
+            {initial ? initial.name : <em className="italic text-brand-300/90">Untitled</em>}
+          </h2>
+        </div>
+        <button type="button" onClick={onCancel} className="btn-link">
           Cancel
         </button>
       </div>
 
-      <fieldset className="grid gap-3 sm:grid-cols-2">
-        <Field label="Name *">
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className={input()}
-            required
-          />
-        </Field>
-        <Field label="Email">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={input()}
-          />
-        </Field>
-        <Field label="Filing status">
-          <select
-            value={filingStatus}
-            onChange={(e) => setFilingStatus(e.target.value as FilingStatus)}
-            className={input()}
-          >
-            {(Object.keys(FILING_STATUS_LABEL) as FilingStatus[]).map((fs) => (
-              <option key={fs} value={fs}>
-                {FILING_STATUS_LABEL[fs]}
-              </option>
-            ))}
-          </select>
-        </Field>
-        <Field label="State (abbr.)">
-          <input
-            value={state}
-            onChange={(e) => setState(e.target.value.toUpperCase())}
-            placeholder="NY"
-            maxLength={2}
-            className={input()}
-          />
-        </Field>
-        <Field label="Age">
-          <input
-            type="number"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            className={input()}
-          />
-        </Field>
-        <Field label="Dependents">
-          <input
-            type="number"
-            value={dependents}
-            onChange={(e) => setDependents(e.target.value)}
-            className={input()}
-          />
-        </Field>
-      </fieldset>
+      <div className="flex flex-col gap-10 px-8 py-8">
+        {/* Identity */}
+        <Section label="Identity" code="01">
+          <div className="grid gap-6 sm:grid-cols-2">
+            <Field label="Name *">
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="field"
+                required
+                placeholder="Jane Doe"
+              />
+            </Field>
+            <Field label="Email">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="field"
+                placeholder="jane@example.com"
+              />
+            </Field>
+            <Field label="Filing status">
+              <select
+                value={filingStatus}
+                onChange={(e) => setFilingStatus(e.target.value as FilingStatus)}
+                className="field"
+              >
+                {(Object.keys(FILING_STATUS_LABEL) as FilingStatus[]).map((fs) => (
+                  <option key={fs} value={fs} className="bg-ink-900">
+                    {FILING_STATUS_LABEL[fs]}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="State (abbr.)">
+              <input
+                value={state}
+                onChange={(e) => setState(e.target.value.toUpperCase())}
+                placeholder="NY"
+                maxLength={2}
+                className="field"
+              />
+            </Field>
+            <Field label="Age">
+              <input
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                className="field"
+                placeholder="—"
+              />
+            </Field>
+            <Field label="Dependents">
+              <input
+                type="number"
+                value={dependents}
+                onChange={(e) => setDependents(e.target.value)}
+                className="field"
+                placeholder="0"
+              />
+            </Field>
+          </div>
+        </Section>
 
-      <div>
-        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-ink-500">Income (annual, $)</p>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <Field label="Wages (W-2)">
-            <input
-              inputMode="numeric"
-              value={wages}
-              onChange={(e) => setWages(e.target.value)}
-              className={input()}
-            />
-          </Field>
-          <Field label="Self-employment">
-            <input
-              inputMode="numeric"
-              value={selfEmployment}
-              onChange={(e) => setSelfEmployment(e.target.value)}
-              className={input()}
-            />
-          </Field>
-          <Field label="Investment">
-            <input
-              inputMode="numeric"
-              value={investment}
-              onChange={(e) => setInvestment(e.target.value)}
-              className={input()}
-            />
-          </Field>
-          <Field label="Rental">
-            <input
-              inputMode="numeric"
-              value={rental}
-              onChange={(e) => setRental(e.target.value)}
-              className={input()}
-            />
-          </Field>
-        </div>
+        {/* Income */}
+        <Section label="Annual income ($)" code="02">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <Field label="Wages (W-2)">
+              <input inputMode="numeric" value={wages} onChange={(e) => setWages(e.target.value)} className="field data-num" placeholder="0" />
+            </Field>
+            <Field label="Self-employment">
+              <input inputMode="numeric" value={selfEmployment} onChange={(e) => setSelfEmployment(e.target.value)} className="field data-num" placeholder="0" />
+            </Field>
+            <Field label="Investment">
+              <input inputMode="numeric" value={investment} onChange={(e) => setInvestment(e.target.value)} className="field data-num" placeholder="0" />
+            </Field>
+            <Field label="Rental">
+              <input inputMode="numeric" value={rental} onChange={(e) => setRental(e.target.value)} className="field data-num" placeholder="0" />
+            </Field>
+          </div>
+        </Section>
+
+        {/* Retirement */}
+        <Section label="Retirement contributions YTD ($)" code="03">
+          <div className="grid gap-6 sm:grid-cols-2">
+            <Field label="Traditional 401(k)">
+              <input inputMode="numeric" value={trad401k} onChange={(e) => setTrad401k(e.target.value)} className="field data-num" placeholder="0" />
+            </Field>
+            <Field label="Roth IRA">
+              <input inputMode="numeric" value={rothIra} onChange={(e) => setRothIra(e.target.value)} className="field data-num" placeholder="0" />
+            </Field>
+          </div>
+        </Section>
+
+        {/* Tags + Notes */}
+        <Section label="Context" code="04">
+          <div className="flex flex-col gap-6">
+            <Field label="Tags (comma-separated)">
+              <input
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+                placeholder="high-earner, cross-border"
+                className="field"
+              />
+            </Field>
+            <Field label="Notes">
+              <textarea
+                rows={4}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                className="field-framed resize-y leading-relaxed"
+                placeholder="Private notes visible only to advisors on this workspace…"
+              />
+            </Field>
+          </div>
+        </Section>
       </div>
 
-      <div>
-        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-ink-500">
-          Retirement contributions YTD ($)
-        </p>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Field label="Traditional 401(k)">
-            <input
-              inputMode="numeric"
-              value={trad401k}
-              onChange={(e) => setTrad401k(e.target.value)}
-              className={input()}
-            />
-          </Field>
-          <Field label="Roth IRA">
-            <input
-              inputMode="numeric"
-              value={rothIra}
-              onChange={(e) => setRothIra(e.target.value)}
-              className={input()}
-            />
-          </Field>
+      {err && (
+        <div className="mx-8 mb-6 border-l-2 border-danger-500/60 px-3 py-2 text-sm text-danger-300">
+          {err}
         </div>
-      </div>
+      )}
 
-      <Field label="Tags (comma-separated)">
-        <input
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-          placeholder="high-earner, cross-border"
-          className={input()}
-        />
-      </Field>
-
-      <Field label="Notes">
-        <textarea
-          rows={3}
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          className={input() + " font-sans"}
-        />
-      </Field>
-
-      {err && <p className="rounded-md bg-danger-500/10 px-3 py-2 text-xs text-danger-400">{err}</p>}
-
-      <div className="flex items-center gap-2">
-        <button
-          type="submit"
-          className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-brand-500/20 hover:bg-brand-400"
-        >
+      <div className="flex items-center gap-5 border-t border-white/[0.06] bg-black/20 px-8 py-4">
+        <button type="submit" className="btn-primary">
           {initial ? "Save changes" : "Create client"}
         </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="rounded-lg border border-white/10 px-4 py-2 text-sm text-ink-300 hover:bg-white/5 hover:text-white"
-        >
+        <button type="button" onClick={onCancel} className="btn-ghost">
           Cancel
         </button>
       </div>
@@ -250,15 +227,32 @@ export default function ClientEditor({ initial, onSave, onCancel }: Props) {
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Section({
+  label,
+  code,
+  children,
+}: {
+  label: string;
+  code: string;
+  children: React.ReactNode;
+}) {
   return (
-    <label className="flex flex-col gap-1 text-xs text-ink-400">
-      {label}
+    <section className="flex flex-col gap-5">
+      <header className="flex items-center gap-4">
+        <span className="font-mono text-[10px] tracking-[0.25em] text-ink-500">{code}</span>
+        <span className="font-display text-[15px] font-light tracking-tight text-white">{label}</span>
+        <span className="h-px flex-1 bg-white/[0.05]" />
+      </header>
       {children}
-    </label>
+    </section>
   );
 }
 
-function input() {
-  return "rounded-lg border border-white/10 bg-ink-900/60 px-3 py-2 text-sm text-white outline-none focus:border-brand-500";
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="flex flex-col gap-2">
+      <span className="label-xs">{label}</span>
+      {children}
+    </label>
+  );
 }

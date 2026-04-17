@@ -14,6 +14,20 @@ const {
 const user = Astro.locals.user;
 const org = Astro.locals.org;
 const authOn = Astro.locals.authEnabled;
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => {
+  if (href === "/") return path === "/";
+  return path === href || path.startsWith(href + "/");
+};
+
+const navItems: Array<{ href: string; label: string; code: string }> = [
+  { href: "/agent",     label: "Agent",     code: "01" },
+  { href: "/scenarios", label: "Scenarios", code: "02" },
+  { href: "/intake",    label: "Intake",    code: "03" },
+  { href: "/tracker",   label: "Tracker",   code: "04" },
+  { href: "/audit",     label: "Audit",     code: "05" },
+];
 ---
 
 <!doctype html>
@@ -32,75 +46,116 @@ const authOn = Astro.locals.authEnabled;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=JetBrains+Mono:wght@300;400;500&display=swap"
     />
   </head>
-  <body class="min-h-full antialiased">
-    <header class="relative z-10 border-b border-white/5">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="/" class="flex items-center gap-2.5 font-semibold tracking-tight">
-          <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-brand-400 to-accent-500 text-ink-950 shadow-lg shadow-brand-500/20">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z" /><circle cx="12" cy="12" r="10" /></svg>
+  <body class="min-h-full antialiased" data-page="app">
+    <header class="relative z-20">
+      <div class="mx-auto flex max-w-7xl items-stretch justify-between gap-8 px-6">
+        <!-- Brand -->
+        <a href="/" class="group flex items-center gap-3 py-5" aria-label="Fidelis home">
+          <span class="relative grid h-8 w-8 place-items-center">
+            <span class="absolute inset-0 rounded-[2px] border border-white/12 transition group-hover:border-white/28"></span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-white/80 group-hover:text-white">
+              <path d="M2 12h20" />
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z" />
+              <circle cx="12" cy="12" r="10" />
+            </svg>
           </span>
-          <span>Fidelis</span>
+          <span class="flex flex-col leading-tight">
+            <span class="text-[10px] tracking-[0.3em] uppercase text-ink-400 font-mono">
+              Fidelis
+            </span>
+            <span class="font-display text-[15px] font-light tracking-tight text-white">
+              Tax intelligence
+            </span>
+          </span>
         </a>
-        <nav class="flex items-center gap-1 text-sm text-ink-300">
-          <a href="/" class="rounded-lg px-3 py-1.5 transition hover:bg-white/5 hover:text-white">Home</a>
-          <a href="/agent" class="rounded-lg px-3 py-1.5 transition hover:bg-white/5 hover:text-white">Agent</a>
-          <a href="/scenarios" class="rounded-lg px-3 py-1.5 transition hover:bg-white/5 hover:text-white">Scenarios</a>
-          <a href="/intake" class="rounded-lg px-3 py-1.5 transition hover:bg-white/5 hover:text-white">Intake</a>
-          <a href="/tracker" class="rounded-lg px-3 py-1.5 transition hover:bg-white/5 hover:text-white">Tracker</a>
-          <a href="/audit" class="rounded-lg px-3 py-1.5 transition hover:bg-white/5 hover:text-white">Audit</a>
-          {user && user.role === "admin" && (
-            <a href="/team" class="rounded-lg px-3 py-1.5 transition hover:bg-white/5 hover:text-white">Team</a>
-          )}
-          {user ? (
-            <div class="ml-2 flex items-center gap-2">
-              <div class="hidden rounded-lg border border-white/10 bg-white/[0.02] px-3 py-1.5 sm:block">
-                <div class="text-[10px] uppercase tracking-wider text-ink-500">{org?.name ?? ""}</div>
-                <div class="text-xs text-ink-200">{user.email}</div>
-              </div>
-              <form method="post" action="/api/auth/logout">
-                <button class="rounded-lg border border-white/10 px-3 py-1.5 text-xs text-ink-300 hover:bg-white/5 hover:text-white">
-                  Sign out
-                </button>
-              </form>
-            </div>
-          ) : authOn ? (
+
+        <!-- Editorial nav -->
+        <nav class="hidden items-stretch gap-6 md:flex" aria-label="Primary">
+          {navItems.map((item) => (
             <a
-              href="/login"
-              class="ml-2 rounded-lg bg-brand-500 px-3.5 py-1.5 font-medium text-white shadow-lg shadow-brand-500/20 transition hover:bg-brand-400"
+              href={item.href}
+              class:list={["nav-link", isActive(item.href) && "is-active"]}
             >
-              Sign in →
+              <span class="mr-2 text-ink-500/70">{item.code}</span>{item.label}
             </a>
-          ) : (
+          ))}
+          {user && user.role === "admin" && (
             <a
-              href="/agent"
-              class="ml-2 rounded-lg bg-brand-500 px-3.5 py-1.5 font-medium text-white shadow-lg shadow-brand-500/20 transition hover:bg-brand-400"
+              href="/team"
+              class:list={["nav-link", isActive("/team") && "is-active"]}
             >
-              Launch agent →
+              <span class="mr-2 text-ink-500/70">06</span>Team
             </a>
           )}
         </nav>
+
+        <!-- Right side: user / CTA -->
+        <div class="flex items-center gap-4 py-3">
+          {user ? (
+            <div class="hidden items-center gap-3 sm:flex">
+              <div class="text-right leading-tight">
+                <div class="font-mono text-[9.5px] uppercase tracking-[0.25em] text-ink-500">
+                  {org?.name ?? "Workspace"}
+                </div>
+                <div class="text-xs text-ink-200">{user.email}</div>
+              </div>
+              <form method="post" action="/api/auth/logout">
+                <button class="btn-link">Sign out</button>
+              </form>
+            </div>
+          ) : authOn ? (
+            <a href="/login" class="btn-primary">Sign in</a>
+          ) : (
+            <a href="/agent" class="btn-primary">Launch agent</a>
+          )}
+        </div>
       </div>
+      <div class="hairline-x"></div>
     </header>
 
-    <main class="relative z-0">
+    <!-- Mobile nav strip -->
+    <div class="md:hidden">
+      <div class="mx-auto flex max-w-7xl gap-4 overflow-x-auto px-6 py-3">
+        {navItems.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              "whitespace-nowrap font-mono text-[10.5px] tracking-[0.22em] uppercase transition",
+              isActive(item.href) ? "text-white" : "text-ink-400 hover:text-white"
+            ]}
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
+      <div class="hairline-x opacity-60"></div>
+    </div>
+
+    <main class="relative z-10">
       <slot />
     </main>
 
-    <footer class="mt-20 border-t border-white/5">
-      <div class="mx-auto max-w-6xl px-6 py-10 text-sm text-ink-400">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div class="max-w-xl">
-            <p class="font-medium text-ink-200">Not tax or legal advice.</p>
-            <p class="mt-1">
-              This tool is an educational calculator. Residency rules depend on
-              treaties, ties, and facts this tool doesn't know about. Consult a
-              qualified tax professional before making decisions.
-            </p>
-          </div>
-          <p class="text-ink-500">Built with Astro · Runs locally in your browser.</p>
+    <footer class="relative z-10 mt-24">
+      <div class="hairline-x opacity-60"></div>
+      <div class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-10 sm:flex-row sm:items-start sm:justify-between">
+        <div class="max-w-xl">
+          <div class="kicker mb-2">Disclosure</div>
+          <p class="text-sm leading-relaxed text-ink-300">
+            Fidelis is informational. Residency rules depend on treaties, ties,
+            and facts the tool doesn't know about. Consult a qualified tax
+            professional before making decisions.
+          </p>
+        </div>
+        <div class="flex flex-col gap-1 text-right">
+          <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-500">
+            Built with Astro · Groq
+          </span>
+          <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-500/70">
+            © {new Date().getFullYear()} Fidelis
+          </span>
         </div>
       </div>
     </footer>

@@ -21,92 +21,81 @@ export default function ClientHeader({
   canExport,
 }: Props) {
   return (
-    <div className="flex flex-wrap items-center gap-3 border-b border-white/5 bg-white/[0.02] px-5 py-3">
-      <div className="flex items-center gap-2">
-        <span className="text-xs uppercase tracking-wider text-ink-500">Client</span>
-        <select
-          value={activeClient?.id ?? ""}
-          onChange={(e) => onSelect(e.target.value)}
-          className="rounded-lg border border-white/10 bg-ink-900/60 px-3 py-1.5 text-sm text-white outline-none focus:border-brand-500"
-        >
-          <option value="">— No client —</option>
-          {clients.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
+    <div className="flex flex-col border-b border-white/[0.06]">
+      {/* Row 1: client selector + actions */}
+      <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4">
+        <div className="flex items-center gap-3">
+          <span className="label-xs">Client</span>
+          <div className="relative">
+            <select
+              value={activeClient?.id ?? ""}
+              onChange={(e) => onSelect(e.target.value)}
+              className="appearance-none bg-transparent pr-6 font-display text-[17px] font-light tracking-tight text-white outline-none hover:text-brand-300 focus:text-brand-300"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10' fill='none' stroke='%23aab1c6' stroke-width='1.4'><path d='M2 4l3 3 3-3'/></svg>\")",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "right 0 center",
+              }}
+            >
+              <option value="">— No client —</option>
+              {clients.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-5">
+          {activeClient && (
+            <button onClick={onEdit} className="btn-link">
+              Edit profile
+            </button>
+          )}
+          <button
+            onClick={onExport}
+            disabled={!canExport}
+            className="btn-link"
+            title="Export as Markdown memo"
+          >
+            Markdown
+          </button>
+          <button
+            onClick={onOpenMemo}
+            disabled={!canExport || !onOpenMemo}
+            className="btn-link text-white hover:text-brand-300 disabled:text-ink-500"
+            title="Open printable PDF memo"
+          >
+            PDF memo →
+          </button>
+        </div>
       </div>
 
+      {/* Row 2: tags / vitals */}
       {activeClient && (
-        <div className="flex flex-wrap items-center gap-1.5 text-xs">
-          <Chip>{FILING_STATUS_LABEL[activeClient.filingStatus]}</Chip>
-          {activeClient.state && <Chip>{activeClient.state}</Chip>}
-          {activeClient.age != null && <Chip>age {activeClient.age}</Chip>}
+        <div className="flex flex-wrap items-center gap-2 border-t border-white/[0.04] bg-black/10 px-6 py-2.5">
+          <span className="tag">{FILING_STATUS_LABEL[activeClient.filingStatus]}</span>
+          {activeClient.state && <span className="tag">{activeClient.state}</span>}
+          {activeClient.age != null && <span className="tag">age {activeClient.age}</span>}
           {activeClient.income?.wages != null && (
-            <Chip>W-2 {fmtK(activeClient.income.wages)}</Chip>
+            <span className="tag">W-2 <span className="data-num ml-1">{fmtK(activeClient.income.wages)}</span></span>
           )}
           {activeClient.income?.selfEmployment != null && activeClient.income.selfEmployment > 0 && (
-            <Chip>SE {fmtK(activeClient.income.selfEmployment)}</Chip>
+            <span className="tag">SE <span className="data-num ml-1">{fmtK(activeClient.income.selfEmployment)}</span></span>
           )}
           {(activeClient.trips?.length ?? 0) > 0 && (
-            <Chip>{activeClient.trips!.length} trips</Chip>
+            <span className="tag">
+              <span className="data-num">{activeClient.trips!.length}</span> trips
+            </span>
           )}
           {activeClient.tags?.map((t) => (
-            <Chip key={t} tone="brand">
-              {t}
-            </Chip>
+            <span key={t} className="tag tag-accent">{t}</span>
           ))}
         </div>
       )}
-
-      <div className="ml-auto flex items-center gap-1">
-        {activeClient && (
-          <button
-            onClick={onEdit}
-            className="rounded-md px-2.5 py-1.5 text-xs text-ink-300 hover:bg-white/5 hover:text-white"
-          >
-            Edit profile
-          </button>
-        )}
-        <button
-          onClick={onExport}
-          disabled={!canExport}
-          className="rounded-md px-2.5 py-1.5 text-xs text-ink-300 hover:bg-white/5 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
-          title="Export conversation as Markdown memo"
-        >
-          Markdown
-        </button>
-        <button
-          onClick={onOpenMemo}
-          disabled={!canExport || !onOpenMemo}
-          className="rounded-md bg-white/5 px-2.5 py-1.5 text-xs font-medium text-ink-100 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
-          title="Open printable memo (Save as PDF from browser)"
-        >
-          PDF memo →
-        </button>
-      </div>
     </div>
-  );
-}
-
-function Chip({
-  children,
-  tone = "ink",
-}: {
-  children: React.ReactNode;
-  tone?: "ink" | "brand";
-}) {
-  const cls =
-    tone === "brand"
-      ? "bg-brand-500/15 text-brand-300 border-brand-500/30"
-      : "bg-white/5 text-ink-200 border-white/10";
-  return (
-    <span
-      className={`rounded-full border px-2 py-0.5 text-[11px] font-medium ${cls}`}
-    >
-      {children}
-    </span>
   );
 }
 

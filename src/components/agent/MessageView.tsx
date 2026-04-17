@@ -9,77 +9,72 @@ type Props = {
 export default function MessageView({ message, streaming }: Props) {
   if (message.role === "user") {
     return (
-      <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-2xl rounded-br-md bg-brand-500/15 px-4 py-2.5 text-sm text-ink-50 ring-1 ring-brand-500/30">
-          <FormattedText text={message.content} />
-        </div>
+      <div className="flex flex-col gap-2">
+        <span className="label-xs">Advisor</span>
+        <blockquote className="msg-user">
+          {message.content}
+        </blockquote>
       </div>
     );
   }
 
   const isEmpty = !message.content && (message.toolCalls?.length ?? 0) === 0;
   return (
-    <div className="flex gap-3">
-      <div className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-brand-400 to-accent-500 text-ink-950 shadow-lg shadow-brand-500/20">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-          <path d="M12 2 2 7l10 5 10-5-10-5Z" />
-          <path d="m2 17 10 5 10-5" />
-          <path d="m2 12 10 5 10-5" />
-        </svg>
-      </div>
-      <div className="min-w-0 flex-1 space-y-3">
-        {message.toolCalls && message.toolCalls.length > 0 && (
-          <div className="space-y-1.5">
-            {message.toolCalls.map((t) => (
-              <ToolCallView key={t.id} tool={t} />
-            ))}
-          </div>
-        )}
-
-        {message.content && (
-          <div className="prose prose-invert prose-sm max-w-none text-ink-100 prose-headings:text-white prose-strong:text-white prose-a:text-brand-300">
-            <FormattedText text={message.content} />
-          </div>
-        )}
-
-        {isEmpty && streaming && <ThinkingIndicator />}
-
-        {message.drafts && message.drafts.length > 0 && (
-          <div className="space-y-2">
-            {message.drafts.map((d, i) => (
-              <EmailDraftCard key={i} draft={d} />
-            ))}
-          </div>
-        )}
-
-        {message.sources && message.sources.length > 0 && (
-          <SourcesPanel sources={message.sources} />
-        )}
-
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-3">
+        <span className="label-xs text-brand-300/80">Fidelis</span>
+        <span className="h-px flex-1 bg-white/[0.05]" />
         {message.usage && (
-          <div className="flex flex-wrap items-center gap-1.5 pt-0.5 text-[11px] text-ink-500">
-            <UsageChip label={message.usage.model} />
-            <UsageChip
-              label={`${message.usage.inputTokens.toLocaleString()} in + ${message.usage.outputTokens.toLocaleString()} out`}
-            />
-            <UsageChip label={`${(message.usage.durationMs / 1000).toFixed(1)}s`} />
-            <UsageChip label={`$${message.usage.costUsd.toFixed(5)}`} tone="brand" />
-          </div>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
+            {message.usage.model.split("-").slice(0, 2).join("-")}
+          </span>
         )}
       </div>
-    </div>
-  );
-}
 
-function UsageChip({ label, tone = "ink" }: { label: string; tone?: "ink" | "brand" }) {
-  const cls =
-    tone === "brand"
-      ? "bg-brand-500/10 text-brand-300 border-brand-500/20"
-      : "bg-white/[0.03] text-ink-400 border-white/10";
-  return (
-    <span className={`rounded-full border px-1.5 py-0.5 font-mono text-[10px] ${cls}`}>
-      {label}
-    </span>
+      {message.toolCalls && message.toolCalls.length > 0 && (
+        <div className="flex flex-col gap-1.5">
+          {message.toolCalls.map((t) => (
+            <ToolCallView key={t.id} tool={t} />
+          ))}
+        </div>
+      )}
+
+      {message.content && (
+        <div className="msg-assistant prose prose-invert prose-sm max-w-none prose-headings:font-display prose-headings:font-normal prose-headings:tracking-tight prose-headings:text-white prose-strong:text-white prose-strong:font-medium prose-a:text-brand-300 prose-a:no-underline hover:prose-a:underline prose-code:text-brand-300 prose-code:bg-white/5 prose-code:px-1 prose-code:py-0.5 prose-code:rounded-sm prose-code:text-[0.9em] prose-code:before:content-none prose-code:after:content-none">
+          <FormattedText text={message.content} />
+        </div>
+      )}
+
+      {isEmpty && streaming && <ThinkingIndicator />}
+
+      {message.drafts && message.drafts.length > 0 && (
+        <div className="flex flex-col gap-3">
+          {message.drafts.map((d, i) => (
+            <EmailDraftCard key={i} draft={d} />
+          ))}
+        </div>
+      )}
+
+      {message.sources && message.sources.length > 0 && (
+        <SourcesPanel sources={message.sources} />
+      )}
+
+      {message.usage && (
+        <div className="flex flex-wrap items-center gap-3 pt-1">
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
+            <span className="data-num">{message.usage.inputTokens.toLocaleString()}</span> in
+            <span className="mx-1 opacity-50">·</span>
+            <span className="data-num">{message.usage.outputTokens.toLocaleString()}</span> out
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
+            <span className="data-num">{(message.usage.durationMs / 1000).toFixed(1)}</span>s
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-brand-300/90">
+            <span className="data-num">${message.usage.costUsd.toFixed(5)}</span>
+          </span>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -107,44 +102,35 @@ function ToolCallView({ tool }: { tool: ToolCall }) {
   }, [tool.args]);
 
   return (
-    <div
-      className={`rounded-lg border px-3 py-2 text-xs transition ${
-        hasError
-          ? "border-danger-500/30 bg-danger-500/5"
-          : running
-            ? "border-brand-500/30 bg-brand-500/5"
-            : "border-white/10 bg-white/[0.02]"
-      }`}
-    >
+    <div className={`tool-block ${running ? "is-running" : ""} ${hasError ? "is-error" : ""}`}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center gap-2"
+        className="flex w-full items-center gap-3 text-left"
       >
         {running ? (
           <Spinner className="h-3 w-3 text-brand-400" />
         ) : hasError ? (
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 text-danger-400">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 text-danger-400">
             <circle cx="12" cy="12" r="10" />
             <path d="M12 8v4" />
             <path d="m12 16 .01 0" />
           </svg>
         ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 text-accent-400">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 text-accent-400">
             <path d="M20 6 9 17l-5-5" />
           </svg>
         )}
-        <span className="font-mono text-ink-200">
-          <span className="text-ink-400">fn</span> {tool.name}
-        </span>
-        <span className="ml-auto text-ink-500">
-          {running ? "running…" : hasError ? "error" : "ok"}
+        <span className="text-ink-500">fn</span>
+        <span className="text-ink-100">{tool.name}</span>
+        <span className="ml-auto text-[10px] uppercase tracking-[0.22em] text-ink-500">
+          {running ? "running" : hasError ? "error" : "ok"}
         </span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
           className={`h-3 w-3 text-ink-500 transition-transform ${open ? "rotate-180" : ""}`}
@@ -153,21 +139,21 @@ function ToolCallView({ tool }: { tool: ToolCall }) {
         </svg>
       </button>
       {open && (
-        <div className="mt-2 space-y-2 border-t border-white/5 pt-2">
+        <div className="mt-3 flex flex-col gap-3 border-t border-white/[0.06] pt-3">
           {parsedArgs && (
             <div>
-              <p className="text-[10px] font-medium uppercase tracking-wider text-ink-500">Arguments</p>
-              <pre className="mt-1 overflow-x-auto rounded bg-ink-950/60 p-2 font-mono text-[11px] text-ink-200">
+              <p className="label-xs mb-1.5">Arguments</p>
+              <pre className="overflow-x-auto bg-black/40 p-2.5 font-mono text-[11px] leading-relaxed text-ink-200">
                 {parsedArgs}
               </pre>
             </div>
           )}
           {(parsedResult || tool.error) && (
             <div>
-              <p className="text-[10px] font-medium uppercase tracking-wider text-ink-500">
+              <p className={`label-xs mb-1.5 ${tool.error ? "text-danger-400" : ""}`}>
                 {tool.error ? "Error" : "Result"}
               </p>
-              <pre className="mt-1 max-h-64 overflow-auto rounded bg-ink-950/60 p-2 font-mono text-[11px] text-ink-200">
+              <pre className="max-h-64 overflow-auto bg-black/40 p-2.5 font-mono text-[11px] leading-relaxed text-ink-200">
                 {tool.error ?? parsedResult}
               </pre>
             </div>
@@ -181,15 +167,15 @@ function ToolCallView({ tool }: { tool: ToolCall }) {
 function SourcesPanel({ sources }: { sources: ChatMessage["sources"] }) {
   if (!sources || sources.length === 0) return null;
   return (
-    <div className="rounded-lg border border-white/5 bg-white/[0.02] p-3">
-      <p className="text-[10px] font-medium uppercase tracking-wider text-ink-500">
-        Sources ({sources.length})
+    <div className="mt-2 border-t border-white/[0.05] pt-4">
+      <p className="label-xs mb-3">
+        Sources · <span className="data-num">{String(sources.length).padStart(2, "0")}</span>
       </p>
-      <div className="mt-2 space-y-1.5">
+      <ol className="flex flex-col gap-2.5">
         {sources.map((s, i) => (
-          <div key={s.id} className="flex gap-2 text-xs">
-            <span className="mt-0.5 shrink-0 rounded bg-brand-500/15 px-1.5 py-0.5 font-mono text-[10px] text-brand-300">
-              [{i + 1}]
+          <li key={s.id} className="flex gap-3 text-[13px]">
+            <span className="mt-0.5 shrink-0 font-mono text-[10px] tracking-[0.18em] text-brand-300/80">
+              [{String(i + 1).padStart(2, "0")}]
             </span>
             <div className="min-w-0">
               {s.url ? (
@@ -197,31 +183,35 @@ function SourcesPanel({ sources }: { sources: ChatMessage["sources"] }) {
                   href={s.url}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="font-medium text-ink-100 hover:text-brand-300 hover:underline"
+                  className="font-medium text-ink-100 transition hover:text-brand-300"
                 >
                   {s.title}
                 </a>
               ) : (
                 <span className="font-medium text-ink-100">{s.title}</span>
               )}
-              <p className="mt-0.5 line-clamp-2 text-ink-400">{s.snippet}</p>
+              <p className="mt-0.5 line-clamp-2 text-[12.5px] leading-relaxed text-ink-500">
+                {s.snippet}
+              </p>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ol>
     </div>
   );
 }
 
 function ThinkingIndicator() {
   return (
-    <div className="flex items-center gap-2 text-xs text-ink-400">
+    <div className="flex items-center gap-2.5">
       <span className="flex gap-1">
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink-400 [animation-delay:-0.3s]" />
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink-400 [animation-delay:-0.15s]" />
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink-400" />
+        <span className="h-1 w-1 animate-pulse rounded-full bg-ink-400 [animation-delay:-0.3s]" />
+        <span className="h-1 w-1 animate-pulse rounded-full bg-ink-400 [animation-delay:-0.15s]" />
+        <span className="h-1 w-1 animate-pulse rounded-full bg-ink-400" />
       </span>
-      <span>Thinking…</span>
+      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-400">
+        Thinking
+      </span>
     </div>
   );
 }
@@ -229,16 +219,12 @@ function ThinkingIndicator() {
 function Spinner({ className = "" }: { className?: string }) {
   return (
     <svg className={`animate-spin ${className}`} viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
-      <path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2.5" />
+      <path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }
 
-/**
- * Ultra-light markdown-lite: paragraphs, bullets, inline code, bold, italics,
- * headings. Intentionally small — no external deps.
- */
 function FormattedText({ text }: { text: string }) {
   const blocks = useMemo(() => parseBlocks(text), [text]);
   return (
@@ -247,14 +233,14 @@ function FormattedText({ text }: { text: string }) {
         if (b.type === "heading") {
           const H = b.level === 1 ? "h2" : b.level === 2 ? "h3" : "h4";
           return (
-            <H key={i} className="mt-3 text-sm font-semibold text-white first:mt-0">
+            <H key={i} className="mt-5 text-[1.15rem] font-normal tracking-tight text-white first:mt-0">
               {inline(b.content)}
             </H>
           );
         }
         if (b.type === "list") {
           return (
-            <ul key={i} className="my-2 list-disc space-y-1 pl-5">
+            <ul key={i} className="my-3 flex list-disc flex-col gap-1 pl-5 marker:text-ink-500">
               {b.items.map((it, j) => (
                 <li key={j}>{inline(it)}</li>
               ))}
@@ -263,7 +249,7 @@ function FormattedText({ text }: { text: string }) {
         }
         if (b.type === "ol") {
           return (
-            <ol key={i} className="my-2 list-decimal space-y-1 pl-5">
+            <ol key={i} className="my-3 flex list-decimal flex-col gap-1 pl-5 marker:text-ink-500">
               {b.items.map((it, j) => (
                 <li key={j}>{inline(it)}</li>
               ))}
@@ -274,14 +260,14 @@ function FormattedText({ text }: { text: string }) {
           return (
             <pre
               key={i}
-              className="my-2 overflow-x-auto rounded-lg bg-ink-950/60 p-3 font-mono text-[12px] text-ink-100"
+              className="my-3 overflow-x-auto bg-black/40 p-3 font-mono text-[12px] leading-relaxed text-ink-100"
             >
               <code>{b.content}</code>
             </pre>
           );
         }
         return (
-          <p key={i} className="my-2 leading-relaxed first:mt-0">
+          <p key={i} className="my-3 leading-[1.72] first:mt-0">
             {inline(b.content)}
           </p>
         );
@@ -372,14 +358,7 @@ function inline(s: string): React.ReactNode {
     if (tok.startsWith("**")) {
       nodes.push(<strong key={key++}>{tok.slice(2, -2)}</strong>);
     } else if (tok.startsWith("`")) {
-      nodes.push(
-        <code
-          key={key++}
-          className="rounded bg-ink-900 px-1 py-0.5 font-mono text-[12px] text-brand-300"
-        >
-          {tok.slice(1, -1)}
-        </code>,
-      );
+      nodes.push(<code key={key++}>{tok.slice(1, -1)}</code>);
     } else {
       nodes.push(<em key={key++}>{tok.slice(1, -1)}</em>);
     }
@@ -420,84 +399,58 @@ function EmailDraftCard({ draft }: { draft: DraftEmail }) {
   };
 
   return (
-    <div className="rounded-xl border border-accent-500/30 bg-accent-500/[0.04] p-4">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span className="grid h-6 w-6 place-items-center rounded-md bg-accent-500/15 text-accent-400">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="m3 7 9 6 9-6" />
-            </svg>
-          </span>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-accent-300">
-              Draft email · advisor review required
-            </p>
-            <p className="text-[11px] text-ink-500">
-              Tone: {draft.tone} · Edit inline, then copy or open in your mail
-              client.
-            </p>
-          </div>
+    <div className="border-l-2 border-accent-500/50 bg-accent-500/[0.03] px-5 py-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <span className="label-xs text-accent-400">Draft email · advisor review required</span>
+          <p className="mt-1 text-[11px] text-ink-500">
+            Tone: {draft.tone} · Edit inline, then copy or open in your mail client.
+          </p>
         </div>
-        <span className="rounded-full border border-warn-500/30 bg-warn-500/10 px-2 py-0.5 text-[10px] uppercase tracking-wider text-warn-300">
-          Unsent
-        </span>
+        <span className="tag tag-warn">Unsent</span>
       </div>
 
-      <div className="mt-3 space-y-2">
-        <label className="flex items-baseline gap-3">
-          <span className="w-14 shrink-0 text-[11px] uppercase tracking-wider text-ink-500">To</span>
+      <div className="mt-4 flex flex-col gap-3">
+        <label className="flex items-baseline gap-4">
+          <span className="label-xs w-14 shrink-0">To</span>
           <input
             value={to}
             onChange={(e) => setTo(e.target.value)}
             placeholder="client@example.com"
-            className="flex-1 rounded-md border border-white/10 bg-ink-900/60 px-2 py-1 text-sm text-white outline-none focus:border-accent-500"
+            className="field flex-1"
           />
         </label>
-        <label className="flex items-baseline gap-3">
-          <span className="w-14 shrink-0 text-[11px] uppercase tracking-wider text-ink-500">
-            Subject
-          </span>
+        <label className="flex items-baseline gap-4">
+          <span className="label-xs w-14 shrink-0">Subject</span>
           <input
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            className="flex-1 rounded-md border border-white/10 bg-ink-900/60 px-2 py-1 text-sm text-white outline-none focus:border-accent-500"
+            className="field flex-1"
           />
         </label>
-        <div className="rounded-md border border-white/10 bg-ink-900/60">
+        <div>
+          <span className="label-xs block pb-2">Body</span>
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
             rows={Math.min(16, Math.max(6, body.split("\n").length + 1))}
-            className="w-full resize-y bg-transparent p-3 text-sm leading-relaxed text-ink-100 outline-none"
+            className="field-framed resize-y text-[14px] leading-relaxed"
           />
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        <a
-          href={mailto}
-          className="rounded-md bg-accent-500 px-3 py-1.5 text-xs font-medium text-ink-950 hover:bg-accent-400"
-        >
+      <div className="mt-4 flex flex-wrap items-center gap-5">
+        <a href={mailto} className="btn-link text-accent-400 hover:text-accent-300">
           Open in mail client →
         </a>
-        <button
-          onClick={() => copy("all")}
-          className="rounded-md border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-ink-200 hover:bg-white/10"
-        >
-          {copied === "all" ? "Copied!" : "Copy all"}
+        <button onClick={() => copy("all")} className="btn-link">
+          {copied === "all" ? "Copied" : "Copy all"}
         </button>
-        <button
-          onClick={() => copy("body")}
-          className="rounded-md border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-ink-200 hover:bg-white/10"
-        >
-          {copied === "body" ? "Copied!" : "Copy body"}
+        <button onClick={() => copy("body")} className="btn-link">
+          {copied === "body" ? "Copied" : "Copy body"}
         </button>
-        <button
-          onClick={() => copy("subject")}
-          className="rounded-md border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-ink-200 hover:bg-white/10"
-        >
-          {copied === "subject" ? "Copied!" : "Copy subject"}
+        <button onClick={() => copy("subject")} className="btn-link">
+          {copied === "subject" ? "Copied" : "Copy subject"}
         </button>
       </div>
     </div>

@@ -16,33 +16,47 @@ export default function ConversationList({
   onDelete,
 }: Props) {
   return (
-    <div className="card flex flex-col gap-0.5 overflow-hidden p-2">
-      <p className="px-2 py-1 text-xs font-medium uppercase tracking-wider text-ink-500">
-        Recent ({conversations.length})
-      </p>
+    <div className="flex flex-col">
+      <div className="flex items-center justify-between px-5 pt-4 pb-2">
+        <span className="label-xs">Recent</span>
+        <span className="font-mono text-[10px] text-ink-500">
+          {String(conversations.length).padStart(2, "0")}
+        </span>
+      </div>
+
       {conversations.length === 0 && (
-        <p className="px-2 py-3 text-xs text-ink-500">
-          No conversations yet. Start one above.
+        <p className="px-5 py-6 text-xs leading-relaxed text-ink-500">
+          No conversations yet.
+          <br />
+          Start one from the button above.
         </p>
       )}
-      <div className="flex max-h-[60vh] flex-col gap-0.5 overflow-y-auto">
+
+      <div className="flex flex-col">
         {conversations.map((c) => {
           const client = clients.find((cl) => cl.id === c.clientId);
           const active = activeId === c.id;
           return (
             <div
               key={c.id}
-              className={`group flex items-start gap-2 rounded-md px-2 py-1.5 ${
-                active ? "bg-brand-500/10" : "hover:bg-white/5"
+              className={`hairline-row group flex items-start gap-3 px-5 py-3 ${
+                active ? "is-active" : ""
               }`}
             >
               <button
-                className="flex min-w-0 flex-1 flex-col items-start text-left"
+                className="flex min-w-0 flex-1 flex-col items-start gap-1 text-left"
                 onClick={() => onSelect(c.id)}
               >
-                <span className="line-clamp-1 text-sm text-white">{c.title}</span>
-                <span className="truncate text-xs text-ink-500">
-                  {client?.name ?? "No client"} ·{" "}
+                <span
+                  className={`line-clamp-2 text-[13.5px] leading-snug transition ${
+                    active ? "text-white" : "text-ink-200 group-hover:text-white"
+                  }`}
+                >
+                  {c.title}
+                </span>
+                <span className="truncate font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
+                  {client?.name ?? "No client"}
+                  <span className="mx-1.5 opacity-50">·</span>
                   {new Date(c.updatedAt).toLocaleDateString(undefined, {
                     month: "short",
                     day: "numeric",
@@ -51,10 +65,10 @@ export default function ConversationList({
               </button>
               <button
                 onClick={() => onDelete(c.id)}
-                className="rounded p-1 text-ink-500 opacity-0 transition hover:bg-danger-500/15 hover:text-danger-400 group-hover:opacity-100"
+                className="p-1 text-ink-500 opacity-0 transition hover:text-danger-400 group-hover:opacity-100"
                 aria-label="Delete conversation"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
                   <path d="M3 6h18" />
                   <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
                   <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />

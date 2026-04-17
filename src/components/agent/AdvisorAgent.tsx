@@ -40,7 +40,6 @@ export default function AdvisorAgent() {
 
   const [editingClientId, setEditingClientId] = useState<string | null>(null);
 
-  // ---------- hydrate from localStorage ----------
   useEffect(() => {
     let cs = loadClients();
     if (cs.length === 0) {
@@ -57,18 +56,10 @@ export default function AdvisorAgent() {
     setHydrated(true);
   }, []);
 
-  useEffect(() => {
-    if (hydrated) saveClients(clients);
-  }, [clients, hydrated]);
-  useEffect(() => {
-    if (hydrated) saveConversations(conversations);
-  }, [conversations, hydrated]);
-  useEffect(() => {
-    if (hydrated) saveActiveClientId(activeClientId);
-  }, [activeClientId, hydrated]);
-  useEffect(() => {
-    if (hydrated) saveActiveConversationId(activeConvoId);
-  }, [activeConvoId, hydrated]);
+  useEffect(() => { if (hydrated) saveClients(clients); }, [clients, hydrated]);
+  useEffect(() => { if (hydrated) saveConversations(conversations); }, [conversations, hydrated]);
+  useEffect(() => { if (hydrated) saveActiveClientId(activeClientId); }, [activeClientId, hydrated]);
+  useEffect(() => { if (hydrated) saveActiveConversationId(activeConvoId); }, [activeConvoId, hydrated]);
 
   const activeClient = useMemo(
     () => clients.find((c) => c.id === activeClientId) ?? undefined,
@@ -79,7 +70,6 @@ export default function AdvisorAgent() {
     [conversations, activeConvoId],
   );
 
-  // ---------- conversation helpers ----------
   const ensureConversation = useCallback((): Conversation => {
     if (activeConvo) return activeConvo;
     const fresh = newConversation(activeClientId ?? undefined);
@@ -112,7 +102,6 @@ export default function AdvisorAgent() {
     if (activeConvoId === id) setActiveConvoId(null);
   };
 
-  // ---------- send a message + stream response ----------
   const send = useCallback(
     async (text: string) => {
       if (!text.trim() || streaming) return;
@@ -283,7 +272,6 @@ export default function AdvisorAgent() {
     abortRef.current?.abort();
   };
 
-  // ---------- pending note helpers ----------
   const acceptNote = (id: string) => {
     const pn = pendingNotes.find((n) => n.id === id);
     if (!pn || !activeClient) return;
@@ -304,7 +292,6 @@ export default function AdvisorAgent() {
   const dismissNote = (id: string) =>
     setPendingNotes((ns) => ns.filter((n) => n.id !== id));
 
-  // ---------- clients CRUD ----------
   const upsertClient = (c: Client) => {
     setClients((list) => {
       const exists = list.some((x) => x.id === c.id);
@@ -364,7 +351,14 @@ export default function AdvisorAgent() {
   };
 
   if (!hydrated) {
-    return <div className="card p-8 text-center text-ink-400">Loading workspace…</div>;
+    return (
+      <div className="flex items-center gap-3 text-sm text-ink-400">
+        <span className="label-xs">Loading workspace</span>
+        <span className="inline-block h-1 w-20 overflow-hidden bg-white/5">
+          <span className="block h-full w-1/3 animate-pulse bg-white/30" />
+        </span>
+      </div>
+    );
   }
 
   const editingClient = editingClientId
@@ -373,105 +367,121 @@ export default function AdvisorAgent() {
   const creatingClient = editingClientId === "__new__";
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
-      {/* -------- Sidebar -------- */}
-      <aside className="flex flex-col gap-3">
-        <div className="card flex flex-col gap-2 p-3">
-          <div className="flex gap-1 rounded-lg bg-ink-900/60 p-1">
-            <button
-              onClick={() => setMode("chat")}
-              className={`flex-1 rounded-md px-2.5 py-1.5 text-xs font-medium transition ${
-                mode === "chat" ? "bg-white/10 text-white" : "text-ink-400 hover:text-white"
-              }`}
-            >
-              Chat
-            </button>
-            <button
-              onClick={() => setMode("clients")}
-              className={`flex-1 rounded-md px-2.5 py-1.5 text-xs font-medium transition ${
-                mode === "clients" ? "bg-white/10 text-white" : "text-ink-400 hover:text-white"
-              }`}
-            >
-              Clients ({clients.length})
-            </button>
-          </div>
+    <div className="grid gap-0 overflow-hidden border border-white/[0.06] bg-black/20 lg:grid-cols-[280px_1fr]">
+      {/* ---------- Sidebar ---------- */}
+      <aside className="flex min-h-[72vh] flex-col gap-0 border-b border-white/[0.06] lg:border-b-0 lg:border-r">
+        {/* Mode switcher */}
+        <div className="flex items-center gap-0 border-b border-white/[0.06]">
           <button
-            onClick={startNewConversation}
-            disabled={streaming}
-            className="w-full rounded-lg bg-brand-500 px-3 py-2 text-sm font-medium text-white shadow-lg shadow-brand-500/20 transition hover:bg-brand-400 disabled:opacity-50"
+            onClick={() => setMode("chat")}
+            className={`flex-1 py-3 font-mono text-[10.5px] uppercase tracking-[0.22em] transition ${
+              mode === "chat"
+                ? "text-white"
+                : "text-ink-500 hover:text-ink-200"
+            }`}
           >
-            + New conversation
+            Chat
+            {mode === "chat" && (
+              <span className="mt-2 block h-px w-full bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+            )}
+          </button>
+          <div className="h-8 w-px bg-white/[0.06]" />
+          <button
+            onClick={() => setMode("clients")}
+            className={`flex-1 py-3 font-mono text-[10.5px] uppercase tracking-[0.22em] transition ${
+              mode === "clients"
+                ? "text-white"
+                : "text-ink-500 hover:text-ink-200"
+            }`}
+          >
+            Clients · {clients.length}
+            {mode === "clients" && (
+              <span className="mt-2 block h-px w-full bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+            )}
           </button>
         </div>
 
-        {mode === "chat" ? (
-          <ConversationList
-            conversations={clientConvos}
-            activeId={activeConvoId}
-            clients={clients}
-            onSelect={(id) => {
-              setActiveConvoId(id);
-              setPendingNotes([]);
-              setStreamError(null);
-            }}
-            onDelete={deleteConversation}
-          />
-        ) : (
-          <div className="card flex flex-col gap-1 p-2">
-            <button
-              onClick={() => setEditingClientId("__new__")}
-              className="mb-1 rounded-md px-2 py-2 text-sm font-medium text-brand-300 hover:bg-white/5"
-            >
-              + Add client
-            </button>
-            {clients.length === 0 && (
-              <p className="px-2 py-3 text-xs text-ink-500">No clients yet.</p>
-            )}
-            {clients.map((c) => (
-              <div
-                key={c.id}
-                className={`group flex items-center gap-2 rounded-md px-2 py-1.5 ${
-                  activeClientId === c.id ? "bg-brand-500/10" : "hover:bg-white/5"
-                }`}
-              >
-                <button
-                  className="flex min-w-0 flex-1 flex-col items-start text-left"
-                  onClick={() => setActiveClientId(c.id)}
+        {/* New button */}
+        <div className="p-4">
+          <button
+            onClick={mode === "chat" ? startNewConversation : () => setEditingClientId("__new__")}
+            disabled={streaming && mode === "chat"}
+            className="btn-ghost w-full"
+          >
+            <span className="text-ink-400">+</span>
+            {mode === "chat" ? "New conversation" : "New client"}
+          </button>
+        </div>
+
+        <div className="hairline-x opacity-60" />
+
+        {/* List */}
+        <div className="flex-1 overflow-y-auto">
+          {mode === "chat" ? (
+            <ConversationList
+              conversations={clientConvos}
+              activeId={activeConvoId}
+              clients={clients}
+              onSelect={(id) => {
+                setActiveConvoId(id);
+                setPendingNotes([]);
+                setStreamError(null);
+              }}
+              onDelete={deleteConversation}
+            />
+          ) : (
+            <div className="flex flex-col">
+              {clients.length === 0 && (
+                <p className="px-5 py-6 text-xs text-ink-500">No clients yet.</p>
+              )}
+              {clients.map((c) => (
+                <div
+                  key={c.id}
+                  className={`hairline-row group flex items-center gap-3 px-5 py-3 ${
+                    activeClientId === c.id ? "is-active" : ""
+                  }`}
                 >
-                  <span className="truncate text-sm text-white">{c.name}</span>
-                  <span className="truncate text-xs text-ink-500">
-                    {c.state ?? "—"} · {c.filingStatus.toUpperCase()}
-                  </span>
-                </button>
-                <button
-                  onClick={() => setEditingClientId(c.id)}
-                  className="rounded p-1 text-ink-500 opacity-0 hover:bg-white/10 hover:text-white group-hover:opacity-100"
-                  aria-label="Edit client"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
-                    <path d="M12 20h9" />
-                    <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => removeClient(c.id)}
-                  className="rounded p-1 text-ink-500 opacity-0 hover:bg-danger-500/15 hover:text-danger-400 group-hover:opacity-100"
-                  aria-label="Delete client"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
-                    <path d="M3 6h18" />
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                  </svg>
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+                  <button
+                    className="flex min-w-0 flex-1 flex-col items-start gap-0.5 text-left"
+                    onClick={() => setActiveClientId(c.id)}
+                  >
+                    <span className="truncate font-display text-[15px] font-light tracking-tight text-white">
+                      {c.name}
+                    </span>
+                    <span className="truncate font-mono text-[10px] uppercase tracking-[0.22em] text-ink-500">
+                      {c.state ?? "—"} · {c.filingStatus.toUpperCase()}
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => setEditingClientId(c.id)}
+                    className="p-1 text-ink-500 opacity-0 transition hover:text-white group-hover:opacity-100"
+                    aria-label="Edit client"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+                      <path d="M12 20h9" />
+                      <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => removeClient(c.id)}
+                    className="p-1 text-ink-500 opacity-0 transition hover:text-danger-400 group-hover:opacity-100"
+                    aria-label="Delete client"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+                      <path d="M3 6h18" />
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </aside>
 
-      {/* -------- Main pane -------- */}
-      <main className="flex min-h-[70vh] flex-col">
+      {/* ---------- Main pane ---------- */}
+      <main className="flex min-h-[72vh] flex-col">
         {mode === "clients" ? (
           <ClientEditor
             key={editingClientId ?? "list"}
@@ -480,7 +490,7 @@ export default function AdvisorAgent() {
             onCancel={() => setEditingClientId(null)}
           />
         ) : (
-          <div className="card flex min-h-[70vh] flex-1 flex-col overflow-hidden">
+          <div className="flex min-h-[72vh] flex-1 flex-col overflow-hidden">
             <ClientHeader
               clients={clients}
               activeClient={activeClient}
@@ -508,7 +518,7 @@ export default function AdvisorAgent() {
                   clientName={activeClient?.name}
                 />
               ) : (
-                <div className="flex flex-col gap-6 px-5 py-6 sm:px-8">
+                <div className="mx-auto flex max-w-3xl flex-col gap-10 px-6 py-10 sm:px-10">
                   {activeConvo.messages.map((m) => (
                     <MessageView key={m.id} message={m} streaming={streaming} />
                   ))}
@@ -517,26 +527,26 @@ export default function AdvisorAgent() {
             </div>
 
             {pendingNotes.length > 0 && (
-              <div className="flex flex-col gap-2 border-t border-white/5 bg-warn-500/5 px-5 py-3">
-                <p className="text-xs font-medium text-warn-400">
-                  Notes ready to attach to {activeClient?.name ?? "client"}
-                </p>
+              <div className="flex flex-col gap-3 border-t border-warn-500/25 bg-warn-500/[0.04] px-6 py-4">
+                <span className="label-xs text-warn-400">
+                  Notes ready to attach · {activeClient?.name ?? "client"}
+                </span>
                 {pendingNotes.map((n) => (
                   <div
                     key={n.id}
-                    className="flex items-start justify-between gap-3 rounded-lg border border-warn-500/30 bg-warn-500/5 px-3 py-2"
+                    className="flex items-start justify-between gap-4 border-l-2 border-warn-500/40 pl-3"
                   >
-                    <p className="flex-1 text-sm text-ink-100">{n.note}</p>
-                    <div className="flex gap-1">
+                    <p className="flex-1 text-sm leading-relaxed text-ink-100">{n.note}</p>
+                    <div className="flex shrink-0 gap-2">
                       <button
                         onClick={() => acceptNote(n.id)}
-                        className="rounded-md bg-accent-500/20 px-2 py-1 text-xs font-medium text-accent-400 hover:bg-accent-500/30"
+                        className="btn-link text-accent-400 hover:text-accent-300"
                       >
-                        Attach
+                        Attach ↵
                       </button>
                       <button
                         onClick={() => dismissNote(n.id)}
-                        className="rounded-md px-2 py-1 text-xs text-ink-400 hover:text-white"
+                        className="btn-link"
                       >
                         Dismiss
                       </button>
@@ -547,8 +557,9 @@ export default function AdvisorAgent() {
             )}
 
             {streamError && (
-              <div className="border-t border-danger-500/30 bg-danger-500/10 px-5 py-3 text-sm text-danger-300">
-                {streamError}
+              <div className="border-t border-danger-500/30 bg-danger-500/[0.05] px-6 py-3">
+                <span className="label-xs text-danger-400">Error</span>
+                <p className="mt-1 text-sm text-danger-300">{streamError}</p>
               </div>
             )}
 
@@ -560,7 +571,7 @@ export default function AdvisorAgent() {
               placeholder={
                 activeClient
                   ? `Ask Fidelis about ${activeClient.name}…`
-                  : "Pick a client from the sidebar, or ask a general tax question…"
+                  : "Pick a client, or ask a general tax question…"
               }
             />
           </div>
@@ -610,33 +621,43 @@ function EmptyState({
   clientName?: string;
 }) {
   return (
-    <div className="mx-auto flex h-full max-w-2xl flex-col items-center justify-center gap-6 px-6 py-16 text-center">
-      <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-brand-400 to-accent-500 text-ink-950 shadow-xl shadow-brand-500/30">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
-          <path d="M12 2 2 7l10 5 10-5-10-5Z" />
-          <path d="m2 17 10 5 10-5" />
-          <path d="m2 12 10 5 10-5" />
-        </svg>
-      </div>
-      <div>
-        <h3 className="text-xl font-semibold text-white">
-          {clientName ? `What can I help you with on ${clientName}?` : "What can I help you dig into?"}
+    <div className="mx-auto flex h-full max-w-2xl flex-col items-start justify-center gap-10 px-8 py-20">
+      <div className="flex flex-col gap-4">
+        <span className="kicker">Begin</span>
+        <h3 className="font-display text-[2rem] font-light leading-[1.05] tracking-tight text-white">
+          {clientName
+            ? <>What shall we examine for <em className="italic text-brand-300/90">{clientName}</em>?</>
+            : <>What shall we <em className="italic text-brand-300/90">examine</em>?</>
+          }
         </h3>
-        <p className="mt-2 text-sm text-ink-400">
-          Fidelis has tools for federal bracket math, residency day-counts, contribution limits,
-          and a built-in tax knowledge base. Every number is tool-computed; every rule is cited.
+        <p className="max-w-lg text-sm leading-relaxed text-ink-400">
+          Tool-computed math. Cited rules. Federal brackets, residency
+          day-counts, contribution limits, Roth conversion ladders, NIIT,
+          AMT — and a growing knowledge base behind every answer.
         </p>
       </div>
-      <div className="grid w-full gap-2 sm:grid-cols-2">
-        {suggestions.map((s) => (
-          <button
-            key={s}
-            onClick={() => onPick(s)}
-            className="rounded-xl border border-white/5 bg-white/[0.03] px-4 py-3 text-left text-sm text-ink-100 transition hover:border-brand-500/40 hover:bg-brand-500/5"
-          >
-            {s}
-          </button>
-        ))}
+
+      <div className="w-full">
+        <div className="label-xs mb-3">Starting points</div>
+        <div className="flex flex-col">
+          {suggestions.map((s, i) => (
+            <button
+              key={s}
+              onClick={() => onPick(s)}
+              className="hairline-row group flex items-center gap-4 px-0 py-3 text-left transition"
+            >
+              <span className="font-mono text-[10px] tracking-[0.22em] text-ink-500 group-hover:text-brand-300">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="flex-1 text-sm leading-relaxed text-ink-200 transition group-hover:text-white">
+                {s}
+              </span>
+              <span className="font-mono text-[10px] tracking-[0.22em] text-ink-500 opacity-0 transition group-hover:opacity-100">
+                →
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
