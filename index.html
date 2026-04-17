@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Heredia × Lyra — Concierge Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #050B14;
+    --bg-mid: #0A1628;
+    --bg-card: rgba(15, 28, 46, 0.7);
+    --line: rgba(91, 141, 239, 0.08);
+    --line-strong: rgba(91, 141, 239, 0.18);
+    --gold: #D4A574;
+    --gold-glow: rgba(212, 165, 116, 0.35);
+    --vision: #4A6B7C;
+    --lyra: #5B8DEF;
+    --text: #E8E4D9;
+    --text-mute: #6B7A8C;
+    --text-faint: #3A4A5C;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%; width: 100%; overflow: hidden;
+    background: radial-gradient(ellipse at 30% 20%, #0E1F38 0%, var(--bg-deep) 60%);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 300;
+  }
+
+  /* ----- Top bar ----- */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; z-index: 100;
+    background: linear-gradient(180deg, rgba(5,11,20,0.95) 0%, rgba(5,11,20,0) 100%);
+  }
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; letter-spacing: 0.18em; font-weight: 400;
+    color: var(--text);
+  }
+  .brand .x { color: var(--gold); margin: 0 10px; font-style: italic; }
+  .brand .lyra { color: var(--lyra); }
+  .demo-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.25em;
+    padding: 5px 10px; border: 1px solid var(--line-strong);
+    border-radius: 2px; color: var(--text-mute);
+    background: rgba(91, 141, 239, 0.05);
+  }
+  .lyra-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--text-faint);
+  }
+  .lyra-mark .dot { color: var(--lyra); }
+
+  /* ----- Layout ----- */
+  .stage {
+    position: absolute; inset: 56px 0 0 0;
+    display: grid; grid-template-columns: 1.5fr 1fr;
+    height: calc(100% - 56px);
+    overflow: hidden;
+  }
+
+  /* ----- Map / nav chart ----- */
+  .chart {
+    position: relative; overflow: hidden;
+    border-right: 1px solid var(--line);
+  }
+  .chart-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(0deg, var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.6;
+  }
+  .chart-coords {
+    position: absolute; bottom: 16px; left: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--text-faint);
+    letter-spacing: 0.15em;
+  }
+  .chart-title {
+    position: absolute; top: 24px; left: 28px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--text-mute);
+    font-size: 14px; letter-spacing: 0.12em;
+  }
+  .chart-title em { color: var(--gold); font-style: normal; }
+
+  .pin {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: default;
+  }
+  .pin .core {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 24px var(--gold-glow), 0 0 60px var(--gold-glow);
+    position: relative; z-index: 2;
+  }
+  .pin.live .core::after {
+    content: ''; position: absolute; inset: -8px;
+    border: 1px solid var(--gold);
+    border-radius: 50%; opacity: 0;
+    animation: pulse 2.4s ease-out infinite;
+  }
+  .pin.live .core::before {
+    content: ''; position: absolute; inset: -16px;
+    border: 1px solid var(--gold);
+    border-radius: 50%; opacity: 0;
+    animation: pulse 2.4s ease-out infinite 0.6s;
+  }
+  @keyframes pulse {
+    0% { transform: scale(0.6); opacity: 0.8; }
+    100% { transform: scale(2.0); opacity: 0; }
+  }
+  .pin.ghost .core {
+    background: transparent;
+    border: 1px dashed var(--vision);
+    box-shadow: none;
+    width: 16px; height: 16px;
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .pin.ghost.awake .core {
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    box-shadow: 0 0 18px var(--gold-glow);
+  }
+  .pin.ghost.awake .core::after {
+    content: ''; position: absolute; inset: -6px;
+    border: 1px solid var(--gold);
+    border-radius: 50%; opacity: 0;
+    animation: pulse 2.4s ease-out infinite;
+  }
+  .pin .label {
+    position: absolute; top: 22px; left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; letter-spacing: 0.08em;
+    color: var(--text);
+    text-align: center;
+  }
+  .pin .sub {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    color: var(--text-faint);
+    margin-top: 3px; text-transform: uppercase;
+  }
+  .pin.live .sub { color: var(--gold); }
+  .pin.ghost .sub { color: var(--vision); }
+  .pin.ghost.awake .sub { color: var(--gold); }
+  .pin.ghost { opacity: 0.45; transition: opacity 0.8s; }
+  .pin.ghost.awake { opacity: 1; }
+
+  .connections {
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 1;
+  }
+
+  /* ----- Chat panel ----- */
+  .chat {
+    display: flex; flex-direction: column;
+    background: linear-gradient(180deg, rgba(10, 22, 40, 0.4) 0%, rgba(5, 11, 20, 0.6) 100%);
+    overflow: hidden; /* KEY: prevents layout from breaking */
+    height: 100%;
+  }
+  .chat-head {
+    padding: 20px 24px 16px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 14px;
+    flex-shrink: 0;
+  }
+  .avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, #6B4F2E 0%, #D4A574 100%);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; color: #1A1208;
+    letter-spacing: 0.05em;
+    box-shadow: 0 0 30px var(--gold-glow);
+    transition: box-shadow 0.3s;
+    flex-shrink: 0;
+    border: 1px solid rgba(212,165,116,0.25);
+  }
+  .avatar img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .avatar.thinking {
+    animation: think 1.4s ease-in-out infinite;
+  }
+  @keyframes think {
+    0%, 100% { box-shadow: 0 0 20px var(--gold-glow); }
+    50% { box-shadow: 0 0 50px var(--gold-glow), 0 0 80px var(--gold-glow); }
+  }
+  .head-info { flex: 1; min-width: 0; }
+  .head-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; letter-spacing: 0.04em;
+  }
+  .head-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint); margin-top: 3px;
+    text-transform: uppercase;
+  }
+  .reset-btn {
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--text-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    padding: 6px 10px; cursor: pointer;
+    border-radius: 2px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    display: none;
+  }
+  .reset-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .reset-btn.visible { display: block; }
+
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+    scroll-behavior: smooth;
+    min-height: 0; /* critical for flex scroll */
+  }
+  .messages::-webkit-scrollbar { width: 3px; }
+  .messages::-webkit-scrollbar-track { background: transparent; }
+  .messages::-webkit-scrollbar-thumb {
+    background: var(--line-strong); border-radius: 2px;
+  }
+
+  .msg {
+    margin-bottom: 20px;
+    animation: fadein 0.5s ease-out;
+  }
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .msg.user { text-align: right; }
+  .msg .bubble {
+    display: inline-block;
+    max-width: 88%;
+    padding: 11px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.55;
+    text-align: left;
+  }
+  .msg.user .bubble {
+    background: rgba(91, 141, 239, 0.08);
+    border: 1px solid rgba(91, 141, 239, 0.18);
+    color: var(--text);
+  }
+  .msg.assistant .bubble {
+    background: rgba(212, 165, 116, 0.04);
+    border-left: 2px solid var(--gold);
+    color: var(--text);
+    padding-left: 18px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+  }
+  .msg.assistant .bubble em {
+    color: var(--gold); font-style: italic;
+  }
+  .msg .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.18em;
+    color: var(--text-faint);
+    margin-top: 5px;
+    text-transform: uppercase;
+  }
+
+  .typing-cursor {
+    display: inline-block; width: 2px; height: 14px;
+    background: var(--gold); vertical-align: text-bottom;
+    margin-left: 2px;
+    animation: blink 1s steps(2) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ----- Text input ----- */
+  .input-row {
+    padding: 10px 16px;
+    border-top: 1px solid var(--line);
+    display: flex; gap: 8px; align-items: center;
+    flex-shrink: 0;
+    background: rgba(5, 11, 20, 0.4);
+  }
+  .chat-input {
+    flex: 1; background: rgba(91, 141, 239, 0.04);
+    border: 1px solid var(--line-strong);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    padding: 9px 13px;
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .chat-input::placeholder { color: var(--text-faint); }
+  .chat-input:focus { border-color: rgba(212,165,116,0.35); }
+  .send-btn {
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--text-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    width: 36px; height: 36px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .send-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ----- Demo prompts ----- */
+  .prompts {
+    padding: 12px 16px 16px;
+    border-top: 1px solid var(--line);
+    background: rgba(5, 11, 20, 0.6);
+    flex-shrink: 0; /* KEY: never compress this section */
+  }
+  .prompts-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint); margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .prompt-btn {
+    display: block; width: 100%;
+    text-align: left;
+    background: rgba(91, 141, 239, 0.04);
+    border: 1px solid var(--line-strong);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    padding: 9px 12px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+  .prompt-btn:hover:not(:disabled) {
+    background: rgba(212, 165, 116, 0.08);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .prompt-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+  .prompt-btn.used {
+    opacity: 0.4;
+    border-style: dashed;
+  }
+  .prompt-btn .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    color: var(--text-faint); margin-right: 10px;
+  }
+  .prompt-btn:hover:not(:disabled) .num { color: var(--gold); }
+
+  /* ----- Intro overlay ----- */
+  .intro {
+    position: fixed; inset: 0; z-index: 200;
+    background: radial-gradient(ellipse at 50% 40%, #0E1F38 0%, var(--bg-deep) 70%);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    transition: opacity 1s, visibility 1s;
+  }
+  .intro.gone { opacity: 0; visibility: hidden; }
+  .intro-portrait {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: linear-gradient(145deg, #5C3D1E 0%, #D4A574 60%, #E8C99A 100%);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px; color: #1A1208;
+    letter-spacing: 0.04em;
+    font-weight: 400;
+    margin-bottom: 28px;
+    border: 1px solid rgba(212,165,116,0.4);
+    box-shadow:
+      0 0 0 8px rgba(212,165,116,0.06),
+      0 0 0 16px rgba(212,165,116,0.03),
+      0 0 80px var(--gold-glow),
+      0 0 140px rgba(212,165,116,0.12);
+    animation: portraitBreathe 4s ease-in-out infinite;
+  }
+  .intro-portrait img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  @keyframes portraitBreathe {
+    0%, 100% { box-shadow: 0 0 0 8px rgba(212,165,116,0.06), 0 0 0 16px rgba(212,165,116,0.03), 0 0 60px var(--gold-glow); }
+    50% { box-shadow: 0 0 0 10px rgba(212,165,116,0.09), 0 0 0 20px rgba(212,165,116,0.04), 0 0 100px var(--gold-glow), 0 0 160px rgba(212,165,116,0.15); }
+  }
+  .intro-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.35em;
+    color: var(--text-faint); margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .intro-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px; letter-spacing: 0.08em;
+    color: var(--text); margin-bottom: 6px;
+    text-align: center;
+  }
+  .intro-title em {
+    color: var(--gold); font-style: italic; font-weight: 300;
+  }
+  .intro-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--text-mute);
+    font-size: 16px; max-width: 480px;
+    text-align: center; margin: 22px 0 10px;
+    line-height: 1.6;
+  }
+  .intro-attribution {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.25em;
+    color: var(--text-faint); margin-bottom: 40px;
+  }
+  .intro-cta {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.3em;
+    padding: 14px 30px; cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+  .intro-cta:hover {
+    background: var(--gold);
+    color: var(--bg-deep);
+    box-shadow: 0 0 40px var(--gold-glow);
+  }
+
+  @media (max-width: 980px) {
+    .stage { grid-template-columns: 1fr; grid-template-rows: 45% 55%; }
+    .chart { border-right: none; border-bottom: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+
+<div class="intro" id="intro">
+  <div class="intro-eyebrow">Heredia × Lyra · Private Demo</div>
+  <div class="intro-portrait" id="introPortrait">EH</div>
+  <div class="intro-title">Emilio <em>Heredia</em></div>
+  <div class="intro-quote">
+    "Most of our guests leave having had an experience<br>
+    that has awoken their awareness of nature."
+  </div>
+  <div class="intro-attribution">— EMILIO HEREDIA · PAPAYA PLAYA · TULUM</div>
+  <button class="intro-cta" onclick="enterDemo()">Enter the Concierge</button>
+</div>
+
+<div class="topbar">
+  <div class="lyra-mark">L<span class="dot">·</span>Y<span class="dot">·</span>R<span class="dot">·</span>A</div>
+  <div class="brand">HEREDIA <span class="x">×</span> <span class="lyra">LYRA</span></div>
+  <div class="demo-pill">DEMO · APR 2026</div>
+</div>
+
+<div class="stage">
+  <div class="chart" id="chart">
+    <div class="chart-bg"></div>
+    <div class="chart-title"><em>Heredia Network</em> — live footprint &amp; vision territories</div>
+    <div class="chart-coords">LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1</div>
+
+    <svg class="connections" id="connections" preserveAspectRatio="none"></svg>
+
+    <div class="pin live" style="left: 23%; top: 52%;" data-id="tulum">
+      <div class="core"></div>
+      <div class="label">Tulum<span class="sub">Papaya Playa · Live</span></div>
+    </div>
+    <div class="pin ghost" style="left: 47%; top: 38%;" data-id="algarve">
+      <div class="core"></div>
+      <div class="label">Algarve<span class="sub">Vision</span></div>
+    </div>
+    <div class="pin ghost" style="left: 56%; top: 42%;" data-id="santorini">
+      <div class="core"></div>
+      <div class="label">Santorini<span class="sub">Vision</span></div>
+    </div>
+    <div class="pin ghost" style="left: 50%; top: 50%;" data-id="marrakech">
+      <div class="core"></div>
+      <div class="label">Marrakech<span class="sub">Vision</span></div>
+    </div>
+    <div class="pin ghost" style="left: 78%; top: 65%;" data-id="bali">
+      <div class="core"></div>
+      <div class="label">Bali<span class="sub">Vision</span></div>
+    </div>
+  </div>
+
+  <div class="chat">
+    <div class="chat-head">
+      <div class="avatar" id="avatar">EH</div>
+      <div class="head-info">
+        <div class="head-name">Emilio Heredia</div>
+        <div class="head-sub">Heredia Concierge · Powered by Lyra</div>
+      </div>
+      <button class="reset-btn" id="resetBtn" onclick="resetDemo()">↺ Reset</button>
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="input-row">
+      <input class="chat-input" id="chatInput" type="text" placeholder="Ask Emilio anything…" />
+      <button class="send-btn" onclick="handleInput()">→</button>
+    </div>
+
+    <div class="prompts">
+      <div class="prompts-label">→ Quick prompts</div>
+      <button class="prompt-btn" data-scenario="story">
+        <span class="num">01</span>Tell me Emilio's story.
+      </button>
+      <button class="prompt-btn" data-scenario="portugal">
+        <span class="num">02</span>I'm planning Portugal in September with my girlfriend.
+      </button>
+      <button class="prompt-btn" data-scenario="scale">
+        <span class="num">03</span>Why should Emilio work with Lyra?
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SCENARIOS = {
+    story: {
+      user: "Tell me Emilio's story.",
+      reply: [
+        "Emilio Heredia began as an electrical engineer — degrees in electronics and finance, then chairman of financial institutions in New York and Mexico City. From the outside, the perfect career.",
+        "But for thirty years he walked a quieter path in parallel: yoga, karate, Tao, corporal psychotherapy. The boardroom and the breath, side by side.",
+        "When he founded *Papaya Playa* in Tulum, he wasn't building a hotel. He was building a thesis: that *primitive sophistication* — barefoot luxury, intimacy with the land — could be more rare than any marble lobby in Manhattan.",
+        "His own words: *\"My main hobby is living with intensity.\"*",
+        "Today he hosts ~8,000 guests a year on a single Mexican coastline. The question isn't whether his vision deserves more soil. It's whether the infrastructure exists to grow it without losing the soul."
+      ],
+      mapAction: null
+    },
+    portugal: {
+      user: "I'm planning Portugal in September with my girlfriend — somewhere quiet, close to the ocean, the kind of place Emilio would pick.",
+      reply: [
+        "I hear you. You're not asking for a hotel — you're asking for a *feeling.* The same one Emilio chases: nature undiluted, intimacy without performance, time that bends slowly.",
+        "Right now, Emilio's only home is Papaya Playa — here in Tulum. One property. Chosen carefully.",
+        "*[Heredia Network · scanning latent territories...]*",
+        "But the Algarve coast — specifically the cliffs around Carrapateira and the inland villages of Monchique — fits Emilio's grammar exactly. Wild Atlantic, no neon, the locals still cook the way their grandmothers did. Emilio has scouted these regions personally.",
+        "If Heredia × Lyra ships on schedule, you'd be booking a Heredia-curated Algarve hideaway by Christmas. Same soul as Tulum. New soil.",
+        "Want me to put you on the founding waitlist? You'd be guest #001 outside Mexico."
+      ],
+      mapAction: ['algarve']
+    },
+    scale: {
+      user: "Why should Emilio work with Lyra?",
+      reply: [
+        "Because right now, Emilio has one Tulum hideaway and roughly 8,000 people who already love his taste. That's a brand. That's a tribe. That's not yet a *network*.",
+        "Lyra builds the infrastructure that turns *one Heredia* into a *Heredia network* — without franchising, without diluting, without putting his name on properties he hasn't touched.",
+        "Same soul. More soil.",
+        "*[Heredia Network · projecting 18-month horizon...]*",
+        "Algarve. Santorini. Marrakech. Bali. Each one a property Emilio personally selects — Lyra ships the booking flow, the concierge layer, the guest journey, the travel agent onboarding. He keeps the curation. We handle the rails.",
+        "His 8,000 guests become 80,000. His brand becomes a passport. And he never has to answer another booking email."
+      ],
+      mapAction: ['algarve', 'santorini', 'marrakech', 'bali']
+    }
+  };
+
+  const DEMO_FALLBACK = [
+    "That's a question worth sitting with.",
+    "Emilio would say: *the answer is always closer to nature than you think.*",
+    "This is a curated demo — tap one of the prompts below to experience the full Heredia concierge."
+  ];
+
+  const messagesEl = document.getElementById('messages');
+  const avatar = document.getElementById('avatar');
+  const intro = document.getElementById('intro');
+  const connections = document.getElementById('connections');
+  const resetBtn = document.getElementById('resetBtn');
+  const chatInput = document.getElementById('chatInput');
+  let busy = false;
+  let hasStarted = false;
+
+  function enterDemo() {
+    intro.classList.add('gone');
+    setTimeout(() => intro.style.display = 'none', 1200);
+    setTimeout(() => {
+      addMessage('assistant', "Welcome. I carry Emilio's story, his grammar, his taste. Ask me anything — or choose a thread below.");
+    }, 1500);
+  }
+
+  function addMessage(role, text) {
+    const msg = document.createElement('div');
+    msg.className = 'msg ' + role;
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.innerHTML = formatText(text);
+    msg.appendChild(bubble);
+    if (role === 'assistant') {
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = '— Emilio · via Lyra';
+      msg.appendChild(meta);
+    }
+    messagesEl.appendChild(msg);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return msg;
+  }
+
+  function formatText(t) {
+    return t.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  }
+
+  async function streamReply(paragraphs, onParagraph) {
+    avatar.classList.add('thinking');
+    await sleep(600);
+
+    for (let p = 0; p < paragraphs.length; p++) {
+      const text = paragraphs[p];
+      const msg = document.createElement('div');
+      msg.className = 'msg assistant';
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      msg.appendChild(bubble);
+      messagesEl.appendChild(msg);
+
+      const cursor = document.createElement('span');
+      cursor.className = 'typing-cursor';
+      bubble.appendChild(cursor);
+
+      let i = 0;
+      while (i < text.length) {
+        const chunk = Math.min(3, text.length - i);
+        cursor.insertAdjacentHTML('beforebegin', escapeHtml(text.substr(i, chunk)));
+        i += chunk;
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+        await sleep(text[i] === ' ' ? 10 : 16);
+      }
+      cursor.remove();
+      bubble.innerHTML = formatText(text);
+
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = '— Emilio · via Lyra';
+      msg.appendChild(meta);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      if (onParagraph) onParagraph(p);
+      if (p < paragraphs.length - 1) await sleep(480);
+    }
+    avatar.classList.remove('thinking');
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  function awakenPin(id) {
+    const pin = document.querySelector(`.pin[data-id="${id}"]`);
+    if (!pin) return;
+    pin.classList.add('awake');
+    drawConnection('tulum', id);
+  }
+
+  function drawConnection(fromId, toId) {
+    const chart = document.getElementById('chart');
+    const r = chart.getBoundingClientRect();
+    const a = document.querySelector(`.pin[data-id="${fromId}"]`).getBoundingClientRect();
+    const b = document.querySelector(`.pin[data-id="${toId}"]`).getBoundingClientRect();
+    const x1 = a.left + a.width / 2 - r.left;
+    const y1 = a.top + a.height / 2 - r.top;
+    const x2 = b.left + b.width / 2 - r.left;
+    const y2 = b.top + b.height / 2 - r.top;
+
+    const ns = "http://www.w3.org/2000/svg";
+    connections.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+    connections.setAttribute('width', r.width);
+    connections.setAttribute('height', r.height);
+
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+    line.setAttribute('x2', x1); line.setAttribute('y2', y1);
+    line.setAttribute('stroke', '#D4A574');
+    line.setAttribute('stroke-width', '0.8');
+    line.setAttribute('stroke-dasharray', '4 4');
+    line.setAttribute('opacity', '0.55');
+    connections.appendChild(line);
+
+    const start = performance.now();
+    const dur = 1200;
+    function step(now) {
+      const k = Math.min(1, (now - start) / dur);
+      const ease = 1 - Math.pow(1 - k, 3);
+      line.setAttribute('x2', x1 + (x2 - x1) * ease);
+      line.setAttribute('y2', y1 + (y2 - y1) * ease);
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  async function runScenario(key) {
+    if (busy) return;
+    busy = true;
+    document.querySelectorAll('.prompt-btn').forEach(b => b.disabled = true);
+
+    const sc = SCENARIOS[key];
+    addMessage('user', sc.user);
+    await sleep(400);
+
+    const pinsToWake = sc.mapAction || [];
+    let pinIdx = 0;
+    await streamReply(sc.reply, (paragraphIdx) => {
+      if (key === 'portugal' && paragraphIdx === 3 && pinsToWake[pinIdx]) {
+        awakenPin(pinsToWake[pinIdx++]);
+      }
+      if (key === 'scale' && paragraphIdx === 4) {
+        pinsToWake.forEach((id, i) => setTimeout(() => awakenPin(id), i * 700));
+      }
+    });
+
+    busy = false;
+    hasStarted = true;
+    resetBtn.classList.add('visible');
+
+    document.querySelector(`.prompt-btn[data-scenario="${key}"]`).classList.add('used');
+    document.querySelectorAll('.prompt-btn').forEach(b => {
+      if (!b.classList.contains('used')) b.disabled = false;
+    });
+  }
+
+  async function handleInput() {
+    const val = chatInput.value.trim();
+    if (!val || busy) return;
+    chatInput.value = '';
+
+    const lower = val.toLowerCase();
+    let matchedKey = null;
+    if (lower.includes('story') || lower.includes('emilio') || lower.includes('who')) matchedKey = 'story';
+    else if (lower.includes('portugal') || lower.includes('algarve') || lower.includes('europe') || lower.includes('girlfriend')) matchedKey = 'portugal';
+    else if (lower.includes('lyra') || lower.includes('work') || lower.includes('scale') || lower.includes('why')) matchedKey = 'scale';
+
+    if (matchedKey) {
+      busy = true;
+      document.querySelectorAll('.prompt-btn').forEach(b => b.disabled = true);
+      addMessage('user', val);
+      await sleep(400);
+      const sc = SCENARIOS[matchedKey];
+      await streamReply(sc.reply, null);
+      busy = false;
+      hasStarted = true;
+      resetBtn.classList.add('visible');
+      document.querySelectorAll('.prompt-btn').forEach(b => {
+        if (!b.classList.contains('used')) b.disabled = false;
+      });
+    } else {
+      busy = true;
+      addMessage('user', val);
+      await sleep(400);
+      await streamReply(DEMO_FALLBACK, null);
+      busy = false;
+    }
+  }
+
+  chatInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleInput();
+  });
+
+  function resetDemo() {
+    messagesEl.innerHTML = '';
+    while (connections.firstChild) connections.removeChild(connections.firstChild);
+    document.querySelectorAll('.pin.ghost').forEach(p => p.classList.remove('awake'));
+    document.querySelectorAll('.prompt-btn').forEach(b => {
+      b.disabled = false;
+      b.classList.remove('used');
+    });
+    resetBtn.classList.remove('visible');
+    hasStarted = false;
+    busy = false;
+    setTimeout(() => {
+      addMessage('assistant', "Welcome back. I carry Emilio's story, his grammar, his taste. Ask me anything — or choose a thread below.");
+    }, 200);
+  }
+
+  document.querySelectorAll('.prompt-btn').forEach(btn => {
+    btn.addEventListener('click', () => runScenario(btn.dataset.scenario));
+  });
+
+  window.enterDemo = enterDemo;
+  window.resetDemo = resetDemo;
+  window.handleInput = handleInput;
+
+  window.addEventListener('resize', () => {
+    while (connections.firstChild) connections.removeChild(connections.firstChild);
+    document.querySelectorAll('.pin.ghost.awake').forEach(p => {
+      drawConnection('tulum', p.dataset.id);
+    });
+  });
+</script>
+</body>
+</html>
