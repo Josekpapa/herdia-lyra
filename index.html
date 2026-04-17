@@ -295,6 +295,11 @@
   /* Stat count-up wrapper */
   .stat .num .count { display: inline-block; font-variant-numeric: tabular-nums; }
   .stat .num.counting { text-shadow: 0 0 28px var(--gold-glow); }
+  .stat .num.stat-word em {
+    color: var(--gold);
+    font-style: italic;
+    font-weight: 300;
+  }
 
   /* Scroll hint */
   .scroll-hint {
@@ -542,7 +547,7 @@
   }
   .rails-stack li {
     display: grid;
-    grid-template-columns: 32px 1fr auto;
+    grid-template-columns: 32px 1fr auto auto;
     gap: 14px;
     padding: 12px 14px;
     border: 1px solid var(--line);
@@ -552,21 +557,46 @@
     cursor: none;
     align-items: center;
   }
+  .rails-stack li.r-live {
+    border-color: rgba(212,165,116,0.3);
+    background: rgba(212,165,116,0.04);
+  }
+  .rails-stack li.r-tbd {
+    border-style: dashed;
+    border-color: rgba(91,141,239,0.18);
+    background: rgba(91,141,239,0.02);
+  }
   .rails-stack li:hover {
     border-color: var(--gold);
-    background: rgba(212,165,116,0.06);
+    background: rgba(212,165,116,0.07);
     transform: translateX(4px);
+  }
+  .rails-stack li.r-tbd:hover {
+    border-color: var(--lyra);
+    border-style: solid;
+    background: rgba(91,141,239,0.06);
   }
   .rails-stack .r-n {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px; letter-spacing: 0.2em;
     color: var(--gold);
   }
+  .rails-stack li.r-tbd .r-n { color: var(--lyra); opacity: 0.65; }
   .rails-stack .r-t {
     font-family: 'Cormorant Garamond', serif;
     font-size: 16px;
     color: var(--text);
     letter-spacing: 0.02em;
+    display: inline-flex; align-items: baseline; gap: 6px;
+  }
+  .rails-stack li.r-tbd .r-t { color: var(--text-mute); font-style: italic; }
+  .rails-stack .r-q {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--lyra);
+    font-style: normal;
+    opacity: 0.7;
+    margin-left: 2px;
   }
   .rails-stack .r-d {
     font-family: 'JetBrains Mono', monospace;
@@ -574,11 +604,33 @@
     color: var(--text-faint);
     text-transform: uppercase;
     text-align: right;
-    max-width: 260px;
+    max-width: 240px;
+  }
+  .rails-stack .r-state {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .rails-stack li.r-live .r-state {
+    color: var(--gold);
+    border-color: rgba(212,165,116,0.35);
+    background: rgba(212,165,116,0.06);
+  }
+  .rails-stack li.r-tbd .r-state {
+    color: var(--lyra);
+    border-color: rgba(91,141,239,0.25);
+    background: rgba(91,141,239,0.05);
+    border-style: dashed;
+    opacity: 0.8;
   }
   @media (max-width: 980px) {
-    .rails-stack li { grid-template-columns: 28px 1fr; }
+    .rails-stack li { grid-template-columns: 28px 1fr auto; }
     .rails-stack .r-d { grid-column: 1 / -1; text-align: left; padding-left: 42px; }
+    .rails-stack .r-state { grid-column: 3; grid-row: 1; }
   }
 
   /* ========== CHAPTER 5 — MAREA CHAT ========== */
@@ -1406,9 +1458,9 @@
 <!-- Progress dots -->
 <div class="progress" id="progress">
   <button data-ch="0" data-label="The Founder" class="active"></button>
-  <button data-ch="1" data-label="The Brand"></button>
+  <button data-ch="1" data-label="The Forge"></button>
   <button data-ch="2" data-label="The Thesis"></button>
-  <button data-ch="3" data-label="The Ecosystem"></button>
+  <button data-ch="3" data-label="The Rails"></button>
   <button data-ch="4" data-label="Marea"></button>
 </div>
 
@@ -1455,20 +1507,20 @@
 <section class="chapter" id="ch2" data-ch="1">
   <div class="content">
     <div class="reveal"><div class="ch-eyebrow" id="ch2Eyebrow"><em>01</em> · THE BRAND</div></div>
-    <div class="reveal"><h2 class="ch-title" id="ch2Title">Papaya Playa. <em>One anchor, infinite soil.</em></h2></div>
-    <div class="reveal"><p class="ch-body" id="ch2Body">A single hideaway on the Tulum shoreline, Quintana Roo — and the anchor brand of the Heredia ecosystem. Barefoot luxury, intimacy with the land. A decade of careful curation, guest by guest. Software now carries the soul — so the soil can multiply without the founder having to.</p></div>
+    <div class="reveal"><h2 class="ch-title" id="ch2Title">Papaya Playa. <em>The forge.</em></h2></div>
+    <div class="reveal"><p class="ch-body" id="ch2Body">A hideaway on the Tulum shoreline, Quintana Roo — and the forge where the Heredia grammar was proven. Barefoot luxury, intimacy with the land. A decade of curation, guest by guest. The software now carries the soul — so the grammar travels without the founder having to.</p></div>
     <div class="reveal stat-row">
       <div class="stat">
-        <div class="num"><span class="count" data-target="8000" data-format="comma">0</span></div>
-        <div class="lbl" id="ch2Stat1">Guests / year</div>
-      </div>
-      <div class="stat">
-        <div class="num"><span class="count" data-target="1">0</span></div>
-        <div class="lbl" id="ch2Stat2">Property</div>
-      </div>
-      <div class="stat">
         <div class="num"><span class="count" data-target="10" data-suffix="+">0</span></div>
-        <div class="lbl" id="ch2Stat3">Years curated</div>
+        <div class="lbl" id="ch2Stat1">Years forged</div>
+      </div>
+      <div class="stat">
+        <div class="num stat-word"><em>One</em></div>
+        <div class="lbl" id="ch2Stat2">Living grammar</div>
+      </div>
+      <div class="stat">
+        <div class="num stat-word"><em>∞</em></div>
+        <div class="lbl" id="ch2Stat3">Soil ahead</div>
       </div>
     </div>
   </div>
@@ -1491,14 +1543,16 @@
 <section class="chapter" id="ch4" data-ch="3">
   <div class="content">
     <div class="reveal"><div class="ch-eyebrow" id="ch4Eyebrow"><em>03</em> · THE ECOSYSTEM</div></div>
-    <div class="reveal"><h2 class="ch-title" id="ch4Title">Same soul. <em>More soil.</em></h2></div>
-    <div class="reveal"><p class="ch-body" id="ch4Body">A hospitality brand becomes an ecosystem the moment software starts carrying the soul. Lyra ships the rails so Papaya Playa's grammar — tone, taste, ritual — lives inside every booking, every concierge reply, every travel-agent handoff. The founder stays rare. The feeling scales.</p></div>
+    <div class="reveal"><h2 class="ch-title" id="ch4Title">Seven rails. <em>One portfolio.</em></h2></div>
+    <div class="reveal"><p class="ch-body" id="ch4Body">A hospitality brand becomes an ecosystem the moment software carries the soul. Two rails are live. Five are drafts — waiting to be named. This is a map for a conversation, not a manifest.</p></div>
     <ul class="rails-stack reveal" id="railsStack">
-      <li><span class="r-n">01</span><span class="r-t" data-rail="booking">Booking engine</span><span class="r-d" data-rail-d="booking">direct, commission-light, Emilio-curated rates</span></li>
-      <li><span class="r-n">02</span><span class="r-t" data-rail="concierge">Marea · AI concierge</span><span class="r-d" data-rail-d="concierge">24/7 brand voice, bilingual, remembers every guest</span></li>
-      <li><span class="r-n">03</span><span class="r-t" data-rail="journey">Guest journey OS</span><span class="r-d" data-rail-d="journey">pre-arrival → in-stay → post-stay, one timeline</span></li>
-      <li><span class="r-n">04</span><span class="r-t" data-rail="agents">Travel-agent portal</span><span class="r-d" data-rail-d="agents">onboard partners, quote in minutes, track commissions</span></li>
-      <li><span class="r-n">05</span><span class="r-t" data-rail="ops">Multi-property ops</span><span class="r-d" data-rail-d="ops">one dashboard, every soil — taste preserved by template</span></li>
+      <li class="r-live"><span class="r-n">01</span><span class="r-t" data-rail="marea">Marea · concierge grammar</span><span class="r-d" data-rail-d="marea">24/7 brand voice, bilingual, remembers every guest</span><span class="r-state" data-rail-s="marea">Live</span></li>
+      <li class="r-live"><span class="r-n">02</span><span class="r-t" data-rail="fidelis">Fidelis · advisor copilot</span><span class="r-d" data-rail-d="fidelis">deterministic tax tools, cited outputs, audit-grade memos</span><span class="r-state" data-rail-s="fidelis">Live</span></li>
+      <li class="r-tbd"><span class="r-n">03</span><span class="r-t" data-rail="memory">Guest memory across properties<span class="r-q">?</span></span><span class="r-d" data-rail-d="memory">one guest, every soil — recognized on arrival</span><span class="r-state" data-rail-s="memory">Draft</span></li>
+      <li class="r-tbd"><span class="r-n">04</span><span class="r-t" data-rail="pricing">Portfolio-aware pricing<span class="r-q">?</span></span><span class="r-d" data-rail-d="pricing">dynamic rates, one brand logic, zero race-to-bottom</span><span class="r-state" data-rail-s="pricing">Draft</span></li>
+      <li class="r-tbd"><span class="r-n">05</span><span class="r-t" data-rail="partners">Partner distribution<span class="r-q">?</span></span><span class="r-d" data-rail-d="partners">travel-agent portal, commissions, clean handoffs to Marea</span><span class="r-state" data-rail-s="partners">Draft</span></li>
+      <li class="r-tbd"><span class="r-n">06</span><span class="r-t" data-rail="corporate">Corporate travel<span class="r-q">?</span></span><span class="r-d" data-rail-d="corporate">B2B luxury — the CMO who books across the portfolio</span><span class="r-state" data-rail-s="corporate">Draft</span></li>
+      <li class="r-tbd"><span class="r-n">07</span><span class="r-t" data-rail="ops">Operations agent<span class="r-q">?</span></span><span class="r-d" data-rail-d="ops">front-of-house automation — housekeeping, check-in, in-room</span><span class="r-state" data-rail-s="ops">Draft</span></li>
     </ul>
     <ul class="network-list reveal" id="networkList">
       <li class="live"><span>Tulum, Quintana Roo · Papaya Playa</span><span class="tag" data-tag="live">Live</span></li>
@@ -1735,19 +1789,19 @@
       ch1Quote: "\"Most of our guests leave having had an experience that has awoken their awareness of nature.\"",
       ch1Attr: "— EMILIO HEREDIA · TULUM · MÉXICO",
       scrollHint: "SCROLL TO BEGIN",
-      ch2Eyebrow: "<em>01</em> · THE BRAND",
-      ch2Title: "Papaya Playa. <em>One anchor, infinite soil.</em>",
-      ch2Body: "A single hideaway on the Tulum shoreline, Quintana Roo — and the anchor brand of the Heredia ecosystem. Barefoot luxury, intimacy with the land. A decade of careful curation, guest by guest. Software now carries the soul — so the soil can multiply without the founder having to.",
-      ch2Stat1: "Guests / year",
-      ch2Stat2: "Property",
-      ch2Stat3: "Years curated",
+      ch2Eyebrow: "<em>01</em> · THE FORGE",
+      ch2Title: "Papaya Playa. <em>The forge.</em>",
+      ch2Body: "A hideaway on the Tulum shoreline, Quintana Roo — and the forge where the Heredia grammar was proven. Barefoot luxury, intimacy with the land. A decade of curation, guest by guest. The software now carries the soul — so the grammar travels without the founder having to.",
+      ch2Stat1: "Years forged",
+      ch2Stat2: "Living grammar",
+      ch2Stat3: "Soil ahead",
       ch3Eyebrow: "<em>02</em> · THE THESIS",
       thesisW1: "Primitive",
       thesisW2: "<em>Sophistication</em>",
       ch3Body: "Barefoot luxury. Intimacy with the land. More rare than any marble lobby in Manhattan — and impossible to franchise.",
-      ch4Eyebrow: "<em>03</em> · THE ECOSYSTEM",
-      ch4Title: "Same soul. <em>More soil.</em>",
-      ch4Body: "A hospitality brand becomes an ecosystem the moment software starts carrying the soul. Lyra ships the rails so Papaya Playa's grammar — tone, taste, ritual — lives inside every booking, every concierge reply, every travel-agent handoff. The founder stays rare. The feeling scales.",
+      ch4Eyebrow: "<em>03</em> · THE RAILS",
+      ch4Title: "Seven rails. <em>One portfolio.</em>",
+      ch4Body: "A hospitality brand becomes an ecosystem the moment software carries the soul. Two rails are live. Five are drafts — waiting to be named. This is a map for a conversation, not a manifest.",
       tagLive: "Live",
       tagVision: "Vision",
       chartTitle: "<em>Heredia Network</em> — live footprint &amp; vision territories",
@@ -1765,7 +1819,7 @@
       welcome: "I'm *Marea* — Emilio Heredia's concierge. I carry his story, his grammar, his taste. Ask me anything, or tap a thread below. Hold *space* to speak.",
       welcomeReset: "I'm *Marea* — ready again. What would you like to explore?",
       meta: "— Marea · by Emilio Heredia",
-      progress: ["The Founder", "The Brand", "The Thesis", "The Ecosystem", "Marea"],
+      progress: ["The Founder", "The Forge", "The Thesis", "The Rails", "Marea"],
       kbdHint: ['HOLD', 'TO SPEAK', 'NAVIGATE'],
       voiceLabel: "LISTENING"
     },
@@ -1775,19 +1829,19 @@
       ch1Quote: "\"La mayoría de nuestros huéspedes se marchan tras una experiencia que ha despertado su conciencia de la naturaleza.\"",
       ch1Attr: "— EMILIO HEREDIA · TULUM · MÉXICO",
       scrollHint: "DESLIZA PARA COMENZAR",
-      ch2Eyebrow: "<em>01</em> · LA MARCA",
-      ch2Title: "Papaya Playa. <em>Un ancla, tierra infinita.</em>",
-      ch2Body: "Un único refugio en la costa de Tulum, Quintana Roo — y la marca ancla del ecosistema Heredia. Lujo descalzo, intimidad con la tierra. Una década de curaduría cuidadosa, huésped a huésped. El software ahora carga el alma — para que la tierra se multiplique sin que el fundador tenga que hacerlo.",
-      ch2Stat1: "Huéspedes / año",
-      ch2Stat2: "Propiedad",
-      ch2Stat3: "Años curados",
+      ch2Eyebrow: "<em>01</em> · LA FRAGUA",
+      ch2Title: "Papaya Playa. <em>La fragua.</em>",
+      ch2Body: "Un refugio en la costa de Tulum, Quintana Roo — y la fragua donde se probó la gramática Heredia. Lujo descalzo, intimidad con la tierra. Una década de curaduría, huésped a huésped. El software ahora carga el alma — para que la gramática viaje sin que el fundador tenga que hacerlo.",
+      ch2Stat1: "Años forjando",
+      ch2Stat2: "Gramática viva",
+      ch2Stat3: "Tierra por venir",
       ch3Eyebrow: "<em>02</em> · LA TESIS",
       thesisW1: "Sofisticación",
       thesisW2: "<em>Primitiva</em>",
       ch3Body: "Lujo descalzo. Intimidad con la tierra. Más rara que cualquier vestíbulo de mármol en Manhattan — e imposible de franquiciar.",
-      ch4Eyebrow: "<em>03</em> · EL ECOSISTEMA",
-      ch4Title: "Misma alma. <em>Más tierra.</em>",
-      ch4Body: "Una marca de hospitalidad se convierte en ecosistema en el momento en que el software empieza a llevar el alma. Lyra entrega los rieles para que la gramática de Papaya Playa — tono, gusto, ritual — viva dentro de cada reserva, cada respuesta de concierge, cada traspaso a agente de viajes. El fundador se mantiene raro. La sensación escala.",
+      ch4Eyebrow: "<em>03</em> · LOS RIELES",
+      ch4Title: "Siete rieles. <em>Un portafolio.</em>",
+      ch4Body: "Una marca de hospitalidad se convierte en ecosistema en el momento en que el software carga el alma. Dos rieles están vivos. Cinco son borradores — esperan a ser nombrados. Esto es un mapa para una conversación, no un manifiesto.",
       tagLive: "En vivo",
       tagVision: "Visión",
       chartTitle: "<em>Red Heredia</em> — presencia actual y territorios en visión",
@@ -1805,7 +1859,7 @@
       welcome: "Soy *Marea* — la concierge de Emilio Heredia. Llevo su historia, su gramática, su gusto. Pregúntame lo que quieras, o elige un hilo abajo. Mantén *espacio* para hablar.",
       welcomeReset: "Soy *Marea* — lista de nuevo. ¿Qué te gustaría explorar?",
       meta: "— Marea · por Emilio Heredia",
-      progress: ["El Fundador", "La Marca", "La Tesis", "El Ecosistema", "Marea"],
+      progress: ["El Fundador", "La Fragua", "La Tesis", "Los Rieles", "Marea"],
       kbdHint: ['MANTÉN', 'PARA HABLAR', 'NAVEGAR'],
       voiceLabel: "ESCUCHANDO"
     }
@@ -2797,13 +2851,13 @@
         guest: `Welcome, *${name}*. I'm Marea. ${taste.length ? `You chose ${taste.join(' · ')} — I'll keep that in mind. ` : ''}Tell me what you're planning, or tap a thread below. Hold *space* to speak.`,
         agent: `Welcome, *${name}*. You book for others — so I'll be brief. The Heredia Partner Portal is how you quote, track commissions, and keep every client inside our grammar. Here's your entry point:`,
         tax: `Welcome, *${name}*. You help founders keep their residency clean — so does Emilio. He built *Fidelis* for exactly this: a tax copilot for the advisor's chair, with every number tied to a deterministic source. Here's the surface:`,
-        curious: `Welcome, *${name}*. You're not here to book — you're here to understand. Good. Ask me about Emilio, Papaya Playa, the 300-property portfolio, or what Lyra actually is.`
+        curious: `Welcome, *${name}*. You're not here to book — you're here to understand. Good. Ask me about Emilio, Papaya Playa, the portfolio ahead, or what Lyra actually is.`
       },
       es: {
         guest: `Bienvenido, *${name}*. Soy Marea. ${taste.length ? `Elegiste ${taste.join(' · ')} — lo tendré presente. ` : ''}Cuéntame qué planeas, o toca un hilo abajo. Mantén *espacio* para hablar.`,
         agent: `Bienvenido, *${name}*. Reservas para otros — así que seré breve. El Portal de Socios Heredia es donde cotizas, rastreas comisiones y mantienes a cada cliente dentro de nuestra gramática. Aquí tu entrada:`,
         tax: `Bienvenido, *${name}*. Ayudas a fundadores a mantener su residencia limpia — igual que Emilio. Él construyó *Fidelis* justo para esto: un copiloto fiscal para la silla del asesor, con cada número atado a una fuente determinista. Aquí la superficie:`,
-        curious: `Bienvenido, *${name}*. No vienes a reservar — vienes a entender. Bien. Pregúntame sobre Emilio, Papaya Playa, el portafolio de 300 propiedades, o qué es Lyra en realidad.`
+        curious: `Bienvenido, *${name}*. No vienes a reservar — vienes a entender. Bien. Pregúntame sobre Emilio, Papaya Playa, el portafolio por venir, o qué es Lyra en realidad.`
       }
     };
     addMessage('assistant', WELCOME[currentLang][intent]);
