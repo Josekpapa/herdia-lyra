@@ -166,39 +166,112 @@ body[data-page="landing"] {
   );
 }
 
-/* Chapter cross-fade watermarks — background UI tied to scroll / active chapter */
-.scroll-bg-watermarks {
+/* Marginal-bracket / ledger scene — tax-adjacent motif, always animating */
+.scroll-bg-ledger-wrap {
   position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
+  inset: -8%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
+  overflow: hidden;
 }
-.scroll-wm {
-  grid-area: 1 / 1;
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: clamp(5.5rem, 26vw, 20rem);
-  line-height: 0.85;
-  letter-spacing: -0.04em;
-  color: var(--marea-text, #c8c4bc);
-  opacity: 0;
-  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+
+.fidelis-ledger-scene {
+  width: min(140%, 1200px);
+  height: min(140%, 1200px);
   transform: translate3d(
-    calc(var(--sy, 0px) * 0.018),
-    calc(var(--sp, 0) * -8vh),
-    0
-  );
-  user-select: none;
-  white-space: nowrap;
+      calc(var(--sy, 0px) * 0.028),
+      calc(var(--sy, 0px) * -0.042),
+      0
+    )
+    rotate(-8deg)
+    scale(1.04);
+  transform-origin: 50% 45%;
+  will-change: transform;
+  opacity: 0.88;
 }
-html[data-landing-ch="0"] .scroll-wm[data-wm="0"],
-html[data-landing-ch="1"] .scroll-wm[data-wm="1"],
-html[data-landing-ch="2"] .scroll-wm[data-wm="2"],
-html[data-landing-ch="3"] .scroll-wm[data-wm="3"],
-html[data-landing-ch="4"] .scroll-wm[data-wm="4"],
-html[data-landing-ch="5"] .scroll-wm[data-wm="5"] {
-  opacity: 0.055;
+
+.ledger-grid-rect {
+  transform: translate3d(calc(var(--sy, 0px) * -0.015), 0, 0);
+  will-change: transform;
+}
+
+.ledger-bracket {
+  stroke-dasharray: 16 12;
+  animation: ledgerBracketFlow 32s linear infinite;
+}
+
+.ledger-bracket-ghost {
+  stroke-dasharray: 20 16;
+  animation: ledgerBracketFlow 40s linear infinite reverse;
+}
+
+@keyframes ledgerBracketFlow {
+  to {
+    stroke-dashoffset: -360;
+  }
+}
+
+.ledger-envelope {
+  stroke-dasharray: 520;
+  stroke-dashoffset: 520;
+  animation: ledgerEnvelopeDraw 20s ease-in-out infinite alternate;
+  opacity: 0.55;
+}
+
+@keyframes ledgerEnvelopeDraw {
+  0% {
+    stroke-dashoffset: 520;
+    opacity: 0.35;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.65;
+  }
+}
+
+.ledger-node-ring {
+  transform-origin: center;
+  animation: ledgerNodeHalo 4.8s ease-in-out infinite;
+}
+
+.ledger-node:nth-of-type(2) .ledger-node-ring {
+  animation-delay: 0.9s;
+}
+.ledger-node:nth-of-type(3) .ledger-node-ring {
+  animation-delay: 1.8s;
+}
+.ledger-node:nth-of-type(4) .ledger-node-ring {
+  animation-delay: 2.6s;
+}
+
+@keyframes ledgerNodeHalo {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.12;
+  }
+}
+
+.ledger-scan {
+  animation: ledgerScanSweep 16s ease-in-out infinite;
+}
+
+@keyframes ledgerScanSweep {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(420px);
+    opacity: 0.9;
+  }
 }
 
 /* Traveling highlight band — reads scroll depth in the deep layer */
@@ -671,12 +744,23 @@ body[data-page="landing"] .progress-rail > i {
 body[data-page="landing"] .depth-hud {
   left: max(0.75rem, env(safe-area-inset-left));
   bottom: max(0.75rem, env(safe-area-inset-bottom));
+  /* Never run under the chapter rail on md+ */
+  max-width: min(19rem, calc(100vw - 5.5rem));
+}
+
+@media (min-width: 768px) {
+  body[data-page="landing"] .depth-hud {
+    max-width: min(19rem, calc(100vw - 7.25rem));
+  }
 }
 
 .depth-hud-panel {
   display: flex;
   align-items: center;
   gap: 0.85rem;
+  flex-wrap: nowrap;
+  width: 100%;
+  min-width: 0;
   padding: 0.65rem 0.85rem 0.65rem 0.65rem;
   border-radius: 3px;
   border: 1px solid color-mix(in oklab, var(--marea-line, rgba(74, 110, 184, 0.14)) 80%, transparent);
@@ -702,6 +786,13 @@ body[data-page="landing"] .depth-hud {
   font-size: 9px;
   letter-spacing: 0.18em;
   color: color-mix(in oklab, var(--marea-lyra, #4a6eb8) 55%, var(--marea-text, #c8c4bc) 45%);
+}
+
+.depth-hud-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
 }
 .depth-hud .dial {
   width: 38px;
@@ -744,8 +835,14 @@ body[data-page="landing"] .depth-hud .dial::after {
   letter-spacing: 0.15em;
 }
 
-/* Right chapter rail — glass overlay, gold active state */
+/* Right chapter rail — sits in vertical band between header & HUD (no overlap) */
 .chapter-rail-overlay {
+  top: max(5.75rem, calc(env(safe-area-inset-top, 0px) + 4.75rem));
+  bottom: max(6.75rem, calc(env(safe-area-inset-bottom, 0px) + 5.75rem));
+  max-height: calc(100dvh - 12.5rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
   padding: 0.5rem 0.35rem;
   border-radius: 3px;
   border: 1px solid color-mix(in oklab, var(--marea-line, rgba(74, 110, 184, 0.14)) 75%, transparent);
@@ -755,6 +852,7 @@ body[data-page="landing"] .depth-hud .dial::after {
   box-shadow:
     0 10px 36px rgba(0, 0, 0, 0.32),
     0 0 0 1px color-mix(in oklab, white 3%, transparent) inset;
+  justify-content: center;
 }
 .chapter-rail-link {
   display: flex;
@@ -1680,9 +1778,20 @@ body[data-page="landing"] .italic-display {
   body[data-page="landing"] .horizon {
     transform: none !important;
   }
-  .scroll-wm {
+  .fidelis-ledger-scene,
+  .ledger-grid-rect {
     transform: none !important;
-    transition: none !important;
+  }
+  .ledger-bracket,
+  .ledger-bracket-ghost,
+  .ledger-envelope,
+  .ledger-node-ring,
+  .ledger-scan {
+    animation: none !important;
+  }
+  .ledger-envelope {
+    stroke-dashoffset: 0 !important;
+    opacity: 0.5 !important;
   }
   .scroll-bg-sheen {
     transform: none !important;

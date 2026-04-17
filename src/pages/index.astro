@@ -9,7 +9,7 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
 ---
 
 <!doctype html>
-<html lang="en" class="h-full" data-landing-ch="0">
+<html lang="en" class="h-full">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -33,11 +33,11 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
     <!-- Progress rail -->
     <div class="progress-rail" id="progress-rail"><i id="progress-bar"></i></div>
 
-    <!-- Bottom-left scroll HUD (glass overlay) -->
+    <!-- Bottom-left scroll HUD — kept clear of right rail via CSS max-width + rail sits in upper band -->
     <div class="depth-hud" aria-hidden="true">
       <div class="depth-hud-panel">
-        <div class="dial"><span id="hud-pct">00</span></div>
-        <div class="flex flex-col leading-none">
+        <div class="dial shrink-0"><span id="hud-pct">00</span></div>
+        <div class="depth-hud-copy min-w-0">
           <span class="depth-hud-ch"
             >CH · <span id="hud-ch">00</span> / 05</span
           >
@@ -53,14 +53,114 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
       <div class="scroll-bg-sheet scroll-bg-sheet--cool"></div>
       <div class="scroll-bg-sheet scroll-bg-sheet--gold"></div>
       <div class="scroll-bg-grid"></div>
-      <!-- Giant watermark word cross-fades per chapter (synced with data-landing-ch) -->
-      <div class="scroll-bg-watermarks">
-        <span class="scroll-wm" data-wm="0">OPEN</span>
-        <span class="scroll-wm" data-wm="1">LEDGER</span>
-        <span class="scroll-wm" data-wm="2">PROOF</span>
-        <span class="scroll-wm" data-wm="3">RANGE</span>
-        <span class="scroll-wm" data-wm="4">SIGNAL</span>
-        <span class="scroll-wm" data-wm="5">IN</span>
+      <!-- Premium niche motif: marginal bracket + ledger grid + tool nodes (always-on motion, scroll parallax) -->
+      <div class="scroll-bg-ledger-wrap">
+        <svg
+          class="fidelis-ledger-scene"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 800 800"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            <linearGradient id="flGold" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#6a5340" stop-opacity="0.35"></stop>
+              <stop offset="40%" stop-color="#b8926a" stop-opacity="0.9"></stop>
+              <stop offset="100%" stop-color="#c9a882" stop-opacity="0.4"></stop>
+            </linearGradient>
+            <linearGradient id="flLyra" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#4a6eb8" stop-opacity="0.2"></stop>
+              <stop offset="100%" stop-color="#7b9bd4" stop-opacity="0.65"></stop>
+            </linearGradient>
+            <pattern id="ledgerGridPat" width="48" height="48" patternUnits="userSpaceOnUse">
+              <path
+                d="M 48 0 L 0 0 0 48"
+                fill="none"
+                stroke="#4a6eb8"
+                stroke-opacity="0.14"
+                stroke-width="0.55"></path>
+            </pattern>
+            <filter id="flGlow" x="-25%" y="-25%" width="150%" height="150%">
+              <feGaussianBlur stdDeviation="1.6" result="b"></feGaussianBlur>
+              <feMerge>
+                <feMergeNode in="b"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+              </feMerge>
+            </filter>
+          </defs>
+          <g class="ledger-root">
+            <rect
+              x="56"
+              y="96"
+              width="688"
+              height="608"
+              fill="url(#ledgerGridPat)"
+              opacity="0.35"
+              class="ledger-grid-rect"></rect>
+            <path
+              class="ledger-baseline"
+              d="M 72 628 H 728"
+              fill="none"
+              stroke="url(#flLyra)"
+              stroke-width="0.7"
+              stroke-opacity="0.45"
+            ></path>
+            <g filter="url(#flGlow)">
+              <path
+                class="ledger-bracket"
+                d="M 100 628 L 100 628 L 260 628 L 260 492 L 400 492 L 400 368 L 540 368 L 540 248 L 688 248 L 688 168 L 720 168"
+                fill="none"
+                stroke="url(#flGold)"
+                stroke-width="1.35"
+                stroke-linecap="square"
+                stroke-linejoin="miter"></path>
+              <path
+                class="ledger-bracket-ghost"
+                d="M 100 628 L 100 628 L 260 628 L 260 492 L 400 492 L 400 368 L 540 368 L 540 248 L 688 248 L 688 168 L 720 168"
+                fill="none"
+                stroke="url(#flLyra)"
+                stroke-width="5"
+                stroke-linecap="square"
+                stroke-linejoin="miter"
+                opacity="0.08"></path>
+              <path
+                class="ledger-envelope"
+                d="M 100 628 C 280 420 520 200 720 168"
+                fill="none"
+                stroke="url(#flLyra)"
+                stroke-width="0.9"
+                stroke-linecap="round"></path>
+            </g>
+            <g class="ledger-nodes">
+              <g class="ledger-node" transform="translate(260,628)">
+                <circle r="4" fill="#b8926a" opacity="0.85"></circle>
+                <circle r="9" fill="none" stroke="#b8926a" stroke-width="0.5" opacity="0.35" class="ledger-node-ring"></circle>
+              </g>
+              <g class="ledger-node" transform="translate(400,492)">
+                <circle r="3.5" fill="#7b9bd4" opacity="0.8"></circle>
+                <circle r="8" fill="none" stroke="#4a6eb8" stroke-width="0.45" opacity="0.4" class="ledger-node-ring"></circle>
+              </g>
+              <g class="ledger-node" transform="translate(540,368)">
+                <circle r="3.5" fill="#b8926a" opacity="0.75"></circle>
+                <circle r="8" fill="none" stroke="#c9a882" stroke-width="0.45" opacity="0.35" class="ledger-node-ring"></circle>
+              </g>
+              <g class="ledger-node" transform="translate(688,248)">
+                <circle r="3" fill="#7b9bd4" opacity="0.85"></circle>
+                <circle r="7" fill="none" stroke="#4a6eb8" stroke-width="0.4" opacity="0.45" class="ledger-node-ring"></circle>
+              </g>
+            </g>
+            <g class="ledger-scan">
+              <rect
+                class="ledger-scan-bar"
+                x="72"
+                y="118"
+                width="656"
+                height="12"
+                rx="2"
+                fill="#4a6eb8"
+                opacity="0.14"></rect>
+            </g>
+          </g>
+        </svg>
       </div>
       <!-- Soft band that travels down the page with scroll depth -->
       <div class="scroll-bg-sheen"></div>
@@ -99,7 +199,7 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
 
     <!-- Right-edge chapter rail (glass overlay; highlights active chapter while scrolling) -->
     <aside
-      class="chapter-rail-overlay pointer-events-none fixed right-4 top-1/2 z-[35] hidden -translate-y-1/2 flex-col items-stretch gap-1 sm:right-5 md:flex"
+      class="chapter-rail-overlay pointer-events-none fixed right-4 z-[35] hidden flex-col items-stretch gap-1 sm:right-5 md:flex"
       id="chapter-nav"
       aria-label="Chapter navigation"
     >
@@ -927,7 +1027,6 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
             if (midY >= c.offsetTop) active = i;
           }
           if (hudCh) hudCh.textContent = String(active).padStart(2, "0");
-          root.setAttribute("data-landing-ch", String(active));
           activateNav(active);
           chapters.forEach((c, i) => {
             if (!c) return;
