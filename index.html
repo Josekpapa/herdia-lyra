@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Emilio Heredia × Lyra — Marea Concierge</title>
+<title>Emilio Heredia × Lyra — Marea</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg-deep: #050B14;
@@ -15,6 +15,7 @@
     --line: rgba(91, 141, 239, 0.08);
     --line-strong: rgba(91, 141, 239, 0.18);
     --gold: #D4A574;
+    --gold-soft: #E8C99A;
     --gold-glow: rgba(212, 165, 116, 0.35);
     --vision: #4A6B7C;
     --lyra: #5B8DEF;
@@ -23,35 +24,95 @@
     --text-faint: #3A4A5C;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   html, body {
-    height: 100%; width: 100%; overflow: hidden;
+    width: 100%;
     background: radial-gradient(ellipse at 30% 20%, #0E1F38 0%, var(--bg-deep) 60%);
     color: var(--text);
     font-family: 'Inter', -apple-system, sans-serif;
     font-weight: 300;
+    overflow-x: hidden;
   }
+  body {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100vh;
+    cursor: none;
+  }
+  body.chat-mode {
+    cursor: auto;
+    scroll-snap-type: none;
+  }
+  ::selection { background: var(--gold); color: var(--bg-deep); }
 
-  /* ----- Top bar ----- */
-  .topbar {
-    position: fixed; top: 0; left: 0; right: 0; height: 56px;
+  /* ========== CUSTOM CURSOR ========== */
+  .cursor-ring {
+    position: fixed; top: 0; left: 0;
+    width: 32px; height: 32px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.22s cubic-bezier(0.22,1,0.36,1),
+                height 0.22s cubic-bezier(0.22,1,0.36,1),
+                background 0.22s, border-color 0.22s, opacity 0.3s;
+    mix-blend-mode: difference;
+    opacity: 0.85;
+  }
+  .cursor-dot {
+    position: fixed; top: 0; left: 0;
+    width: 4px; height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 8px var(--gold-glow);
+  }
+  .cursor-ring.hover {
+    width: 56px; height: 56px;
+    background: rgba(212,165,116,0.08);
+    border-color: var(--gold-soft);
+  }
+  .cursor-ring.hide { opacity: 0; }
+  .cursor-particle {
+    position: fixed;
+    width: 3px; height: 3px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 6px var(--gold-glow);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+  @media (hover: none) { .cursor-ring, .cursor-dot { display: none; } body { cursor: auto; } }
+
+  /* ========== FIXED UI (progress + lang + brand) ========== */
+  .fixed-ui {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100; pointer-events: none;
+  }
+  .fixed-ui > * { pointer-events: auto; }
+  .topbar-frame {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 28px; z-index: 100;
-    background: linear-gradient(180deg, rgba(5,11,20,0.95) 0%, rgba(5,11,20,0) 100%);
+    padding: 22px 32px;
+    background: linear-gradient(180deg, rgba(5,11,20,0.75) 0%, rgba(5,11,20,0) 100%);
   }
-  .brand {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px; letter-spacing: 0.18em; font-weight: 400;
-    color: var(--text);
-  }
-  .brand .x { color: var(--gold); margin: 0 10px; font-style: italic; }
-  .brand .lyra { color: var(--lyra); }
-  .demo-pill {
+  .lyra-mark {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.25em;
-    padding: 5px 10px; border: 1px solid var(--line-strong);
-    border-radius: 2px; color: var(--text-mute);
-    background: rgba(91, 141, 239, 0.05);
+    font-size: 11px; letter-spacing: 0.25em;
+    color: var(--text-faint);
   }
+  .lyra-mark .dot { color: var(--lyra); }
+  .brand-center {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px; letter-spacing: 0.28em; font-weight: 400;
+    color: var(--text-mute);
+    text-transform: uppercase;
+  }
+  .brand-center .x { color: var(--gold); margin: 0 8px; font-style: italic; }
   .topbar-right {
     display: flex; align-items: center; gap: 10px;
   }
@@ -60,6 +121,7 @@
     border: 1px solid var(--line-strong);
     border-radius: 2px;
     overflow: hidden;
+    backdrop-filter: blur(8px);
   }
   .lang-btn {
     background: transparent;
@@ -67,34 +129,351 @@
     color: var(--text-faint);
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px; letter-spacing: 0.2em;
-    padding: 5px 10px;
-    cursor: pointer;
+    padding: 6px 11px;
+    cursor: none;
     transition: all 0.2s;
   }
   .lang-btn.active {
     background: rgba(212,165,116,0.12);
     color: var(--gold);
   }
-  .lang-btn:hover:not(.active) { color: var(--text); }
-  .lyra-mark {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 0.2em;
-    color: var(--text-faint);
-  }
-  .lyra-mark .dot { color: var(--lyra); }
 
-  /* ----- Layout ----- */
-  .stage {
-    position: absolute; inset: 56px 0 0 0;
-    display: grid; grid-template-columns: 1.5fr 1fr;
-    height: calc(100% - 56px);
+  /* Progress dots right side */
+  .progress {
+    position: fixed; right: 28px; top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 14px;
+    z-index: 90;
+    pointer-events: auto;
+  }
+  .progress button {
+    width: 8px; height: 8px;
+    background: transparent;
+    border: 1px solid var(--text-faint);
+    border-radius: 50%;
+    cursor: none;
+    transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+    padding: 0;
+    position: relative;
+  }
+  .progress button:hover { border-color: var(--gold); }
+  .progress button.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 14px var(--gold-glow);
+    transform: scale(1.2);
+  }
+  .progress button::after {
+    content: attr(data-label);
+    position: absolute; right: 22px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    color: var(--text-faint);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-transform: uppercase;
+  }
+  .progress button:hover::after,
+  .progress button.active::after { opacity: 1; }
+  .progress button.active::after { color: var(--gold); }
+
+  /* ========== CHAPTERS ========== */
+  .chapter {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    padding: 60px 40px;
+  }
+  .ch-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.42em;
+    color: var(--text-faint); margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .ch-eyebrow em { color: var(--gold); font-style: normal; font-weight: 500; }
+  .ch-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+  }
+  .ch-title em { color: var(--gold); font-style: italic; font-weight: 400; }
+  .ch-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--text-mute);
+    line-height: 1.6;
+  }
+
+  /* Reveal animations */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 1.2s cubic-bezier(0.22,1,0.36,1), transform 1.2s cubic-bezier(0.22,1,0.36,1); }
+  .chapter.active .reveal { opacity: 1; transform: translateY(0); }
+  .chapter.active .reveal:nth-child(1) { transition-delay: 0.1s; }
+  .chapter.active .reveal:nth-child(2) { transition-delay: 0.3s; }
+  .chapter.active .reveal:nth-child(3) { transition-delay: 0.55s; }
+  .chapter.active .reveal:nth-child(4) { transition-delay: 0.8s; }
+  .chapter.active .reveal:nth-child(5) { transition-delay: 1.05s; }
+  .chapter.active .reveal:nth-child(6) { transition-delay: 1.25s; }
+
+  /* Scroll hint */
+  .scroll-hint {
+    position: absolute; bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.4em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 12px;
+    animation: scrollHint 2.4s ease-in-out infinite;
+  }
+  .scroll-hint .line {
+    width: 40px; height: 1px; background: var(--text-faint);
+    position: relative; overflow: hidden;
+  }
+  .scroll-hint .line::after {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gold);
+    animation: lineTravel 2.4s ease-in-out infinite;
+  }
+  @keyframes scrollHint {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+  @keyframes lineTravel {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* ========== CHAPTER 1 — THE MAN ========== */
+  #ch1 .ch1-content {
+    text-align: center;
+    max-width: 640px;
+    position: relative;
+    z-index: 2;
+  }
+  .portrait {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: linear-gradient(145deg, #5C3D1E 0%, #D4A574 60%, #E8C99A 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px; color: #1A1208;
+    letter-spacing: 0.04em;
+    font-weight: 400;
+    margin: 0 auto 36px;
+    border: 1px solid rgba(212,165,116,0.4);
+    box-shadow:
+      0 0 0 10px rgba(212,165,116,0.05),
+      0 0 0 20px rgba(212,165,116,0.025),
+      0 0 120px var(--gold-glow);
+    animation: portraitBreathe 5s ease-in-out infinite;
+  }
+  @keyframes portraitBreathe {
+    0%, 100% { box-shadow: 0 0 0 10px rgba(212,165,116,0.05), 0 0 0 20px rgba(212,165,116,0.025), 0 0 80px var(--gold-glow); }
+    50% { box-shadow: 0 0 0 14px rgba(212,165,116,0.08), 0 0 0 28px rgba(212,165,116,0.04), 0 0 160px var(--gold-glow), 0 0 220px rgba(212,165,116,0.15); }
+  }
+  #ch1 .ch-title { font-size: 60px; margin-bottom: 8px; }
+  #ch1 .name-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.5em;
+    color: var(--text-faint); margin-bottom: 36px;
+    text-transform: uppercase;
+  }
+  #ch1 .quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--text);
+    font-size: 20px;
+    line-height: 1.65;
+    max-width: 540px;
+    margin: 0 auto 28px;
+  }
+  #ch1 .attribution {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.28em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+
+  /* Ambient particles for ch1 */
+  .ambient-particles {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .ambient-particles span {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--gold);
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: drift 18s linear infinite;
+  }
+
+  @keyframes drift {
+    0% { transform: translate(0,0); opacity: 0; }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.3; }
+    100% { transform: translate(60px, -120px); opacity: 0; }
+  }
+
+  /* ========== GLOBE ========== */
+  .globe-stage {
+    position: fixed; inset: 0;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.22,1,0.36,1);
+    pointer-events: none;
+  }
+  .globe-stage.visible { opacity: 1; pointer-events: auto; }
+  #globeViz { width: 100%; height: 100%; }
+  .globe-stage canvas { display: block; }
+  .globe-vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, var(--bg-deep) 95%);
+    pointer-events: none;
+  }
+
+  /* ========== CHAPTER 2 — THE PLACE ========== */
+  #ch2 .content {
+    max-width: 480px;
+    margin-left: 8%;
+    position: relative;
+    z-index: 3;
+    text-align: left;
+  }
+  #ch2 .ch-title { font-size: 54px; margin-bottom: 20px; }
+  #ch2 .ch-body { font-size: 17px; max-width: 420px; }
+  .stat-row {
+    display: flex; gap: 36px;
+    margin-top: 36px; padding-top: 26px;
+    border-top: 1px solid var(--line-strong);
+  }
+  .stat {
+    display: flex; flex-direction: column;
+  }
+  .stat .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    color: var(--gold);
+    line-height: 1;
+    font-style: italic;
+  }
+  .stat .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.3em;
+    color: var(--text-faint);
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+
+  /* ========== CHAPTER 3 — THE THESIS ========== */
+  #ch3 .content {
+    max-width: 980px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  .thesis {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(52px, 9vw, 128px);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 36px;
+  }
+  .thesis .line {
+    display: block;
     overflow: hidden;
   }
+  .thesis .word {
+    display: inline-block;
+    transform: translateY(110%);
+    opacity: 0;
+    transition: transform 1.4s cubic-bezier(0.22,1,0.36,1), opacity 1.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  #ch3.active .thesis .word {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  #ch3.active .thesis .word:nth-child(2) { transition-delay: 0.2s; }
+  #ch3.active .thesis .line:nth-child(2) .word { transition-delay: 0.4s; }
+  .thesis em {
+    color: var(--gold); font-style: italic;
+  }
+  #ch3 .ch-body {
+    font-size: 18px; max-width: 620px; margin: 0 auto;
+  }
 
-  /* ----- Map / nav chart ----- */
+  /* Thesis background lines */
+  .thesis-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(0deg, var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 120px 120px;
+    opacity: 0.5;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  /* ========== CHAPTER 4 — THE NETWORK ========== */
+  #ch4 .content {
+    max-width: 460px;
+    margin-right: 8%;
+    margin-left: auto;
+    position: relative;
+    z-index: 3;
+    text-align: left;
+  }
+  #ch4 .ch-title { font-size: 54px; margin-bottom: 20px; }
+  #ch4 .ch-body { font-size: 17px; }
+  .network-list {
+    list-style: none;
+    margin-top: 28px;
+    border-top: 1px solid var(--line-strong);
+    padding-top: 16px;
+  }
+  .network-list li {
+    padding: 10px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.25em;
+    color: var(--text-mute);
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--line);
+    text-transform: uppercase;
+    transition: color 0.3s, padding-left 0.3s;
+  }
+  .network-list li:hover { color: var(--gold); padding-left: 8px; }
+  .network-list li .tag {
+    color: var(--vision);
+    font-size: 9px;
+  }
+  .network-list li.live .tag { color: var(--gold); }
+
+  /* ========== CHAPTER 5 — MAREA CHAT ========== */
+  #ch5 {
+    padding: 0;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+  .stage {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1.5fr 1fr;
+    padding-top: 70px;
+  }
   .chart {
-    position: relative; overflow: hidden;
+    position: relative;
+    overflow: hidden;
     border-right: 1px solid var(--line);
+    min-height: calc(100vh - 70px);
   }
   .chart-bg {
     position: absolute; inset: 0;
@@ -121,7 +500,7 @@
   .pin {
     position: absolute;
     transform: translate(-50%, -50%);
-    cursor: default;
+    cursor: none;
   }
   .pin .core {
     width: 14px; height: 14px; border-radius: 50%;
@@ -184,18 +563,17 @@
   .pin.ghost.awake .sub { color: var(--gold); }
   .pin.ghost { opacity: 0.45; transition: opacity 0.8s; }
   .pin.ghost.awake { opacity: 1; }
-
   .connections {
     position: absolute; inset: 0;
     pointer-events: none; z-index: 1;
   }
 
-  /* ----- Chat panel ----- */
+  /* Chat panel */
   .chat {
     display: flex; flex-direction: column;
     background: linear-gradient(180deg, rgba(10, 22, 40, 0.4) 0%, rgba(5, 11, 20, 0.6) 100%);
-    overflow: hidden; /* KEY: prevents layout from breaking */
-    height: 100%;
+    overflow: hidden;
+    height: calc(100vh - 70px);
   }
   .chat-head {
     padding: 20px 24px 16px; border-bottom: 1px solid var(--line);
@@ -206,7 +584,6 @@
     width: 48px; height: 48px; border-radius: 50%;
     background: linear-gradient(135deg, #6B4F2E 0%, #D4A574 100%);
     display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
     font-family: 'Cormorant Garamond', serif;
     font-size: 18px; color: #1A1208;
     letter-spacing: 0.05em;
@@ -215,12 +592,7 @@
     flex-shrink: 0;
     border: 1px solid rgba(212,165,116,0.25);
   }
-  .avatar img {
-    width: 100%; height: 100%; object-fit: cover;
-  }
-  .avatar.thinking {
-    animation: think 1.4s ease-in-out infinite;
-  }
+  .avatar.thinking { animation: think 1.4s ease-in-out infinite; }
   @keyframes think {
     0%, 100% { box-shadow: 0 0 20px var(--gold-glow); }
     50% { box-shadow: 0 0 50px var(--gold-glow), 0 0 80px var(--gold-glow); }
@@ -242,48 +614,36 @@
     color: var(--text-faint);
     font-family: 'JetBrains Mono', monospace;
     font-size: 9px; letter-spacing: 0.2em;
-    padding: 6px 10px; cursor: pointer;
+    padding: 6px 10px; cursor: none;
     border-radius: 2px;
     text-transform: uppercase;
     transition: all 0.2s;
     flex-shrink: 0;
     display: none;
   }
-  .reset-btn:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-  }
+  .reset-btn:hover { border-color: var(--gold); color: var(--gold); }
   .reset-btn.visible { display: block; }
 
   .messages {
-    flex: 1;
-    overflow-y: auto;
+    flex: 1; overflow-y: auto;
     padding: 20px 24px;
     scroll-behavior: smooth;
-    min-height: 0; /* critical for flex scroll */
+    min-height: 0;
   }
   .messages::-webkit-scrollbar { width: 3px; }
   .messages::-webkit-scrollbar-track { background: transparent; }
-  .messages::-webkit-scrollbar-thumb {
-    background: var(--line-strong); border-radius: 2px;
-  }
+  .messages::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 2px; }
 
-  .msg {
-    margin-bottom: 20px;
-    animation: fadein 0.5s ease-out;
-  }
+  .msg { margin-bottom: 20px; animation: fadein 0.5s ease-out; }
   @keyframes fadein {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
   }
   .msg.user { text-align: right; }
   .msg .bubble {
-    display: inline-block;
-    max-width: 88%;
-    padding: 11px 15px;
-    border-radius: 4px;
-    font-size: 14px;
-    line-height: 1.55;
+    display: inline-block; max-width: 88%;
+    padding: 11px 15px; border-radius: 4px;
+    font-size: 14px; line-height: 1.55;
     text-align: left;
   }
   .msg.user .bubble {
@@ -297,21 +657,15 @@
     color: var(--text);
     padding-left: 18px;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.65;
+    font-size: 16px; font-weight: 400; line-height: 1.65;
   }
-  .msg.assistant .bubble em {
-    color: var(--gold); font-style: italic;
-  }
+  .msg.assistant .bubble em { color: var(--gold); font-style: italic; }
   .msg .meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: 9px; letter-spacing: 0.18em;
     color: var(--text-faint);
-    margin-top: 5px;
-    text-transform: uppercase;
+    margin-top: 5px; text-transform: uppercase;
   }
-
   .typing-cursor {
     display: inline-block; width: 2px; height: 14px;
     background: var(--gold); vertical-align: text-bottom;
@@ -320,48 +674,98 @@
   }
   @keyframes blink { 50% { opacity: 0; } }
 
-  /* ----- Text input ----- */
   .input-row {
     padding: 10px 16px;
     border-top: 1px solid var(--line);
     display: flex; gap: 8px; align-items: center;
     flex-shrink: 0;
     background: rgba(5, 11, 20, 0.4);
+    position: relative;
   }
   .chat-input {
     flex: 1; background: rgba(91, 141, 239, 0.04);
     border: 1px solid var(--line-strong);
     color: var(--text);
     font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 13px;
+    font-weight: 300; font-size: 13px;
     padding: 9px 13px;
-    border-radius: 3px;
-    outline: none;
+    border-radius: 3px; outline: none;
     transition: border-color 0.2s;
   }
   .chat-input::placeholder { color: var(--text-faint); }
   .chat-input:focus { border-color: rgba(212,165,116,0.35); }
-  .send-btn {
+  .send-btn, .voice-btn {
     background: transparent;
     border: 1px solid var(--line-strong);
     color: var(--text-faint);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
     width: 36px; height: 36px;
-    cursor: pointer;
+    cursor: none;
     border-radius: 3px;
     transition: all 0.2s;
     display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
   }
-  .send-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .send-btn:hover, .voice-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .voice-btn.recording {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(212,165,116,0.08);
+    animation: recordPulse 1.2s ease-in-out infinite;
+  }
+  @keyframes recordPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(212,165,116,0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(212,165,116,0); }
+  }
 
-  /* ----- Demo prompts ----- */
+  /* Voice waveform overlay */
+  .voice-overlay {
+    position: absolute;
+    left: 16px; right: 110px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 36px;
+    background: rgba(5,11,20,0.95);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    display: none;
+    align-items: center;
+    padding: 0 14px;
+    gap: 10px;
+    pointer-events: none;
+  }
+  .voice-overlay.visible { display: flex; }
+  .voice-overlay .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .waveform {
+    flex: 1; height: 24px;
+    display: flex; align-items: center; gap: 2px;
+  }
+  .waveform .bar {
+    flex: 1;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 1px;
+    transition: height 0.08s ease-out;
+  }
+  .voice-transcript {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--text);
+    max-width: 200px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* Prompts */
   .prompts {
     padding: 12px 16px 16px;
     border-top: 1px solid var(--line);
     background: rgba(5, 11, 20, 0.6);
-    flex-shrink: 0; /* KEY: never compress this section */
+    flex-shrink: 0;
   }
   .prompts-label {
     font-family: 'JetBrains Mono', monospace;
@@ -376,11 +780,9 @@
     border: 1px solid var(--line-strong);
     color: var(--text);
     font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 12px;
-    padding: 9px 12px;
-    margin-bottom: 5px;
-    cursor: pointer;
+    font-weight: 300; font-size: 12px;
+    padding: 9px 12px; margin-bottom: 5px;
+    cursor: none;
     border-radius: 3px;
     transition: all 0.2s;
     line-height: 1.4;
@@ -391,10 +793,7 @@
     color: var(--gold);
   }
   .prompt-btn:disabled { opacity: 0.25; cursor: not-allowed; }
-  .prompt-btn.used {
-    opacity: 0.4;
-    border-style: dashed;
-  }
+  .prompt-btn.used { opacity: 0.4; border-style: dashed; }
   .prompt-btn .num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 9px; letter-spacing: 0.2em;
@@ -402,178 +801,243 @@
   }
   .prompt-btn:hover:not(:disabled) .num { color: var(--gold); }
 
-  /* ----- Intro overlay ----- */
-  .intro {
-    position: fixed; inset: 0; z-index: 200;
-    background: radial-gradient(ellipse at 50% 40%, #0E1F38 0%, var(--bg-deep) 70%);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column;
-    transition: opacity 1s, visibility 1s;
-  }
-  .intro.gone { opacity: 0; visibility: hidden; }
-  .intro-portrait {
-    width: 110px; height: 110px; border-radius: 50%;
-    background: linear-gradient(145deg, #5C3D1E 0%, #D4A574 60%, #E8C99A 100%);
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 44px; color: #1A1208;
-    letter-spacing: 0.04em;
-    font-weight: 400;
-    margin-bottom: 28px;
-    border: 1px solid rgba(212,165,116,0.4);
-    box-shadow:
-      0 0 0 8px rgba(212,165,116,0.06),
-      0 0 0 16px rgba(212,165,116,0.03),
-      0 0 80px var(--gold-glow),
-      0 0 140px rgba(212,165,116,0.12);
-    animation: portraitBreathe 4s ease-in-out infinite;
-  }
-  .intro-portrait img {
-    width: 100%; height: 100%; object-fit: cover;
-  }
-  @keyframes portraitBreathe {
-    0%, 100% { box-shadow: 0 0 0 8px rgba(212,165,116,0.06), 0 0 0 16px rgba(212,165,116,0.03), 0 0 60px var(--gold-glow); }
-    50% { box-shadow: 0 0 0 10px rgba(212,165,116,0.09), 0 0 0 20px rgba(212,165,116,0.04), 0 0 100px var(--gold-glow), 0 0 160px rgba(212,165,116,0.15); }
-  }
-  .intro-eyebrow {
+  /* Keyboard hint */
+  .kbd-hint {
+    position: fixed;
+    bottom: 18px; left: 50%;
+    transform: translateX(-50%);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px; letter-spacing: 0.35em;
-    color: var(--text-faint); margin-bottom: 10px;
+    font-size: 9px; letter-spacing: 0.28em;
+    color: var(--text-faint);
     text-transform: uppercase;
+    z-index: 50;
+    display: flex; gap: 14px; align-items: center;
+    padding: 7px 14px;
+    background: rgba(5,11,20,0.7);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
   }
-  .intro-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 40px; letter-spacing: 0.08em;
-    color: var(--text); margin-bottom: 6px;
-    text-align: center;
-  }
-  .intro-title em {
-    color: var(--gold); font-style: italic; font-weight: 300;
-  }
-  .intro-quote {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic; color: var(--text-mute);
-    font-size: 16px; max-width: 480px;
-    text-align: center; margin: 22px 0 10px;
-    line-height: 1.6;
-  }
-  .intro-attribution {
+  .kbd-hint.visible { opacity: 1; }
+  .kbd-hint kbd {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.25em;
-    color: var(--text-faint); margin-bottom: 40px;
-  }
-  .intro-cta {
-    background: transparent;
-    border: 1px solid var(--gold);
+    padding: 2px 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
     color: var(--gold);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 0.3em;
-    padding: 14px 30px; cursor: pointer;
-    transition: all 0.3s;
-    text-transform: uppercase;
-  }
-  .intro-cta:hover {
-    background: var(--gold);
-    color: var(--bg-deep);
-    box-shadow: 0 0 40px var(--gold-glow);
+    font-size: 9px;
   }
 
   @media (max-width: 980px) {
-    .stage { grid-template-columns: 1fr; grid-template-rows: 45% 55%; }
-    .chart { border-right: none; border-bottom: 1px solid var(--line); }
+    #ch2 .content, #ch4 .content { margin: 0 auto; text-align: center; }
+    .stage { grid-template-columns: 1fr; grid-template-rows: 40vh 60vh; }
+    .chart { border-right: none; border-bottom: 1px solid var(--line); min-height: 40vh; }
+    .chat { height: 60vh; }
+    .progress { right: 14px; }
+    #ch1 .ch-title { font-size: 44px; }
+    #ch2 .ch-title, #ch4 .ch-title { font-size: 40px; }
+    .brand-center { display: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="intro" id="intro">
-  <div class="intro-eyebrow" id="introEyebrow">Emilio Heredia × Lyra · Private Demo</div>
-  <div class="intro-portrait" id="introPortrait">EH</div>
-  <div class="intro-title">Emilio <em>Heredia</em></div>
-  <div class="intro-quote" id="introQuote">
-    "Most of our guests leave having had an experience<br>
-    that has awoken their awareness of nature."
-  </div>
-  <div class="intro-attribution" id="introAttribution">— EMILIO HEREDIA · PAPAYA PLAYA · TULUM</div>
-  <button class="intro-cta" id="introCta" onclick="enterDemo()">Meet Marea</button>
-</div>
+<!-- Custom cursor -->
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
 
-<div class="topbar">
-  <div class="lyra-mark">L<span class="dot">·</span>Y<span class="dot">·</span>R<span class="dot">·</span>A</div>
-  <div class="brand">HEREDIA <span class="x">×</span> <span class="lyra">LYRA</span></div>
-  <div class="topbar-right">
-    <div class="lang-toggle">
-      <button class="lang-btn active" data-lang="en">EN</button>
-      <button class="lang-btn" data-lang="es">ES</button>
-    </div>
-    <div class="demo-pill" id="demoPill">MAREA · APR 2026</div>
-  </div>
-</div>
-
-<div class="stage">
-  <div class="chart" id="chart">
-    <div class="chart-bg"></div>
-    <div class="chart-title" id="chartTitle"><em>Heredia Network</em> — live footprint &amp; vision territories</div>
-    <div class="chart-coords" id="chartCoords">LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1</div>
-
-    <svg class="connections" id="connections" preserveAspectRatio="none"></svg>
-
-    <div class="pin live" style="left: 23%; top: 52%;" data-id="tulum">
-      <div class="core"></div>
-      <div class="label">Tulum<span class="sub" data-sub="live">Papaya Playa · Live</span></div>
-    </div>
-    <div class="pin ghost" style="left: 47%; top: 38%;" data-id="algarve">
-      <div class="core"></div>
-      <div class="label">Algarve<span class="sub" data-sub="vision">Vision</span></div>
-    </div>
-    <div class="pin ghost" style="left: 56%; top: 42%;" data-id="santorini">
-      <div class="core"></div>
-      <div class="label">Santorini<span class="sub" data-sub="vision">Vision</span></div>
-    </div>
-    <div class="pin ghost" style="left: 50%; top: 50%;" data-id="marrakech">
-      <div class="core"></div>
-      <div class="label">Marrakech<span class="sub" data-sub="vision">Vision</span></div>
-    </div>
-    <div class="pin ghost" style="left: 78%; top: 65%;" data-id="bali">
-      <div class="core"></div>
-      <div class="label">Bali<span class="sub" data-sub="vision">Vision</span></div>
-    </div>
-  </div>
-
-  <div class="chat">
-    <div class="chat-head">
-      <div class="avatar" id="avatar">EH</div>
-      <div class="head-info">
-        <div class="head-name">Marea <span id="headByline" style="color:var(--text-faint);font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;">by Emilio Heredia</span></div>
-        <div class="head-sub" id="headSub">Emilio's AI Concierge · Powered by Lyra</div>
+<!-- Fixed top UI -->
+<div class="fixed-ui">
+  <div class="topbar-frame">
+    <div class="lyra-mark">L<span class="dot">·</span>Y<span class="dot">·</span>R<span class="dot">·</span>A</div>
+    <div class="brand-center">HEREDIA <span class="x">×</span> LYRA · <em id="tagline">Same soul. More soil.</em></div>
+    <div class="topbar-right">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="es">ES</button>
       </div>
-      <button class="reset-btn" id="resetBtn" onclick="resetDemo()">↺ Reset</button>
-    </div>
-
-    <div class="messages" id="messages"></div>
-
-    <div class="input-row">
-      <input class="chat-input" id="chatInput" type="text" placeholder="Ask Marea…" />
-      <button class="send-btn" onclick="handleInput()">→</button>
-    </div>
-
-    <div class="prompts">
-      <div class="prompts-label" id="promptsLabel">→ Quick prompts</div>
-      <button class="prompt-btn" data-scenario="story">
-        <span class="num">01</span><span class="prompt-text">Tell me Emilio's story.</span>
-      </button>
-      <button class="prompt-btn" data-scenario="portugal">
-        <span class="num">02</span><span class="prompt-text">I'm planning Portugal in September with my girlfriend.</span>
-      </button>
-      <button class="prompt-btn" data-scenario="scale">
-        <span class="num">03</span><span class="prompt-text">Why should Emilio work with Lyra?</span>
-      </button>
     </div>
   </div>
 </div>
 
+<!-- Progress dots -->
+<div class="progress" id="progress">
+  <button data-ch="0" data-label="The Man" class="active"></button>
+  <button data-ch="1" data-label="The Place"></button>
+  <button data-ch="2" data-label="The Thesis"></button>
+  <button data-ch="3" data-label="The Network"></button>
+  <button data-ch="4" data-label="Marea"></button>
+</div>
+
+<!-- Persistent globe (shown on ch2 & ch4) -->
+<div class="globe-stage" id="globeStage">
+  <div id="globeViz"></div>
+  <div class="globe-vignette"></div>
+</div>
+
+<!-- Keyboard hint -->
+<div class="kbd-hint" id="kbdHint">
+  <span>HOLD <kbd>SPACE</kbd> TO SPEAK</span>
+  <span>·</span>
+  <span><kbd>↑↓</kbd> NAVIGATE</span>
+</div>
+
+<!-- ============== CHAPTER 1: THE MAN ============== -->
+<section class="chapter active" id="ch1" data-ch="0">
+  <div class="ambient-particles" id="ambientParticles"></div>
+  <div class="ch1-content">
+    <div class="reveal">
+      <div class="portrait" id="portrait">EH</div>
+    </div>
+    <div class="reveal">
+      <h1 class="ch-title">Emilio <em>Heredia</em></h1>
+    </div>
+    <div class="reveal">
+      <div class="name-sub" id="ch1Sub">Engineer · Founder · Papaya Playa</div>
+    </div>
+    <div class="reveal">
+      <p class="quote" id="ch1Quote">"Most of our guests leave having had an experience that has awoken their awareness of nature."</p>
+    </div>
+    <div class="reveal">
+      <div class="attribution" id="ch1Attr">— EMILIO HEREDIA · TULUM · MÉXICO</div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span id="scrollHintText">SCROLL TO BEGIN</span>
+    <span class="line"></span>
+  </div>
+</section>
+
+<!-- ============== CHAPTER 2: THE PLACE ============== -->
+<section class="chapter" id="ch2" data-ch="1">
+  <div class="content">
+    <div class="reveal"><div class="ch-eyebrow" id="ch2Eyebrow"><em>01</em> · THE PLACE</div></div>
+    <div class="reveal"><h2 class="ch-title" id="ch2Title">One coastline. <em>One soul.</em></h2></div>
+    <div class="reveal"><p class="ch-body" id="ch2Body">Papaya Playa — a single hideaway on the Yucatán coast. Barefoot luxury, intimacy with the land. A decade of careful curation, guest by guest.</p></div>
+    <div class="reveal stat-row">
+      <div class="stat">
+        <div class="num">8,000</div>
+        <div class="lbl" id="ch2Stat1">Guests / year</div>
+      </div>
+      <div class="stat">
+        <div class="num">1</div>
+        <div class="lbl" id="ch2Stat2">Property</div>
+      </div>
+      <div class="stat">
+        <div class="num">10+</div>
+        <div class="lbl" id="ch2Stat3">Years curated</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CHAPTER 3: THE THESIS ============== -->
+<section class="chapter" id="ch3" data-ch="2">
+  <div class="thesis-grid"></div>
+  <div class="content">
+    <div class="reveal"><div class="ch-eyebrow" id="ch3Eyebrow"><em>02</em> · THE THESIS</div></div>
+    <h2 class="thesis">
+      <span class="line"><span class="word" id="thesisW1">Primitive</span></span>
+      <span class="line"><span class="word" id="thesisW2"><em>Sophistication</em></span></span>
+    </h2>
+    <div class="reveal"><p class="ch-body" id="ch3Body">Barefoot luxury. Intimacy with the land. More rare than any marble lobby in Manhattan — and impossible to franchise.</p></div>
+  </div>
+</section>
+
+<!-- ============== CHAPTER 4: THE NETWORK ============== -->
+<section class="chapter" id="ch4" data-ch="3">
+  <div class="content">
+    <div class="reveal"><div class="ch-eyebrow" id="ch4Eyebrow"><em>03</em> · THE NETWORK</div></div>
+    <div class="reveal"><h2 class="ch-title" id="ch4Title">Same soul. <em>More soil.</em></h2></div>
+    <div class="reveal"><p class="ch-body" id="ch4Body">Properties personally selected by Emilio. Lyra ships the rails — booking, concierge, guest journey, travel-agent onboarding. He keeps the curation.</p></div>
+    <ul class="network-list reveal" id="networkList">
+      <li class="live"><span>Tulum · Papaya Playa</span><span class="tag" data-tag="live">Live</span></li>
+      <li><span>Algarve · Portugal</span><span class="tag" data-tag="vision">Vision</span></li>
+      <li><span>Santorini · Greece</span><span class="tag" data-tag="vision">Vision</span></li>
+      <li><span>Marrakech · Morocco</span><span class="tag" data-tag="vision">Vision</span></li>
+      <li><span>Bali · Indonesia</span><span class="tag" data-tag="vision">Vision</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============== CHAPTER 5: MAREA ============== -->
+<section class="chapter" id="ch5" data-ch="4">
+  <div class="stage">
+    <div class="chart" id="chart">
+      <div class="chart-bg"></div>
+      <div class="chart-title" id="chartTitle"><em>Heredia Network</em> — live footprint &amp; vision territories</div>
+      <div class="chart-coords" id="chartCoords">LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1</div>
+      <svg class="connections" id="connections" preserveAspectRatio="none"></svg>
+
+      <div class="pin live" style="left: 23%; top: 52%;" data-id="tulum">
+        <div class="core"></div>
+        <div class="label">Tulum<span class="sub" data-sub="live">Papaya Playa · Live</span></div>
+      </div>
+      <div class="pin ghost" style="left: 47%; top: 38%;" data-id="algarve">
+        <div class="core"></div>
+        <div class="label">Algarve<span class="sub" data-sub="vision">Vision</span></div>
+      </div>
+      <div class="pin ghost" style="left: 56%; top: 42%;" data-id="santorini">
+        <div class="core"></div>
+        <div class="label">Santorini<span class="sub" data-sub="vision">Vision</span></div>
+      </div>
+      <div class="pin ghost" style="left: 50%; top: 50%;" data-id="marrakech">
+        <div class="core"></div>
+        <div class="label">Marrakech<span class="sub" data-sub="vision">Vision</span></div>
+      </div>
+      <div class="pin ghost" style="left: 78%; top: 65%;" data-id="bali">
+        <div class="core"></div>
+        <div class="label">Bali<span class="sub" data-sub="vision">Vision</span></div>
+      </div>
+    </div>
+
+    <div class="chat">
+      <div class="chat-head">
+        <div class="avatar" id="avatar">EH</div>
+        <div class="head-info">
+          <div class="head-name">Marea <span id="headByline" style="color:var(--text-faint);font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;">by Emilio Heredia</span></div>
+          <div class="head-sub" id="headSub">Emilio's AI Concierge · Powered by Lyra</div>
+        </div>
+        <button class="reset-btn" id="resetBtn" onclick="resetDemo()">↺ Reset</button>
+      </div>
+
+      <div class="messages" id="messages"></div>
+
+      <div class="input-row">
+        <input class="chat-input" id="chatInput" type="text" placeholder="Ask Marea…" />
+        <button class="voice-btn" id="voiceBtn" title="Hold to speak">🎙</button>
+        <button class="send-btn" onclick="handleInput()">→</button>
+        <div class="voice-overlay" id="voiceOverlay">
+          <span class="label" id="voiceLabel">LISTENING</span>
+          <div class="waveform" id="waveform"></div>
+          <span class="voice-transcript" id="voiceTranscript"></span>
+        </div>
+      </div>
+
+      <div class="prompts">
+        <div class="prompts-label" id="promptsLabel">→ Quick prompts</div>
+        <button class="prompt-btn" data-scenario="story">
+          <span class="num">01</span><span class="prompt-text">Tell me Emilio's story.</span>
+        </button>
+        <button class="prompt-btn" data-scenario="portugal">
+          <span class="num">02</span><span class="prompt-text">I'm planning Portugal in September with my girlfriend.</span>
+        </button>
+        <button class="prompt-btn" data-scenario="scale">
+          <span class="num">03</span><span class="prompt-text">What can Marea do for me?</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/globe.gl"></script>
 <script>
+  /* ============================================================
+     I18N + SCENARIOS
+     ============================================================ */
   const SCENARIOS = {
     en: {
       story: {
@@ -583,7 +1047,7 @@
           "But for thirty years he walked a quieter path in parallel: yoga, karate, Tao, corporal psychotherapy. The boardroom and the breath, side by side.",
           "When he founded *Papaya Playa* in Tulum, he wasn't building a hotel. He was building a thesis: that *primitive sophistication* — barefoot luxury, intimacy with the land — could be more rare than any marble lobby in Manhattan.",
           "His own words: *\"My main hobby is living with intensity.\"*",
-          "Today he hosts ~8,000 guests a year on a single Mexican coastline. The question isn't whether his vision deserves more soil. It's whether the infrastructure exists to grow it without losing the soul."
+          "Today he hosts ~8,000 guests a year on a single Mexican coastline."
         ],
         mapAction: null
       },
@@ -593,21 +1057,19 @@
           "I hear you. You're not asking for a hotel — you're asking for a *feeling.* The same one Emilio chases: nature undiluted, intimacy without performance, time that bends slowly.",
           "Right now, Emilio's only home is Papaya Playa — here in Tulum. One property. Chosen carefully.",
           "*[Heredia Network · scanning latent territories...]*",
-          "But the Algarve coast — specifically the cliffs around Carrapateira and the inland villages of Monchique — fits Emilio's grammar exactly. Wild Atlantic, no neon, the locals still cook the way their grandmothers did. Emilio has scouted these regions personally.",
-          "If Heredia × Lyra ships on schedule, you'd be booking a Heredia-curated Algarve hideaway by Christmas. Same soul as Tulum. New soil.",
-          "Want me to put you on the founding waitlist? You'd be guest #001 outside Mexico."
+          "But the Algarve coast — the cliffs around Carrapateira and the inland villages of Monchique — fits Emilio's grammar exactly. Wild Atlantic, no neon, the locals still cook the way their grandmothers did.",
+          "Same soul as Tulum. New soil. Want me to sketch a September itinerary?"
         ],
         mapAction: ['algarve']
       },
       scale: {
-        user: "Why should Emilio work with Lyra?",
+        user: "What can Marea do for me?",
         reply: [
-          "Because right now, Emilio has one Tulum hideaway and roughly 8,000 people who already love his taste. That's a brand. That's a tribe. That's not yet a *network*.",
-          "Lyra builds the infrastructure that turns *one Heredia* into a *Heredia network* — without franchising, without diluting, without putting his name on properties he hasn't touched.",
-          "Same soul. More soil.",
-          "*[Heredia Network · projecting 18-month horizon...]*",
-          "Algarve. Santorini. Marrakech. Bali. Each one a property Emilio personally selects — Lyra ships the booking flow, the concierge layer, the guest journey, the travel agent onboarding. He keeps the curation. We handle the rails.",
-          "His 8,000 guests become 80,000. His brand becomes a passport. And he never has to answer another booking email."
+          "Think of me as Emilio's presence, available at any hour. I carry his story, his grammar, his taste — and I'm trained to speak the way he does.",
+          "For guests: I plan your stay, handle your documents, remember your preferences, and greet you like an old friend.",
+          "*[Marea · orchestrating guest journey...]*",
+          "For partner properties: onboarding, booking flow, concierge layer, travel-agent integration. Same soul across every new soil.",
+          "Emilio keeps the curation. Lyra handles the rails. And you get the feeling, wherever you land."
         ],
         mapAction: ['algarve', 'santorini', 'marrakech', 'bali']
       }
@@ -620,7 +1082,7 @@
           "Pero durante treinta años caminó un sendero más silencioso en paralelo: yoga, karate, Tao, psicoterapia corporal. La sala de juntas y la respiración, lado a lado.",
           "Cuando fundó *Papaya Playa* en Tulum, no estaba construyendo un hotel. Estaba construyendo una tesis: que la *sofisticación primitiva* — lujo descalzo, intimidad con la tierra — podría ser más rara que cualquier vestíbulo de mármol en Manhattan.",
           "Sus propias palabras: *\"Mi principal afición es vivir con intensidad.\"*",
-          "Hoy recibe a ~8,000 huéspedes al año en una sola costa mexicana. La pregunta no es si su visión merece más tierra. Es si existe la infraestructura para hacerla crecer sin perder el alma."
+          "Hoy recibe a ~8,000 huéspedes al año en una sola costa mexicana."
         ],
         mapAction: null
       },
@@ -630,21 +1092,19 @@
           "Te escucho. No pides un hotel — pides una *sensación.* La misma que persigue Emilio: naturaleza sin diluir, intimidad sin actuación, tiempo que se curva despacio.",
           "Ahora mismo, el único hogar de Emilio es Papaya Playa — aquí en Tulum. Una propiedad. Elegida con cuidado.",
           "*[Red Heredia · escaneando territorios latentes...]*",
-          "Pero la costa del Algarve — en concreto los acantilados alrededor de Carrapateira y los pueblos del interior de Monchique — encaja exactamente con la gramática de Emilio. Atlántico salvaje, sin neón, los locales aún cocinan como lo hacían sus abuelas. Emilio ha explorado estas regiones personalmente.",
-          "Si Heredia × Lyra llega a tiempo, estarías reservando un refugio del Algarve curado por Heredia para Navidad. Misma alma que Tulum. Nueva tierra.",
-          "¿Quieres que te ponga en la lista fundadora? Serías el huésped #001 fuera de México."
+          "Pero la costa del Algarve — los acantilados alrededor de Carrapateira y los pueblos del interior de Monchique — encaja exactamente con la gramática de Emilio. Atlántico salvaje, sin neón, los locales aún cocinan como lo hacían sus abuelas.",
+          "Misma alma que Tulum. Nueva tierra. ¿Quieres que te esboce un itinerario de septiembre?"
         ],
         mapAction: ['algarve']
       },
       scale: {
-        user: "¿Por qué Emilio debería trabajar con Lyra?",
+        user: "¿Qué puede hacer Marea por mí?",
         reply: [
-          "Porque ahora mismo, Emilio tiene un refugio en Tulum y aproximadamente 8,000 personas que ya aman su gusto. Eso es una marca. Eso es una tribu. Aún no es una *red*.",
-          "Lyra construye la infraestructura que convierte *un Heredia* en una *red Heredia* — sin franquiciar, sin diluir, sin poner su nombre en propiedades que no ha tocado.",
-          "Misma alma. Más tierra.",
-          "*[Red Heredia · proyectando horizonte a 18 meses...]*",
-          "Algarve. Santorini. Marrakech. Bali. Cada una una propiedad que Emilio selecciona personalmente — Lyra entrega el flujo de reservas, la capa de concierge, el recorrido del huésped, el onboarding del agente de viajes. Él mantiene la curaduría. Nosotros llevamos los rieles.",
-          "Sus 8,000 huéspedes se convierten en 80,000. Su marca se convierte en un pasaporte. Y nunca más tiene que responder otro correo de reserva."
+          "Piensa en mí como la presencia de Emilio, disponible a cualquier hora. Llevo su historia, su gramática, su gusto — y estoy entrenada para hablar como él.",
+          "Para huéspedes: planeo tu estancia, manejo tus documentos, recuerdo tus preferencias, y te recibo como a un viejo amigo.",
+          "*[Marea · orquestando recorrido del huésped...]*",
+          "Para propiedades asociadas: onboarding, flujo de reservas, capa de concierge, integración con agente de viajes. Misma alma en cada nueva tierra.",
+          "Emilio mantiene la curaduría. Lyra lleva los rieles. Y tú recibes la sensación, dondequiera que aterrices."
         ],
         mapAction: ['algarve', 'santorini', 'marrakech', 'bali']
       }
@@ -655,22 +1115,37 @@
     en: [
       "That's a question worth sitting with.",
       "Emilio would say: *the answer is always closer to nature than you think.*",
-      "This is a curated demo — tap one of the prompts below to experience the full Heredia concierge."
+      "Try one of the threads below — or ask me about his story, Portugal, or what Marea does."
     ],
     es: [
       "Esa es una pregunta que vale la pena meditar.",
       "Emilio diría: *la respuesta siempre está más cerca de la naturaleza de lo que crees.*",
-      "Este es un demo curado — toca una de las preguntas abajo para experimentar al concierge Heredia completo."
+      "Prueba uno de los hilos abajo — o pregúntame sobre su historia, Portugal, o qué hace Marea."
     ]
   };
 
   const I18N = {
     en: {
-      introEyebrow: "Emilio Heredia × Lyra · Private Demo",
-      introQuote: "\"Most of our guests leave having had an experience<br>that has awoken their awareness of nature.\"",
-      introAttribution: "— EMILIO HEREDIA · PAPAYA PLAYA · TULUM",
-      introCta: "Meet Marea",
-      demoPill: "MAREA · APR 2026",
+      tagline: "Same soul. More soil.",
+      ch1Sub: "Engineer · Founder · Papaya Playa",
+      ch1Quote: "\"Most of our guests leave having had an experience that has awoken their awareness of nature.\"",
+      ch1Attr: "— EMILIO HEREDIA · TULUM · MÉXICO",
+      scrollHint: "SCROLL TO BEGIN",
+      ch2Eyebrow: "<em>01</em> · THE PLACE",
+      ch2Title: "One coastline. <em>One soul.</em>",
+      ch2Body: "Papaya Playa — a single hideaway on the Yucatán coast. Barefoot luxury, intimacy with the land. A decade of careful curation, guest by guest.",
+      ch2Stat1: "Guests / year",
+      ch2Stat2: "Property",
+      ch2Stat3: "Years curated",
+      ch3Eyebrow: "<em>02</em> · THE THESIS",
+      thesisW1: "Primitive",
+      thesisW2: "<em>Sophistication</em>",
+      ch3Body: "Barefoot luxury. Intimacy with the land. More rare than any marble lobby in Manhattan — and impossible to franchise.",
+      ch4Eyebrow: "<em>03</em> · THE NETWORK",
+      ch4Title: "Same soul. <em>More soil.</em>",
+      ch4Body: "Properties personally selected by Emilio. Lyra ships the rails — booking, concierge, guest journey, travel-agent onboarding. He keeps the curation.",
+      tagLive: "Live",
+      tagVision: "Vision",
       chartTitle: "<em>Heredia Network</em> — live footprint &amp; vision territories",
       chartCoords: "LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1",
       subLive: "Papaya Playa · Live",
@@ -682,17 +1157,35 @@
       promptsLabel: "→ Quick prompts",
       prompt1: "Tell me Emilio's story.",
       prompt2: "I'm planning Portugal in September with my girlfriend.",
-      prompt3: "Why should Emilio work with Lyra?",
-      welcome: "I'm *Marea* — Emilio Heredia's concierge. I carry his story, his grammar, his taste. Ask me anything, or choose a thread below.",
-      welcomeReset: "I'm *Marea* — Emilio Heredia's concierge. Ready again. What would you like to explore?",
-      meta: "— Marea · by Emilio Heredia"
+      prompt3: "What can Marea do for me?",
+      welcome: "I'm *Marea* — Emilio Heredia's concierge. I carry his story, his grammar, his taste. Ask me anything, or tap a thread below. Hold *space* to speak.",
+      welcomeReset: "I'm *Marea* — ready again. What would you like to explore?",
+      meta: "— Marea · by Emilio Heredia",
+      progress: ["The Man", "The Place", "The Thesis", "The Network", "Marea"],
+      kbdHint: ['HOLD', 'TO SPEAK', 'NAVIGATE'],
+      voiceLabel: "LISTENING"
     },
     es: {
-      introEyebrow: "Emilio Heredia × Lyra · Demo Privada",
-      introQuote: "\"La mayoría de nuestros huéspedes se marchan tras una<br>experiencia que ha despertado su conciencia de la naturaleza.\"",
-      introAttribution: "— EMILIO HEREDIA · PAPAYA PLAYA · TULUM",
-      introCta: "Conoce a Marea",
-      demoPill: "MAREA · ABR 2026",
+      tagline: "Misma alma. Más tierra.",
+      ch1Sub: "Ingeniero · Fundador · Papaya Playa",
+      ch1Quote: "\"La mayoría de nuestros huéspedes se marchan tras una experiencia que ha despertado su conciencia de la naturaleza.\"",
+      ch1Attr: "— EMILIO HEREDIA · TULUM · MÉXICO",
+      scrollHint: "DESLIZA PARA COMENZAR",
+      ch2Eyebrow: "<em>01</em> · EL LUGAR",
+      ch2Title: "Una costa. <em>Un alma.</em>",
+      ch2Body: "Papaya Playa — un único refugio en la costa de Yucatán. Lujo descalzo, intimidad con la tierra. Una década de curaduría cuidadosa, huésped a huésped.",
+      ch2Stat1: "Huéspedes / año",
+      ch2Stat2: "Propiedad",
+      ch2Stat3: "Años curados",
+      ch3Eyebrow: "<em>02</em> · LA TESIS",
+      thesisW1: "Sofisticación",
+      thesisW2: "<em>Primitiva</em>",
+      ch3Body: "Lujo descalzo. Intimidad con la tierra. Más rara que cualquier vestíbulo de mármol en Manhattan — e imposible de franquiciar.",
+      ch4Eyebrow: "<em>03</em> · LA RED",
+      ch4Title: "Misma alma. <em>Más tierra.</em>",
+      ch4Body: "Propiedades seleccionadas personalmente por Emilio. Lyra entrega los rieles — reservas, concierge, recorrido del huésped, onboarding de agentes de viaje. Él mantiene la curaduría.",
+      tagLive: "En vivo",
+      tagVision: "Visión",
       chartTitle: "<em>Red Heredia</em> — presencia actual y territorios en visión",
       chartCoords: "LAT 0° · LON 0° · CARTA DE NAVEGACIÓN HEREDIA · v0.1",
       subLive: "Papaya Playa · En vivo",
@@ -704,31 +1197,216 @@
       promptsLabel: "→ Preguntas rápidas",
       prompt1: "Cuéntame la historia de Emilio.",
       prompt2: "Estoy planeando Portugal en septiembre con mi novia.",
-      prompt3: "¿Por qué Emilio debería trabajar con Lyra?",
-      welcome: "Soy *Marea* — la concierge de Emilio Heredia. Llevo su historia, su gramática, su gusto. Pregúntame lo que quieras, o elige un hilo abajo.",
-      welcomeReset: "Soy *Marea* — la concierge de Emilio Heredia. Lista de nuevo. ¿Qué te gustaría explorar?",
-      meta: "— Marea · por Emilio Heredia"
+      prompt3: "¿Qué puede hacer Marea por mí?",
+      welcome: "Soy *Marea* — la concierge de Emilio Heredia. Llevo su historia, su gramática, su gusto. Pregúntame lo que quieras, o elige un hilo abajo. Mantén *espacio* para hablar.",
+      welcomeReset: "Soy *Marea* — lista de nuevo. ¿Qué te gustaría explorar?",
+      meta: "— Marea · por Emilio Heredia",
+      progress: ["El Hombre", "El Lugar", "La Tesis", "La Red", "Marea"],
+      kbdHint: ['MANTÉN', 'PARA HABLAR', 'NAVEGAR'],
+      voiceLabel: "ESCUCHANDO"
     }
   };
 
   let currentLang = 'en';
 
+  /* ============================================================
+     CUSTOM CURSOR + PARTICLES
+     ============================================================ */
+  const cursorRing = document.getElementById('cursorRing');
+  const cursorDot = document.getElementById('cursorDot');
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+  let ringX = mouseX, ringY = mouseY;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursorDot.style.left = mouseX + 'px';
+    cursorDot.style.top = mouseY + 'px';
+  });
+
+  function animateCursor() {
+    ringX += (mouseX - ringX) * 0.18;
+    ringY += (mouseY - ringY) * 0.18;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top = ringY + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // Hover state on interactive elements
+  const hoverTargets = 'button, a, input, .pin, .prompt-btn, .lang-btn, .progress button';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(hoverTargets)) cursorRing.classList.add('hover');
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(hoverTargets)) cursorRing.classList.remove('hover');
+  });
+
+  // Particle trail (sparse, elegant)
+  let lastParticle = 0;
+  window.addEventListener('mousemove', (e) => {
+    const now = performance.now();
+    if (now - lastParticle < 45) return;
+    lastParticle = now;
+    const p = document.createElement('div');
+    p.className = 'cursor-particle';
+    p.style.left = e.clientX + 'px';
+    p.style.top = e.clientY + 'px';
+    document.body.appendChild(p);
+    requestAnimationFrame(() => {
+      p.style.opacity = '0';
+      p.style.transform = `translate(calc(-50% + ${(Math.random()-0.5)*30}px), calc(-50% + ${-20 - Math.random()*30}px))`;
+    });
+    setTimeout(() => p.remove(), 900);
+  });
+
+  /* ============================================================
+     AMBIENT PARTICLES (Chapter 1 background)
+     ============================================================ */
+  const ambientContainer = document.getElementById('ambientParticles');
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement('span');
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = (Math.random() * 18) + 's';
+    s.style.animationDuration = (14 + Math.random() * 12) + 's';
+    ambientContainer.appendChild(s);
+  }
+
+  /* ============================================================
+     3D GLOBE (globe.gl)
+     ============================================================ */
+  const globeStage = document.getElementById('globeStage');
+  let globe = null;
+  const NETWORK_POINTS = [
+    { id: 'tulum', lat: 20.2114, lng: -87.4654, name: 'Tulum · Papaya Playa', live: true },
+    { id: 'algarve', lat: 37.0194, lng: -8.9500, name: 'Algarve', live: false },
+    { id: 'santorini', lat: 36.3932, lng: 25.4615, name: 'Santorini', live: false },
+    { id: 'marrakech', lat: 31.6295, lng: -7.9811, name: 'Marrakech', live: false },
+    { id: 'bali', lat: -8.4095, lng: 115.1889, name: 'Bali', live: false }
+  ];
+
+  function initGlobe() {
+    if (globe || !window.Globe) return;
+    globe = Globe()(document.getElementById('globeViz'))
+      .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
+      .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
+      .backgroundColor('rgba(0,0,0,0)')
+      .atmosphereColor('#D4A574')
+      .atmosphereAltitude(0.22)
+      .showAtmosphere(true)
+      .pointsData([])
+      .arcsData([])
+      .pointAltitude(0.02)
+      .pointRadius(d => d.live ? 0.6 : 0.35)
+      .pointColor(d => d.live ? '#D4A574' : 'rgba(212,165,116,0.5)')
+      .pointLabel(d => `<div style="font-family:'Cormorant Garamond',serif;color:#D4A574;padding:4px 8px;background:rgba(5,11,20,0.9);border:1px solid rgba(212,165,116,0.3);border-radius:2px;font-size:13px;">${d.name}</div>`)
+      .arcColor(() => ['rgba(212,165,116,0.1)', '#D4A574'])
+      .arcDashLength(0.4)
+      .arcDashGap(0.2)
+      .arcDashAnimateTime(2200)
+      .arcStroke(0.5)
+      .arcAltitude(0.22);
+
+    const scene = globe.scene();
+    globe.controls().enableZoom = false;
+    globe.controls().autoRotate = true;
+    globe.controls().autoRotateSpeed = 0.4;
+
+    // Start view on Tulum
+    globe.pointOfView({ lat: 20.2114, lng: -87.4654, altitude: 2.5 }, 0);
+  }
+
+  function setGlobeChapter(chapter) {
+    if (!globe) return;
+    if (chapter === 1) {
+      // Chapter 2: focused on Tulum
+      globe.pointsData([NETWORK_POINTS[0]]);
+      globe.arcsData([]);
+      globe.pointOfView({ lat: 20.2114, lng: -87.4654, altitude: 2.2 }, 2000);
+      globe.controls().autoRotateSpeed = 0.3;
+    } else if (chapter === 3) {
+      // Chapter 4: network view, zoomed out, arcs
+      globe.pointsData(NETWORK_POINTS);
+      const arcs = NETWORK_POINTS.slice(1).map(p => ({
+        startLat: 20.2114, startLng: -87.4654,
+        endLat: p.lat, endLng: p.lng
+      }));
+      globe.arcsData(arcs);
+      globe.pointOfView({ lat: 25, lng: -20, altitude: 3.0 }, 2200);
+      globe.controls().autoRotateSpeed = 0.6;
+    }
+  }
+
+  /* ============================================================
+     CHAPTERS — scroll observer
+     ============================================================ */
+  const chapters = document.querySelectorAll('.chapter');
+  const progressButtons = document.querySelectorAll('.progress button');
+  let currentChapter = 0;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+        const ch = parseInt(entry.target.dataset.ch);
+        setChapter(ch);
+      }
+    });
+  }, { threshold: [0.5, 0.75] });
+
+  chapters.forEach(ch => observer.observe(ch));
+
+  function setChapter(ch) {
+    if (ch === currentChapter) return;
+    currentChapter = ch;
+    chapters.forEach((c, i) => c.classList.toggle('active', i === ch));
+    progressButtons.forEach((b, i) => b.classList.toggle('active', i === ch));
+
+    // Globe visibility: ch2 (idx 1) and ch4 (idx 3)
+    if (ch === 1 || ch === 3) {
+      globeStage.classList.add('visible');
+      setGlobeChapter(ch);
+    } else {
+      globeStage.classList.remove('visible');
+    }
+
+    // Chat mode: ch5 (idx 4) — disable scroll snap so chat scrolls naturally
+    document.body.classList.toggle('chat-mode', ch === 4);
+
+    // Show kbd hint on ch5
+    document.getElementById('kbdHint').classList.toggle('visible', ch === 4);
+  }
+
+  // Progress click
+  progressButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const ch = parseInt(btn.dataset.ch);
+      chapters[ch].scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Keyboard nav
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (currentChapter < chapters.length - 1) chapters[currentChapter + 1].scrollIntoView({ behavior: 'smooth' });
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (currentChapter > 0) chapters[currentChapter - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  /* ============================================================
+     CHAT LOGIC
+     ============================================================ */
   const messagesEl = document.getElementById('messages');
   const avatar = document.getElementById('avatar');
-  const intro = document.getElementById('intro');
   const connections = document.getElementById('connections');
   const resetBtn = document.getElementById('resetBtn');
   const chatInput = document.getElementById('chatInput');
   let busy = false;
-  let hasStarted = false;
-
-  function enterDemo() {
-    intro.classList.add('gone');
-    setTimeout(() => intro.style.display = 'none', 1200);
-    setTimeout(() => {
-      addMessage('assistant', I18N[currentLang].welcome);
-    }, 1500);
-  }
+  let welcomed = false;
 
   function addMessage(role, text) {
     const msg = document.createElement('div');
@@ -745,7 +1423,6 @@
     }
     messagesEl.appendChild(msg);
     messagesEl.scrollTop = messagesEl.scrollHeight;
-    return msg;
   }
 
   function formatText(t) {
@@ -787,7 +1464,7 @@
       messagesEl.scrollTop = messagesEl.scrollHeight;
 
       if (onParagraph) onParagraph(p);
-      if (p < paragraphs.length - 1) await sleep(480);
+      if (p < paragraphs.length - 1) await sleep(440);
     }
     avatar.classList.remove('thinking');
   }
@@ -795,7 +1472,6 @@
   function escapeHtml(s) {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
-
   function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
   function awakenPin(id) {
@@ -844,6 +1520,7 @@
   async function runScenario(key) {
     if (busy) return;
     busy = true;
+    if (!welcomed) welcomeFirst();
     document.querySelectorAll('.prompt-btn').forEach(b => b.disabled = true);
 
     const sc = SCENARIOS[currentLang][key];
@@ -856,15 +1533,13 @@
       if (key === 'portugal' && paragraphIdx === 3 && pinsToWake[pinIdx]) {
         awakenPin(pinsToWake[pinIdx++]);
       }
-      if (key === 'scale' && paragraphIdx === 4) {
-        pinsToWake.forEach((id, i) => setTimeout(() => awakenPin(id), i * 700));
+      if (key === 'scale' && paragraphIdx === 3) {
+        pinsToWake.forEach((id, i) => setTimeout(() => awakenPin(id), i * 650));
       }
     });
 
     busy = false;
-    hasStarted = true;
     resetBtn.classList.add('visible');
-
     document.querySelector(`.prompt-btn[data-scenario="${key}"]`).classList.add('used');
     document.querySelectorAll('.prompt-btn').forEach(b => {
       if (!b.classList.contains('used')) b.disabled = false;
@@ -874,13 +1549,14 @@
   async function handleInput() {
     const val = chatInput.value.trim();
     if (!val || busy) return;
+    if (!welcomed) welcomeFirst();
     chatInput.value = '';
 
     const lower = val.toLowerCase();
     let matchedKey = null;
     if (lower.includes('story') || lower.includes('emilio') || lower.includes('who') || lower.includes('historia') || lower.includes('quién') || lower.includes('quien')) matchedKey = 'story';
     else if (lower.includes('portugal') || lower.includes('algarve') || lower.includes('europe') || lower.includes('girlfriend') || lower.includes('novia') || lower.includes('europa')) matchedKey = 'portugal';
-    else if (lower.includes('lyra') || lower.includes('work') || lower.includes('scale') || lower.includes('why') || lower.includes('por qué') || lower.includes('por que') || lower.includes('escalar') || lower.includes('trabajar')) matchedKey = 'scale';
+    else if (lower.includes('marea') || lower.includes('lyra') || lower.includes('scale') || lower.includes('what') || lower.includes('do for') || lower.includes('qué puede') || lower.includes('que puede') || lower.includes('trabajar')) matchedKey = 'scale';
 
     if (matchedKey) {
       busy = true;
@@ -890,7 +1566,6 @@
       const sc = SCENARIOS[currentLang][matchedKey];
       await streamReply(sc.reply, null);
       busy = false;
-      hasStarted = true;
       resetBtn.classList.add('visible');
       document.querySelectorAll('.prompt-btn').forEach(b => {
         if (!b.classList.contains('used')) b.disabled = false;
@@ -908,6 +1583,12 @@
     if (e.key === 'Enter') handleInput();
   });
 
+  function welcomeFirst() {
+    if (welcomed) return;
+    welcomed = true;
+    addMessage('assistant', I18N[currentLang].welcome);
+  }
+
   function resetDemo() {
     messagesEl.innerHTML = '';
     while (connections.firstChild) connections.removeChild(connections.firstChild);
@@ -917,9 +1598,10 @@
       b.classList.remove('used');
     });
     resetBtn.classList.remove('visible');
-    hasStarted = false;
+    welcomed = false;
     busy = false;
     setTimeout(() => {
+      welcomed = true;
       addMessage('assistant', I18N[currentLang].welcomeReset);
     }, 200);
   }
@@ -928,56 +1610,209 @@
     btn.addEventListener('click', () => runScenario(btn.dataset.scenario));
   });
 
+  /* ============================================================
+     LANGUAGE TOGGLE
+     ============================================================ */
   function setLang(lang) {
     if (!I18N[lang]) return;
     currentLang = lang;
     const t = I18N[lang];
-
     document.documentElement.lang = lang;
     document.querySelectorAll('.lang-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.lang === lang);
     });
 
-    const byId = (id) => document.getElementById(id);
-    byId('introEyebrow').textContent = t.introEyebrow;
-    byId('introQuote').innerHTML = t.introQuote;
-    byId('introAttribution').textContent = t.introAttribution;
-    byId('introCta').textContent = t.introCta;
-    byId('demoPill').textContent = t.demoPill;
-    byId('chartTitle').innerHTML = t.chartTitle;
-    byId('chartCoords').textContent = t.chartCoords;
-    byId('headByline').textContent = t.headByline;
-    byId('headSub').textContent = t.headSub;
-    byId('resetBtn').textContent = t.resetBtn;
-    byId('chatInput').placeholder = t.inputPlaceholder;
-    byId('promptsLabel').textContent = t.promptsLabel;
+    const set = (id, html, isHtml) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (isHtml) el.innerHTML = html; else el.textContent = html;
+    };
+
+    set('tagline', t.tagline);
+    set('ch1Sub', t.ch1Sub);
+    set('ch1Quote', t.ch1Quote);
+    set('ch1Attr', t.ch1Attr);
+    set('scrollHintText', t.scrollHint);
+    set('ch2Eyebrow', t.ch2Eyebrow, true);
+    set('ch2Title', t.ch2Title, true);
+    set('ch2Body', t.ch2Body);
+    set('ch2Stat1', t.ch2Stat1);
+    set('ch2Stat2', t.ch2Stat2);
+    set('ch2Stat3', t.ch2Stat3);
+    set('ch3Eyebrow', t.ch3Eyebrow, true);
+    set('thesisW1', t.thesisW1, true);
+    set('thesisW2', t.thesisW2, true);
+    set('ch3Body', t.ch3Body);
+    set('ch4Eyebrow', t.ch4Eyebrow, true);
+    set('ch4Title', t.ch4Title, true);
+    set('ch4Body', t.ch4Body);
+    set('chartTitle', t.chartTitle, true);
+    set('chartCoords', t.chartCoords);
+    set('headByline', t.headByline);
+    set('headSub', t.headSub);
+    set('resetBtn', t.resetBtn);
+    set('promptsLabel', t.promptsLabel);
+    set('voiceLabel', t.voiceLabel);
 
     document.querySelectorAll('[data-sub="live"]').forEach(el => el.textContent = t.subLive);
     document.querySelectorAll('[data-sub="vision"]').forEach(el => el.textContent = t.subVision);
+    document.querySelectorAll('[data-tag="live"]').forEach(el => el.textContent = t.tagLive);
+    document.querySelectorAll('[data-tag="vision"]').forEach(el => el.textContent = t.tagVision);
 
     const promptTexts = [t.prompt1, t.prompt2, t.prompt3];
     document.querySelectorAll('.prompt-btn .prompt-text').forEach((el, i) => {
       el.textContent = promptTexts[i];
     });
 
+    document.getElementById('chatInput').placeholder = t.inputPlaceholder;
     document.querySelectorAll('.msg.assistant .meta').forEach(el => el.textContent = t.meta);
+
+    // Progress labels
+    progressButtons.forEach((b, i) => b.setAttribute('data-label', t.progress[i]));
   }
 
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => setLang(btn.dataset.lang));
   });
 
-  window.enterDemo = enterDemo;
-  window.resetDemo = resetDemo;
-  window.handleInput = handleInput;
-  window.setLang = setLang;
+  /* ============================================================
+     VOICE INPUT (hold space / tap button)
+     ============================================================ */
+  const voiceBtn = document.getElementById('voiceBtn');
+  const voiceOverlay = document.getElementById('voiceOverlay');
+  const waveform = document.getElementById('waveform');
+  const voiceTranscript = document.getElementById('voiceTranscript');
 
+  // Build waveform bars
+  const BAR_COUNT = 32;
+  const bars = [];
+  for (let i = 0; i < BAR_COUNT; i++) {
+    const b = document.createElement('div');
+    b.className = 'bar';
+    waveform.appendChild(b);
+    bars.push(b);
+  }
+
+  let audioContext, analyser, mediaStream, recognition, isRecording = false, rafId;
+
+  async function startVoice() {
+    if (isRecording) return;
+    isRecording = true;
+    voiceBtn.classList.add('recording');
+    voiceOverlay.classList.add('visible');
+    voiceTranscript.textContent = '';
+
+    try {
+      mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const source = audioContext.createMediaStreamSource(mediaStream);
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 128;
+      source.connect(analyser);
+      const data = new Uint8Array(analyser.frequencyBinCount);
+
+      function draw() {
+        if (!isRecording) return;
+        analyser.getByteFrequencyData(data);
+        for (let i = 0; i < BAR_COUNT; i++) {
+          const v = data[i] / 255;
+          bars[i].style.height = (3 + v * 21) + 'px';
+        }
+        rafId = requestAnimationFrame(draw);
+      }
+      draw();
+    } catch (err) {
+      // mic denied → still animate bars randomly for effect
+      function fake() {
+        if (!isRecording) return;
+        for (let i = 0; i < BAR_COUNT; i++) {
+          bars[i].style.height = (3 + Math.random() * 18) + 'px';
+        }
+        rafId = requestAnimationFrame(fake);
+      }
+      fake();
+    }
+
+    // Speech recognition
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SR) {
+      recognition = new SR();
+      recognition.lang = currentLang === 'es' ? 'es-ES' : 'en-US';
+      recognition.interimResults = true;
+      recognition.continuous = true;
+      recognition.onresult = (e) => {
+        let transcript = '';
+        for (let i = 0; i < e.results.length; i++) {
+          transcript += e.results[i][0].transcript;
+        }
+        voiceTranscript.textContent = transcript;
+        chatInput.value = transcript;
+      };
+      try { recognition.start(); } catch(e) {}
+    }
+  }
+
+  function stopVoice() {
+    if (!isRecording) return;
+    isRecording = false;
+    voiceBtn.classList.remove('recording');
+    voiceOverlay.classList.remove('visible');
+    if (rafId) cancelAnimationFrame(rafId);
+    if (recognition) { try { recognition.stop(); } catch(e){} }
+    if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
+    if (audioContext) audioContext.close();
+    bars.forEach(b => b.style.height = '3px');
+
+    // Submit the input
+    setTimeout(() => {
+      if (chatInput.value.trim()) handleInput();
+    }, 200);
+  }
+
+  // Spacebar hold
+  let spaceHeld = false;
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && !spaceHeld && document.activeElement.tagName !== 'INPUT' && currentChapter === 4) {
+      e.preventDefault();
+      spaceHeld = true;
+      startVoice();
+    }
+  });
+  document.addEventListener('keyup', (e) => {
+    if (e.code === 'Space' && spaceHeld) {
+      spaceHeld = false;
+      stopVoice();
+    }
+  });
+
+  // Voice button hold (mouse + touch)
+  voiceBtn.addEventListener('mousedown', startVoice);
+  voiceBtn.addEventListener('mouseup', stopVoice);
+  voiceBtn.addEventListener('mouseleave', () => { if (isRecording) stopVoice(); });
+  voiceBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startVoice(); });
+  voiceBtn.addEventListener('touchend', (e) => { e.preventDefault(); stopVoice(); });
+
+  /* ============================================================
+     INIT
+     ============================================================ */
   window.addEventListener('resize', () => {
     while (connections.firstChild) connections.removeChild(connections.firstChild);
     document.querySelectorAll('.pin.ghost.awake').forEach(p => {
       drawConnection('tulum', p.dataset.id);
     });
+    if (globe) globe.width(window.innerWidth).height(window.innerHeight);
   });
+
+  window.setLang = setLang;
+  window.resetDemo = resetDemo;
+  window.handleInput = handleInput;
+
+  // Initialize globe once loaded
+  function waitForGlobe() {
+    if (window.Globe) initGlobe();
+    else setTimeout(waitForGlobe, 100);
+  }
+  waitForGlobe();
 </script>
 </body>
 </html>
