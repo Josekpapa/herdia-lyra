@@ -52,6 +52,30 @@
     border-radius: 2px; color: var(--text-mute);
     background: rgba(91, 141, 239, 0.05);
   }
+  .topbar-right {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .lang-toggle {
+    display: flex;
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .lang-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .lang-btn.active {
+    background: rgba(212,165,116,0.12);
+    color: var(--gold);
+  }
+  .lang-btn:hover:not(.active) { color: var(--text); }
   .lyra-mark {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px; letter-spacing: 0.2em;
@@ -464,50 +488,56 @@
 <body>
 
 <div class="intro" id="intro">
-  <div class="intro-eyebrow">Emilio Heredia × Lyra · Private Demo</div>
+  <div class="intro-eyebrow" id="introEyebrow">Emilio Heredia × Lyra · Private Demo</div>
   <div class="intro-portrait" id="introPortrait">EH</div>
   <div class="intro-title">Emilio <em>Heredia</em></div>
-  <div class="intro-quote">
+  <div class="intro-quote" id="introQuote">
     "Most of our guests leave having had an experience<br>
     that has awoken their awareness of nature."
   </div>
-  <div class="intro-attribution">— EMILIO HEREDIA · PAPAYA PLAYA · TULUM</div>
-  <button class="intro-cta" onclick="enterDemo()">Meet Marea</button>
+  <div class="intro-attribution" id="introAttribution">— EMILIO HEREDIA · PAPAYA PLAYA · TULUM</div>
+  <button class="intro-cta" id="introCta" onclick="enterDemo()">Meet Marea</button>
 </div>
 
 <div class="topbar">
   <div class="lyra-mark">L<span class="dot">·</span>Y<span class="dot">·</span>R<span class="dot">·</span>A</div>
   <div class="brand">HEREDIA <span class="x">×</span> <span class="lyra">LYRA</span></div>
-  <div class="demo-pill">MAREA · APR 2026</div>
+  <div class="topbar-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="es">ES</button>
+    </div>
+    <div class="demo-pill" id="demoPill">MAREA · APR 2026</div>
+  </div>
 </div>
 
 <div class="stage">
   <div class="chart" id="chart">
     <div class="chart-bg"></div>
-    <div class="chart-title"><em>Heredia Network</em> — live footprint &amp; vision territories</div>
-    <div class="chart-coords">LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1</div>
+    <div class="chart-title" id="chartTitle"><em>Heredia Network</em> — live footprint &amp; vision territories</div>
+    <div class="chart-coords" id="chartCoords">LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1</div>
 
     <svg class="connections" id="connections" preserveAspectRatio="none"></svg>
 
     <div class="pin live" style="left: 23%; top: 52%;" data-id="tulum">
       <div class="core"></div>
-      <div class="label">Tulum<span class="sub">Papaya Playa · Live</span></div>
+      <div class="label">Tulum<span class="sub" data-sub="live">Papaya Playa · Live</span></div>
     </div>
     <div class="pin ghost" style="left: 47%; top: 38%;" data-id="algarve">
       <div class="core"></div>
-      <div class="label">Algarve<span class="sub">Vision</span></div>
+      <div class="label">Algarve<span class="sub" data-sub="vision">Vision</span></div>
     </div>
     <div class="pin ghost" style="left: 56%; top: 42%;" data-id="santorini">
       <div class="core"></div>
-      <div class="label">Santorini<span class="sub">Vision</span></div>
+      <div class="label">Santorini<span class="sub" data-sub="vision">Vision</span></div>
     </div>
     <div class="pin ghost" style="left: 50%; top: 50%;" data-id="marrakech">
       <div class="core"></div>
-      <div class="label">Marrakech<span class="sub">Vision</span></div>
+      <div class="label">Marrakech<span class="sub" data-sub="vision">Vision</span></div>
     </div>
     <div class="pin ghost" style="left: 78%; top: 65%;" data-id="bali">
       <div class="core"></div>
-      <div class="label">Bali<span class="sub">Vision</span></div>
+      <div class="label">Bali<span class="sub" data-sub="vision">Vision</span></div>
     </div>
   </div>
 
@@ -515,8 +545,8 @@
     <div class="chat-head">
       <div class="avatar" id="avatar">EH</div>
       <div class="head-info">
-        <div class="head-name">Marea <span style="color:var(--text-faint);font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;">by Emilio Heredia</span></div>
-        <div class="head-sub">Emilio's AI Concierge · Powered by Lyra</div>
+        <div class="head-name">Marea <span id="headByline" style="color:var(--text-faint);font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;">by Emilio Heredia</span></div>
+        <div class="head-sub" id="headSub">Emilio's AI Concierge · Powered by Lyra</div>
       </div>
       <button class="reset-btn" id="resetBtn" onclick="resetDemo()">↺ Reset</button>
     </div>
@@ -529,15 +559,15 @@
     </div>
 
     <div class="prompts">
-      <div class="prompts-label">→ Quick prompts</div>
+      <div class="prompts-label" id="promptsLabel">→ Quick prompts</div>
       <button class="prompt-btn" data-scenario="story">
-        <span class="num">01</span>Tell me Emilio's story.
+        <span class="num">01</span><span class="prompt-text">Tell me Emilio's story.</span>
       </button>
       <button class="prompt-btn" data-scenario="portugal">
-        <span class="num">02</span>I'm planning Portugal in September with my girlfriend.
+        <span class="num">02</span><span class="prompt-text">I'm planning Portugal in September with my girlfriend.</span>
       </button>
       <button class="prompt-btn" data-scenario="scale">
-        <span class="num">03</span>Why should Emilio work with Lyra?
+        <span class="num">03</span><span class="prompt-text">Why should Emilio work with Lyra?</span>
       </button>
     </div>
   </div>
@@ -545,48 +575,143 @@
 
 <script>
   const SCENARIOS = {
-    story: {
-      user: "Tell me Emilio's story.",
-      reply: [
-        "Emilio Heredia began as an electrical engineer — degrees in electronics and finance, then chairman of financial institutions in New York and Mexico City. From the outside, the perfect career.",
-        "But for thirty years he walked a quieter path in parallel: yoga, karate, Tao, corporal psychotherapy. The boardroom and the breath, side by side.",
-        "When he founded *Papaya Playa* in Tulum, he wasn't building a hotel. He was building a thesis: that *primitive sophistication* — barefoot luxury, intimacy with the land — could be more rare than any marble lobby in Manhattan.",
-        "His own words: *\"My main hobby is living with intensity.\"*",
-        "Today he hosts ~8,000 guests a year on a single Mexican coastline. The question isn't whether his vision deserves more soil. It's whether the infrastructure exists to grow it without losing the soul."
-      ],
-      mapAction: null
+    en: {
+      story: {
+        user: "Tell me Emilio's story.",
+        reply: [
+          "Emilio Heredia began as an electrical engineer — degrees in electronics and finance, then chairman of financial institutions in New York and Mexico City. From the outside, the perfect career.",
+          "But for thirty years he walked a quieter path in parallel: yoga, karate, Tao, corporal psychotherapy. The boardroom and the breath, side by side.",
+          "When he founded *Papaya Playa* in Tulum, he wasn't building a hotel. He was building a thesis: that *primitive sophistication* — barefoot luxury, intimacy with the land — could be more rare than any marble lobby in Manhattan.",
+          "His own words: *\"My main hobby is living with intensity.\"*",
+          "Today he hosts ~8,000 guests a year on a single Mexican coastline. The question isn't whether his vision deserves more soil. It's whether the infrastructure exists to grow it without losing the soul."
+        ],
+        mapAction: null
+      },
+      portugal: {
+        user: "I'm planning Portugal in September with my girlfriend — somewhere quiet, close to the ocean, the kind of place Emilio would pick.",
+        reply: [
+          "I hear you. You're not asking for a hotel — you're asking for a *feeling.* The same one Emilio chases: nature undiluted, intimacy without performance, time that bends slowly.",
+          "Right now, Emilio's only home is Papaya Playa — here in Tulum. One property. Chosen carefully.",
+          "*[Heredia Network · scanning latent territories...]*",
+          "But the Algarve coast — specifically the cliffs around Carrapateira and the inland villages of Monchique — fits Emilio's grammar exactly. Wild Atlantic, no neon, the locals still cook the way their grandmothers did. Emilio has scouted these regions personally.",
+          "If Heredia × Lyra ships on schedule, you'd be booking a Heredia-curated Algarve hideaway by Christmas. Same soul as Tulum. New soil.",
+          "Want me to put you on the founding waitlist? You'd be guest #001 outside Mexico."
+        ],
+        mapAction: ['algarve']
+      },
+      scale: {
+        user: "Why should Emilio work with Lyra?",
+        reply: [
+          "Because right now, Emilio has one Tulum hideaway and roughly 8,000 people who already love his taste. That's a brand. That's a tribe. That's not yet a *network*.",
+          "Lyra builds the infrastructure that turns *one Heredia* into a *Heredia network* — without franchising, without diluting, without putting his name on properties he hasn't touched.",
+          "Same soul. More soil.",
+          "*[Heredia Network · projecting 18-month horizon...]*",
+          "Algarve. Santorini. Marrakech. Bali. Each one a property Emilio personally selects — Lyra ships the booking flow, the concierge layer, the guest journey, the travel agent onboarding. He keeps the curation. We handle the rails.",
+          "His 8,000 guests become 80,000. His brand becomes a passport. And he never has to answer another booking email."
+        ],
+        mapAction: ['algarve', 'santorini', 'marrakech', 'bali']
+      }
     },
-    portugal: {
-      user: "I'm planning Portugal in September with my girlfriend — somewhere quiet, close to the ocean, the kind of place Emilio would pick.",
-      reply: [
-        "I hear you. You're not asking for a hotel — you're asking for a *feeling.* The same one Emilio chases: nature undiluted, intimacy without performance, time that bends slowly.",
-        "Right now, Emilio's only home is Papaya Playa — here in Tulum. One property. Chosen carefully.",
-        "*[Heredia Network · scanning latent territories...]*",
-        "But the Algarve coast — specifically the cliffs around Carrapateira and the inland villages of Monchique — fits Emilio's grammar exactly. Wild Atlantic, no neon, the locals still cook the way their grandmothers did. Emilio has scouted these regions personally.",
-        "If Heredia × Lyra ships on schedule, you'd be booking a Heredia-curated Algarve hideaway by Christmas. Same soul as Tulum. New soil.",
-        "Want me to put you on the founding waitlist? You'd be guest #001 outside Mexico."
-      ],
-      mapAction: ['algarve']
-    },
-    scale: {
-      user: "Why should Emilio work with Lyra?",
-      reply: [
-        "Because right now, Emilio has one Tulum hideaway and roughly 8,000 people who already love his taste. That's a brand. That's a tribe. That's not yet a *network*.",
-        "Lyra builds the infrastructure that turns *one Heredia* into a *Heredia network* — without franchising, without diluting, without putting his name on properties he hasn't touched.",
-        "Same soul. More soil.",
-        "*[Heredia Network · projecting 18-month horizon...]*",
-        "Algarve. Santorini. Marrakech. Bali. Each one a property Emilio personally selects — Lyra ships the booking flow, the concierge layer, the guest journey, the travel agent onboarding. He keeps the curation. We handle the rails.",
-        "His 8,000 guests become 80,000. His brand becomes a passport. And he never has to answer another booking email."
-      ],
-      mapAction: ['algarve', 'santorini', 'marrakech', 'bali']
+    es: {
+      story: {
+        user: "Cuéntame la historia de Emilio.",
+        reply: [
+          "Emilio Heredia empezó como ingeniero eléctrico — títulos en electrónica y finanzas, luego presidente de instituciones financieras en Nueva York y Ciudad de México. Desde afuera, la carrera perfecta.",
+          "Pero durante treinta años caminó un sendero más silencioso en paralelo: yoga, karate, Tao, psicoterapia corporal. La sala de juntas y la respiración, lado a lado.",
+          "Cuando fundó *Papaya Playa* en Tulum, no estaba construyendo un hotel. Estaba construyendo una tesis: que la *sofisticación primitiva* — lujo descalzo, intimidad con la tierra — podría ser más rara que cualquier vestíbulo de mármol en Manhattan.",
+          "Sus propias palabras: *\"Mi principal afición es vivir con intensidad.\"*",
+          "Hoy recibe a ~8,000 huéspedes al año en una sola costa mexicana. La pregunta no es si su visión merece más tierra. Es si existe la infraestructura para hacerla crecer sin perder el alma."
+        ],
+        mapAction: null
+      },
+      portugal: {
+        user: "Estoy planeando Portugal en septiembre con mi novia — un lugar tranquilo, cerca del océano, del tipo que elegiría Emilio.",
+        reply: [
+          "Te escucho. No pides un hotel — pides una *sensación.* La misma que persigue Emilio: naturaleza sin diluir, intimidad sin actuación, tiempo que se curva despacio.",
+          "Ahora mismo, el único hogar de Emilio es Papaya Playa — aquí en Tulum. Una propiedad. Elegida con cuidado.",
+          "*[Red Heredia · escaneando territorios latentes...]*",
+          "Pero la costa del Algarve — en concreto los acantilados alrededor de Carrapateira y los pueblos del interior de Monchique — encaja exactamente con la gramática de Emilio. Atlántico salvaje, sin neón, los locales aún cocinan como lo hacían sus abuelas. Emilio ha explorado estas regiones personalmente.",
+          "Si Heredia × Lyra llega a tiempo, estarías reservando un refugio del Algarve curado por Heredia para Navidad. Misma alma que Tulum. Nueva tierra.",
+          "¿Quieres que te ponga en la lista fundadora? Serías el huésped #001 fuera de México."
+        ],
+        mapAction: ['algarve']
+      },
+      scale: {
+        user: "¿Por qué Emilio debería trabajar con Lyra?",
+        reply: [
+          "Porque ahora mismo, Emilio tiene un refugio en Tulum y aproximadamente 8,000 personas que ya aman su gusto. Eso es una marca. Eso es una tribu. Aún no es una *red*.",
+          "Lyra construye la infraestructura que convierte *un Heredia* en una *red Heredia* — sin franquiciar, sin diluir, sin poner su nombre en propiedades que no ha tocado.",
+          "Misma alma. Más tierra.",
+          "*[Red Heredia · proyectando horizonte a 18 meses...]*",
+          "Algarve. Santorini. Marrakech. Bali. Cada una una propiedad que Emilio selecciona personalmente — Lyra entrega el flujo de reservas, la capa de concierge, el recorrido del huésped, el onboarding del agente de viajes. Él mantiene la curaduría. Nosotros llevamos los rieles.",
+          "Sus 8,000 huéspedes se convierten en 80,000. Su marca se convierte en un pasaporte. Y nunca más tiene que responder otro correo de reserva."
+        ],
+        mapAction: ['algarve', 'santorini', 'marrakech', 'bali']
+      }
     }
   };
 
-  const DEMO_FALLBACK = [
-    "That's a question worth sitting with.",
-    "Emilio would say: *the answer is always closer to nature than you think.*",
-    "This is a curated demo — tap one of the prompts below to experience the full Heredia concierge."
-  ];
+  const DEMO_FALLBACK = {
+    en: [
+      "That's a question worth sitting with.",
+      "Emilio would say: *the answer is always closer to nature than you think.*",
+      "This is a curated demo — tap one of the prompts below to experience the full Heredia concierge."
+    ],
+    es: [
+      "Esa es una pregunta que vale la pena meditar.",
+      "Emilio diría: *la respuesta siempre está más cerca de la naturaleza de lo que crees.*",
+      "Este es un demo curado — toca una de las preguntas abajo para experimentar al concierge Heredia completo."
+    ]
+  };
+
+  const I18N = {
+    en: {
+      introEyebrow: "Emilio Heredia × Lyra · Private Demo",
+      introQuote: "\"Most of our guests leave having had an experience<br>that has awoken their awareness of nature.\"",
+      introAttribution: "— EMILIO HEREDIA · PAPAYA PLAYA · TULUM",
+      introCta: "Meet Marea",
+      demoPill: "MAREA · APR 2026",
+      chartTitle: "<em>Heredia Network</em> — live footprint &amp; vision territories",
+      chartCoords: "LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1",
+      subLive: "Papaya Playa · Live",
+      subVision: "Vision",
+      headByline: "by Emilio Heredia",
+      headSub: "Emilio's AI Concierge · Powered by Lyra",
+      resetBtn: "↺ Reset",
+      inputPlaceholder: "Ask Marea…",
+      promptsLabel: "→ Quick prompts",
+      prompt1: "Tell me Emilio's story.",
+      prompt2: "I'm planning Portugal in September with my girlfriend.",
+      prompt3: "Why should Emilio work with Lyra?",
+      welcome: "I'm *Marea* — Emilio Heredia's concierge. I carry his story, his grammar, his taste. Ask me anything, or choose a thread below.",
+      welcomeReset: "I'm *Marea* — Emilio Heredia's concierge. Ready again. What would you like to explore?",
+      meta: "— Marea · by Emilio Heredia"
+    },
+    es: {
+      introEyebrow: "Emilio Heredia × Lyra · Demo Privada",
+      introQuote: "\"La mayoría de nuestros huéspedes se marchan tras una<br>experiencia que ha despertado su conciencia de la naturaleza.\"",
+      introAttribution: "— EMILIO HEREDIA · PAPAYA PLAYA · TULUM",
+      introCta: "Conoce a Marea",
+      demoPill: "MAREA · ABR 2026",
+      chartTitle: "<em>Red Heredia</em> — presencia actual y territorios en visión",
+      chartCoords: "LAT 0° · LON 0° · CARTA DE NAVEGACIÓN HEREDIA · v0.1",
+      subLive: "Papaya Playa · En vivo",
+      subVision: "Visión",
+      headByline: "por Emilio Heredia",
+      headSub: "Concierge IA de Emilio · Impulsado por Lyra",
+      resetBtn: "↺ Reiniciar",
+      inputPlaceholder: "Pregunta a Marea…",
+      promptsLabel: "→ Preguntas rápidas",
+      prompt1: "Cuéntame la historia de Emilio.",
+      prompt2: "Estoy planeando Portugal en septiembre con mi novia.",
+      prompt3: "¿Por qué Emilio debería trabajar con Lyra?",
+      welcome: "Soy *Marea* — la concierge de Emilio Heredia. Llevo su historia, su gramática, su gusto. Pregúntame lo que quieras, o elige un hilo abajo.",
+      welcomeReset: "Soy *Marea* — la concierge de Emilio Heredia. Lista de nuevo. ¿Qué te gustaría explorar?",
+      meta: "— Marea · por Emilio Heredia"
+    }
+  };
+
+  let currentLang = 'en';
 
   const messagesEl = document.getElementById('messages');
   const avatar = document.getElementById('avatar');
@@ -601,7 +726,7 @@
     intro.classList.add('gone');
     setTimeout(() => intro.style.display = 'none', 1200);
     setTimeout(() => {
-      addMessage('assistant', "I'm *Marea* — Emilio Heredia's concierge. I carry his story, his grammar, his taste. Ask me anything, or choose a thread below.");
+      addMessage('assistant', I18N[currentLang].welcome);
     }, 1500);
   }
 
@@ -615,7 +740,7 @@
     if (role === 'assistant') {
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.textContent = '— Marea · by Emilio Heredia';
+      meta.textContent = I18N[currentLang].meta;
       msg.appendChild(meta);
     }
     messagesEl.appendChild(msg);
@@ -657,7 +782,7 @@
 
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.textContent = '— Marea · by Emilio Heredia';
+      meta.textContent = I18N[currentLang].meta;
       msg.appendChild(meta);
       messagesEl.scrollTop = messagesEl.scrollHeight;
 
@@ -721,7 +846,7 @@
     busy = true;
     document.querySelectorAll('.prompt-btn').forEach(b => b.disabled = true);
 
-    const sc = SCENARIOS[key];
+    const sc = SCENARIOS[currentLang][key];
     addMessage('user', sc.user);
     await sleep(400);
 
@@ -753,16 +878,16 @@
 
     const lower = val.toLowerCase();
     let matchedKey = null;
-    if (lower.includes('story') || lower.includes('emilio') || lower.includes('who')) matchedKey = 'story';
-    else if (lower.includes('portugal') || lower.includes('algarve') || lower.includes('europe') || lower.includes('girlfriend')) matchedKey = 'portugal';
-    else if (lower.includes('lyra') || lower.includes('work') || lower.includes('scale') || lower.includes('why')) matchedKey = 'scale';
+    if (lower.includes('story') || lower.includes('emilio') || lower.includes('who') || lower.includes('historia') || lower.includes('quién') || lower.includes('quien')) matchedKey = 'story';
+    else if (lower.includes('portugal') || lower.includes('algarve') || lower.includes('europe') || lower.includes('girlfriend') || lower.includes('novia') || lower.includes('europa')) matchedKey = 'portugal';
+    else if (lower.includes('lyra') || lower.includes('work') || lower.includes('scale') || lower.includes('why') || lower.includes('por qué') || lower.includes('por que') || lower.includes('escalar') || lower.includes('trabajar')) matchedKey = 'scale';
 
     if (matchedKey) {
       busy = true;
       document.querySelectorAll('.prompt-btn').forEach(b => b.disabled = true);
       addMessage('user', val);
       await sleep(400);
-      const sc = SCENARIOS[matchedKey];
+      const sc = SCENARIOS[currentLang][matchedKey];
       await streamReply(sc.reply, null);
       busy = false;
       hasStarted = true;
@@ -774,7 +899,7 @@
       busy = true;
       addMessage('user', val);
       await sleep(400);
-      await streamReply(DEMO_FALLBACK, null);
+      await streamReply(DEMO_FALLBACK[currentLang], null);
       busy = false;
     }
   }
@@ -795,7 +920,7 @@
     hasStarted = false;
     busy = false;
     setTimeout(() => {
-      addMessage('assistant', "I'm *Marea* — Emilio Heredia's concierge. Ready again. What would you like to explore?");
+      addMessage('assistant', I18N[currentLang].welcomeReset);
     }, 200);
   }
 
@@ -803,9 +928,49 @@
     btn.addEventListener('click', () => runScenario(btn.dataset.scenario));
   });
 
+  function setLang(lang) {
+    if (!I18N[lang]) return;
+    currentLang = lang;
+    const t = I18N[lang];
+
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+
+    const byId = (id) => document.getElementById(id);
+    byId('introEyebrow').textContent = t.introEyebrow;
+    byId('introQuote').innerHTML = t.introQuote;
+    byId('introAttribution').textContent = t.introAttribution;
+    byId('introCta').textContent = t.introCta;
+    byId('demoPill').textContent = t.demoPill;
+    byId('chartTitle').innerHTML = t.chartTitle;
+    byId('chartCoords').textContent = t.chartCoords;
+    byId('headByline').textContent = t.headByline;
+    byId('headSub').textContent = t.headSub;
+    byId('resetBtn').textContent = t.resetBtn;
+    byId('chatInput').placeholder = t.inputPlaceholder;
+    byId('promptsLabel').textContent = t.promptsLabel;
+
+    document.querySelectorAll('[data-sub="live"]').forEach(el => el.textContent = t.subLive);
+    document.querySelectorAll('[data-sub="vision"]').forEach(el => el.textContent = t.subVision);
+
+    const promptTexts = [t.prompt1, t.prompt2, t.prompt3];
+    document.querySelectorAll('.prompt-btn .prompt-text').forEach((el, i) => {
+      el.textContent = promptTexts[i];
+    });
+
+    document.querySelectorAll('.msg.assistant .meta').forEach(el => el.textContent = t.meta);
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.dataset.lang));
+  });
+
   window.enterDemo = enterDemo;
   window.resetDemo = resetDemo;
   window.handleInput = handleInput;
+  window.setLang = setLang;
 
   window.addEventListener('resize', () => {
     while (connections.firstChild) connections.removeChild(connections.firstChild);
