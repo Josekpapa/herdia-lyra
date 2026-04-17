@@ -47,15 +47,22 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Landing-only heavy glows — applied via [data-page="landing"] on <body> */
+/* Landing-only — Marea-inspired depth: navy void + warm gold + Lyra blue lines */
 body[data-page="landing"] {
+  background-color: #050b14;
   background-image:
-    radial-gradient(1200px 600px at 10% -10%, rgba(14, 165, 233, 0.16), transparent 60%),
-    radial-gradient(900px 500px at 110% 0%, rgba(52, 211, 153, 0.10), transparent 55%),
-    radial-gradient(600px 400px at 50% 120%, rgba(99, 102, 241, 0.12), transparent 60%);
-  /* Establish a stacking context so negative-z children (orbs, burn-scene)
-     render ABOVE the body background, not behind it. */
+    radial-gradient(ellipse 120% 80% at 28% 18%, #0e1f38 0%, transparent 58%),
+    radial-gradient(900px 520px at 92% 8%, rgba(91, 141, 239, 0.09), transparent 55%),
+    radial-gradient(800px 480px at 8% 85%, rgba(212, 165, 116, 0.07), transparent 60%),
+    radial-gradient(600px 400px at 50% 120%, rgba(10, 22, 40, 0.9), transparent 70%);
+  color: #e8e4d9;
+  /* Establish a stacking context so negative-z children render above body bg */
   isolation: isolate;
+}
+
+body[data-page="landing"] ::selection {
+  background: var(--marea-gold, #d4a574);
+  color: var(--marea-deep, #050b14);
 }
 
 /* Ensure sections on the landing sit above the fixed scene layers */
@@ -260,6 +267,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   transition: width 120ms linear;
 }
 
+body[data-page="landing"] .progress-rail > i {
+  background: linear-gradient(
+    90deg,
+    var(--marea-gold, #d4a574),
+    color-mix(in oklab, var(--marea-lyra, #5b8def) 75%, var(--marea-gold, #d4a574) 25%)
+  );
+}
+
 /* -------------------------------------------------------------------------- */
 /* Per-character text reveal                                                  */
 /* -------------------------------------------------------------------------- */
@@ -456,6 +471,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     );
   display: grid;
   place-items: center;
+}
+
+body[data-page="landing"] .depth-hud .dial {
+  background:
+    conic-gradient(
+      from -90deg,
+      var(--marea-gold, #d4a574) calc(var(--sp, 0) * 360deg),
+      rgba(91, 141, 239, 0.12) 0
+    );
+}
+body[data-page="landing"] .depth-hud .dial::after {
+  background: var(--marea-deep, #050b14);
 }
 .depth-hud .dial::after {
   content: "";
@@ -1016,9 +1043,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   /* Fade-to-transparent gradient masks text passing under the header */
   background: linear-gradient(
     to bottom,
-    rgba(6, 8, 15, 0.88) 0%,
-    rgba(6, 8, 15, 0.72) 60%,
-    rgba(6, 8, 15, 0.0) 100%
+    color-mix(in oklab, var(--marea-mid, #0a1628) 92%, transparent) 0%,
+    color-mix(in oklab, var(--marea-mid, #0a1628) 78%, transparent) 55%,
+    transparent 100%
   );
   backdrop-filter: blur(14px) saturate(1.1);
   -webkit-backdrop-filter: blur(14px) saturate(1.1);
@@ -1035,12 +1062,88 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.08) 20%,
-    rgba(255, 255, 255, 0.08) 80%,
+    var(--marea-line, rgba(91, 141, 239, 0.14)) 22%,
+    var(--marea-line, rgba(91, 141, 239, 0.14)) 78%,
     transparent
   );
   opacity: calc(clamp(0, var(--sp, 0) * 6, 1));
   transition: opacity 180ms ease;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Marea / Herdia-inspired primitives (wordmark, quote, chapter active)       */
+/* -------------------------------------------------------------------------- */
+
+.lyra-mark {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--marea-text, #e8e4d9);
+  white-space: nowrap;
+}
+.lyra-mark .lyra-dot {
+  color: var(--marea-lyra, #5b8def);
+  font-weight: 400;
+  margin: 0 0.04em;
+}
+
+.landing-tagline {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--marea-text, #e8e4d9) 45%, transparent);
+}
+.landing-tagline em {
+  font-style: italic;
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: color-mix(in oklab, var(--marea-gold-soft, #e8c99a) 80%, white 10%);
+}
+
+.editorial-quote {
+  position: relative;
+  max-width: 36rem;
+  padding: 1.25rem 0 1.25rem 1.5rem;
+  border-left: 1px solid var(--marea-line, rgba(91, 141, 239, 0.18));
+  font-family: "Cormorant Garamond", var(--font-display);
+  font-size: clamp(1.25rem, 2.8vw, 1.65rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.45;
+  color: color-mix(in oklab, var(--marea-text, #e8e4d9) 92%, var(--marea-gold, #d4a574) 8%);
+}
+.editorial-quote::before {
+  content: "\201C";
+  position: absolute;
+  left: 0.15rem;
+  top: 0.35rem;
+  font-size: 2.5rem;
+  line-height: 1;
+  opacity: 0.12;
+  pointer-events: none;
+  font-family: var(--font-display);
+}
+.editorial-byline {
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--marea-lyra, #5b8def) 55%, var(--marea-text, #e8e4d9) 45%);
+}
+
+body[data-page="landing"] .italic-display {
+  color: color-mix(in oklab, var(--marea-gold-soft, #e8c99a) 80%, white 10%);
+}
+
+/* Chapter shells — scroll margin for fixed header; .landing-chapter-active toggled in JS */
+.landing-chapter {
+  scroll-margin-top: 5.5rem;
 }
 
 
@@ -1050,13 +1153,23 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 /* -------------------------------------------------------------------------- */
 
 :root {
-  --color-earth: #c4973a;   /* warm gold — new primary accent               */
+  --color-earth: #c4973a;   /* warm gold — Montana / tool accent            */
   --color-earth-soft: #d4a95a;
   --color-earth-deep: #8a6a26;
   --color-terra: #a85030;   /* terracotta — rare accent                     */
   --color-bone:  #fbf7ee;   /* off-white (use on inverted panels)            */
   --color-dust:  #f2e8d0;   /* cream (use on inverted panels)                */
   --color-sky:   #7baac4;   /* dusty blue (info-state accent)                */
+
+  /* Herdia / Marea landing — deep sea + gold + Lyra blue                     */
+  --marea-deep: #050b14;
+  --marea-mid: #0a1628;
+  --marea-gold: #d4a574;
+  --marea-gold-soft: #e8c99a;
+  --marea-gold-glow: rgba(212, 165, 116, 0.35);
+  --marea-lyra: #5b8def;
+  --marea-line: rgba(91, 141, 239, 0.12);
+  --marea-text: #e8e4d9;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1175,8 +1288,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(60vw 40vw at 70% 40%, rgba(196, 151, 58, 0.14), transparent 60%),
-    radial-gradient(50vw 30vw at 20% 80%, rgba(168,  80, 48, 0.10), transparent 60%);
+    radial-gradient(60vw 40vw at 70% 40%, rgba(196, 151, 58, 0.12), transparent 60%),
+    radial-gradient(50vw 30vw at 20% 80%, rgba(168,  80, 48, 0.08), transparent 60%),
+    radial-gradient(55vw 42vw at 88% 24%, rgba(91, 141, 239, 0.06), transparent 58%);
   z-index: -1;
 }
 

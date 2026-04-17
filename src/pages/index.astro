@@ -26,7 +26,7 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=JetBrains+Mono:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=JetBrains+Mono:wght@300;400;500&display=swap"
     />
   </head>
   <body class="relative min-h-full overflow-x-hidden antialiased" data-page="landing">
@@ -37,8 +37,13 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
     <div class="depth-hud" aria-hidden="true">
       <div class="dial"><span id="hud-pct">00</span></div>
       <div class="flex flex-col leading-none">
-        <span class="text-ink-300">CH · <span id="hud-ch">00</span> / 05</span>
-        <span class="mt-1 text-ink-500">SCROLL DEPTH</span>
+        <span class="text-[color-mix(in_oklab,var(--marea-text)_72%,transparent)]"
+          >CH · <span id="hud-ch">00</span> / 05</span
+        >
+        <span class="mt-1 text-[color-mix(in_oklab,var(--marea-text)_42%,transparent)]">SCROLL DEPTH</span>
+        <span class="mt-1.5 hidden text-[9px] text-[color-mix(in_oklab,var(--marea-lyra)_50%,var(--marea-text)_50%)] sm:block"
+          >↑↓ NAVIGATE · / → AGENT</span
+        >
       </div>
     </div>
 
@@ -61,21 +66,26 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
 
     <!-- Minimal floating top bar -->
     <header class="landing-header fixed inset-x-0 top-0 z-40">
-      <div class="mx-auto flex max-w-7xl items-center justify-between gap-8 px-6 py-4 text-xs">
-        <a href="/" class="group flex items-center gap-2.5 text-ink-100" aria-label="Fidelis home">
-          <span class="grid h-6 w-6 place-items-center rounded-full bg-gradient-to-br from-brand-400 to-accent-500 text-ink-950 text-[10px] font-bold">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 text-xs md:gap-8">
+        <a href="/" class="group flex shrink-0 items-center gap-3 text-[var(--marea-text)]" aria-label="Fidelis home">
+          <span class="grid h-6 w-6 place-items-center rounded-full border border-[color-mix(in_oklab,var(--marea-lyra)_35%,transparent)] bg-[color-mix(in_oklab,var(--marea-mid)_80%,black)] text-[10px] font-bold text-[var(--marea-gold)] shadow-[0_0_24px_var(--marea-gold-glow)]">
             F
           </span>
-          <span class="font-mono tracking-[0.22em] text-[11px] transition group-hover:text-white">
-            FIDELIS
+          <span class="lyra-mark transition group-hover:text-white">
+            F<span class="lyra-dot">·</span>I<span class="lyra-dot">·</span>D<span class="lyra-dot">·</span>E<span class="lyra-dot">·</span>L<span class="lyra-dot">·</span>I<span class="lyra-dot">·</span>S
           </span>
         </a>
-        <nav class="flex items-center gap-6 font-mono text-[10.5px] tracking-[0.22em] text-ink-400">
-          <a href="/agent" class="transition hover:text-white">/agent</a>
-          <a href="/scenarios" class="hidden transition hover:text-white sm:inline">/scenarios</a>
-          <a href="/intake" class="hidden transition hover:text-white sm:inline">/intake</a>
-          <a href="/tracker" class="hidden transition hover:text-white md:inline">/tracker</a>
-          <a href="/audit" class="hidden transition hover:text-white md:inline">/audit</a>
+        <p class="landing-tagline mx-auto hidden text-center md:block lg:mx-0">
+          <span class="text-[var(--marea-gold)]">FIDELIS</span> × <span class="text-[var(--marea-lyra)]">LYRA</span>
+          <span class="text-[color-mix(in_oklab,var(--marea-text)_35%,transparent)]"> · </span>
+          <em>Same rigor. More room.</em>
+        </p>
+        <nav class="flex shrink-0 items-center gap-6 font-mono text-[10.5px] tracking-[0.22em] text-[color-mix(in_oklab,var(--marea-text)_55%,transparent)]">
+          <a href="/agent" class="transition hover:text-[var(--marea-text)]">/agent</a>
+          <a href="/scenarios" class="hidden transition hover:text-[var(--marea-text)] sm:inline">/scenarios</a>
+          <a href="/intake" class="hidden transition hover:text-[var(--marea-text)] sm:inline">/intake</a>
+          <a href="/tracker" class="hidden transition hover:text-[var(--marea-text)] md:inline">/tracker</a>
+          <a href="/audit" class="hidden transition hover:text-[var(--marea-text)] md:inline">/audit</a>
         </nav>
       </div>
       <div class="landing-header-hairline" aria-hidden="true"></div>
@@ -111,7 +121,7 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
     <!-- ============================================================== -->
     <section
       id="ch-00"
-      class="noise perspective-deep relative flex min-h-[100svh] flex-col justify-between overflow-hidden px-6 pb-10 pt-32 sm:pt-40"
+      class="landing-chapter noise perspective-deep relative flex min-h-[100svh] flex-col justify-between overflow-hidden px-6 pb-10 pt-32 sm:pt-40"
       data-parallax
       data-reveal-host
     >
@@ -174,7 +184,7 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
             style="animation-delay: 2100ms"
           ></span>
           <p
-            class="max-w-2xl text-lg leading-relaxed text-ink-300 sm:text-xl"
+            class="max-w-2xl text-lg leading-relaxed text-[color-mix(in_oklab,var(--marea-text)_72%,transparent)] sm:text-xl"
             data-slide
             data-slide-delay="2300"
             data-slide-step="45"
@@ -184,6 +194,11 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
             source. When it doesn't know, it says so — on the record.
           </p>
         </div>
+
+        <blockquote class="editorial-quote reveal reveal-delay-3 mt-14">
+          Most of what clients remember isn't the spreadsheet — it's whether the advice had a spine.
+          <footer class="editorial-byline">— FIDELIS · ADVISOR CHAIR</footer>
+        </blockquote>
 
         <!-- CTA row with warm gold accent -->
         <div class="reveal reveal-delay-4 mt-14 flex flex-wrap items-center gap-4">
@@ -232,7 +247,7 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
     <!-- ============================================================== -->
     <section
       id="ch-01"
-      class="chapter-layer h-200 relative border-t border-white/5"
+      class="landing-chapter chapter-layer h-200 relative border-t border-white/5"
       data-parallax
     >
       <!-- Pinned background typography: stays fixed while foreground scrolls -->
@@ -322,7 +337,7 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
     <!-- ============================================================== -->
     <!-- CHAPTER 02 · GROUNDED OR NOTHING  (live chat demo mock)           -->
     <!-- ============================================================== -->
-    <section id="ch-02" class="relative overflow-hidden border-t border-white/5 px-6 py-32 sm:py-40" data-parallax>
+    <section id="ch-02" class="landing-chapter relative overflow-hidden border-t border-white/5 px-6 py-32 sm:py-40" data-parallax>
       <div class="mx-auto max-w-7xl">
         <p class="chapter-marker" data-split="subtle">Chapter 02 · Grounded, or nothing</p>
 
@@ -343,7 +358,9 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
         </p>
 
         <!-- Chat transcript -->
-        <div class="reveal reveal-delay-2 mt-16 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-ink-900/80 to-ink-950/80 shadow-[0_40px_120px_-40px_rgba(14,165,233,0.35)]">
+        <div
+          class="reveal reveal-delay-2 mt-16 overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--marea-lyra)_22%,white_8%)] bg-gradient-to-b from-[color-mix(in_oklab,var(--marea-mid)_88%,black)] to-[var(--marea-deep)] shadow-[0_40px_100px_-36px_rgba(91,141,239,0.2),0_28px_80px_-32px_rgba(212,165,116,0.12)]"
+        >
           <div class="flex items-center gap-2 border-b border-white/5 bg-white/[0.03] px-5 py-3 font-mono text-xs text-ink-500">
             <span class="h-2.5 w-2.5 rounded-full bg-danger-500/50"></span>
             <span class="h-2.5 w-2.5 rounded-full bg-warn-500/50"></span>
@@ -416,7 +433,7 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
     <!-- ============================================================== -->
     <!-- CHAPTER 03 · THE CAPABILITIES                                     -->
     <!-- ============================================================== -->
-    <section id="ch-03" class="relative border-t border-white/5 px-6 py-32 sm:py-40" data-parallax>
+    <section id="ch-03" class="landing-chapter relative border-t border-white/5 px-6 py-32 sm:py-40" data-parallax>
       <div class="mx-auto max-w-7xl">
         <p class="chapter-marker" data-split="subtle">Chapter 03 · The capabilities</p>
         <h2
@@ -488,7 +505,7 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
     <!-- ============================================================== -->
     <!-- CHAPTER 04 · THE FLOW  (nav-chart style diagram)                  -->
     <!-- ============================================================== -->
-    <section id="ch-04" class="relative overflow-hidden border-t border-white/5 px-6 py-32 sm:py-40" data-parallax>
+    <section id="ch-04" class="landing-chapter relative overflow-hidden border-t border-white/5 px-6 py-32 sm:py-40" data-parallax>
       <div class="mx-auto max-w-7xl">
         <p class="chapter-marker" data-split="subtle">Chapter 04 · The flow</p>
         <h2
@@ -634,7 +651,7 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
     <!-- ============================================================== -->
     <section
       id="ch-05"
-      class="relative flex min-h-[85svh] items-center border-t border-white/5 px-6 py-32"
+      class="landing-chapter relative flex min-h-[85svh] items-center border-t border-white/5 px-6 py-32"
       data-parallax
     >
       <div class="hero-glow absolute inset-0 -z-10"></div>
@@ -905,6 +922,10 @@ import FlowCaption from "../components/landing/FlowCaption.astro";
           }
           if (hudCh) hudCh.textContent = String(active).padStart(2, "0");
           activateNav(active);
+          chapters.forEach((c, i) => {
+            if (!c) return;
+            c.classList.toggle("landing-chapter-active", i === active);
+          });
         };
 
         const onScroll = () => {
