@@ -212,14 +212,89 @@
   }
 
   /* Reveal animations */
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 1.2s cubic-bezier(0.22,1,0.36,1), transform 1.2s cubic-bezier(0.22,1,0.36,1); }
-  .chapter.active .reveal { opacity: 1; transform: translateY(0); }
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(6px);
+    transition:
+      opacity 1.3s cubic-bezier(0.22,1,0.36,1),
+      transform 1.3s cubic-bezier(0.22,1,0.36,1),
+      filter 1.1s cubic-bezier(0.22,1,0.36,1);
+  }
+  .chapter.active .reveal { opacity: 1; transform: translateY(0); filter: blur(0); }
   .chapter.active .reveal:nth-child(1) { transition-delay: 0.1s; }
   .chapter.active .reveal:nth-child(2) { transition-delay: 0.3s; }
   .chapter.active .reveal:nth-child(3) { transition-delay: 0.55s; }
   .chapter.active .reveal:nth-child(4) { transition-delay: 0.8s; }
   .chapter.active .reveal:nth-child(5) { transition-delay: 1.05s; }
   .chapter.active .reveal:nth-child(6) { transition-delay: 1.25s; }
+
+  /* Word-mask + per-character cascade (premium effect) */
+  .word-wrap {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: baseline;
+    padding-bottom: 0.12em;
+    line-height: 1.05;
+  }
+  .word-wrap .c {
+    display: inline-block;
+    transform: translateY(110%) rotate(4deg);
+    opacity: 0;
+    transition:
+      transform 0.95s cubic-bezier(0.22,1,0.36,1),
+      opacity 0.75s ease-out;
+  }
+  .chapter.active .word-wrap .c { transform: translateY(0) rotate(0); opacity: 1; }
+  .word-wrap + .word-wrap { margin-left: 0.22em; }
+
+  /* Tracking-in for eyebrows */
+  .ch-eyebrow {
+    letter-spacing: 1.2em;
+    opacity: 0;
+    transition: letter-spacing 1.4s cubic-bezier(0.22,1,0.36,1), opacity 1.2s ease-out;
+  }
+  .chapter.active .ch-eyebrow { letter-spacing: 0.42em; opacity: 1; transition-delay: 0.15s; }
+
+  /* Body copy word-fade */
+  .ch-body .w {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(3px);
+    transition: opacity 0.9s ease-out, transform 0.9s cubic-bezier(0.22,1,0.36,1), filter 0.9s ease-out;
+  }
+  .chapter.active .ch-body .w { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+  /* Gold glow pulse across em accents (works with nested char spans) */
+  .chapter.active em {
+    animation: goldGlow 4.5s ease-in-out 1.4s infinite;
+  }
+  @keyframes goldGlow {
+    0%, 100% { text-shadow: 0 0 0 transparent; }
+    50% {
+      text-shadow:
+        0 0 18px rgba(212,165,116,0.55),
+        0 0 36px rgba(212,165,116,0.25);
+    }
+  }
+
+  /* Char cascade for short hero lines (subtitle/attribution) */
+  .char-line .c {
+    display: inline-block;
+    transform: translateY(8px);
+    opacity: 0;
+    filter: blur(4px);
+    transition:
+      transform 0.7s cubic-bezier(0.22,1,0.36,1),
+      opacity 0.7s ease-out,
+      filter 0.7s ease-out;
+  }
+  .chapter.active .char-line .c { transform: translateY(0); opacity: 1; filter: blur(0); }
+
+  /* Stat count-up wrapper */
+  .stat .num .count { display: inline-block; font-variant-numeric: tabular-nums; }
+  .stat .num.counting { text-shadow: 0 0 28px var(--gold-glow); }
 
   /* Scroll hint */
   .scroll-hint {
@@ -456,6 +531,56 @@
   }
   .network-list li.live .tag { color: var(--gold); }
 
+  /* Software rails stack (ch4) */
+  .rails-stack {
+    list-style: none;
+    margin-top: 28px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .rails-stack li {
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+    gap: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    background: rgba(212,165,116,0.02);
+    border-radius: 2px;
+    transition: border-color 0.3s, background 0.3s, transform 0.3s;
+    cursor: none;
+    align-items: center;
+  }
+  .rails-stack li:hover {
+    border-color: var(--gold);
+    background: rgba(212,165,116,0.06);
+    transform: translateX(4px);
+  }
+  .rails-stack .r-n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+  .rails-stack .r-t {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .rails-stack .r-d {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    text-align: right;
+    max-width: 260px;
+  }
+  @media (max-width: 980px) {
+    .rails-stack li { grid-template-columns: 28px 1fr; }
+    .rails-stack .r-d { grid-column: 1 / -1; text-align: left; padding-left: 42px; }
+  }
+
   /* ========== CHAPTER 5 — MAREA CHAT ========== */
   #ch5 {
     padding: 0;
@@ -499,11 +624,21 @@
 
   .pin {
     position: absolute;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0.6);
     cursor: none;
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
   }
+  #ch5.active .pin { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  #ch5.active .pin.ghost { opacity: 0.45; }
+  #ch5.active .pin.ghost.awake { opacity: 1; }
+  #ch5.active .pin[data-id="tulum"]    { transition-delay: 0.3s; }
+  #ch5.active .pin[data-id="algarve"]  { transition-delay: 0.55s; }
+  #ch5.active .pin[data-id="marrakech"]{ transition-delay: 0.75s; }
+  #ch5.active .pin[data-id="santorini"]{ transition-delay: 0.95s; }
+  #ch5.active .pin[data-id="bali"]     { transition-delay: 1.15s; }
   .pin .core {
-    width: 14px; height: 14px; border-radius: 50%;
+    width: 12px; height: 12px; border-radius: 50%;
     background: var(--gold);
     box-shadow: 0 0 24px var(--gold-glow), 0 0 60px var(--gold-glow);
     position: relative; z-index: 2;
@@ -543,13 +678,24 @@
     animation: pulse 2.4s ease-out infinite;
   }
   .pin .label {
-    position: absolute; top: 22px; left: 50%;
+    position: absolute; top: 18px; left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
     font-family: 'Cormorant Garamond', serif;
     font-size: 13px; letter-spacing: 0.08em;
     color: var(--text);
     text-align: center;
+  }
+  .pin[data-label="top"] .label {
+    top: auto; bottom: 18px; transform: translateX(-50%);
+  }
+  .pin[data-label="right"] .label {
+    top: 50%; left: 18px; transform: translateY(-50%);
+    text-align: left;
+  }
+  .pin[data-label="left"] .label {
+    top: 50%; left: auto; right: 18px; transform: translateY(-50%);
+    text-align: right;
   }
   .pin .sub {
     display: block;
@@ -567,6 +713,117 @@
     position: absolute; inset: 0;
     pointer-events: none; z-index: 1;
   }
+  .connections path {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 1;
+    stroke-dasharray: 4 6;
+    opacity: 0.35;
+  }
+  .connections path.hover-line {
+    stroke-dasharray: 3 4;
+    opacity: 0.85;
+    animation: dashFlow 1.6s linear infinite;
+  }
+  @keyframes dashFlow {
+    to { stroke-dashoffset: -28; }
+  }
+
+  /* Pin hover state — label brightens, ripple larger */
+  .pin { pointer-events: auto; }
+  .pin .core { transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s ease; }
+  .pin:hover .core {
+    transform: scale(1.35);
+    box-shadow: 0 0 40px var(--gold), 0 0 80px var(--gold-glow);
+  }
+  .pin:hover .label { color: var(--gold); }
+  .pin:hover .sub { color: var(--gold); }
+  .pin.active-pin .core {
+    background: var(--gold) !important;
+    border: 1px solid var(--gold) !important;
+    box-shadow: 0 0 50px var(--gold), 0 0 120px var(--gold-glow) !important;
+  }
+
+  /* Pin info card */
+  .pin-info {
+    position: absolute;
+    min-width: 200px; max-width: 260px;
+    padding: 14px 16px;
+    background: rgba(5, 11, 20, 0.92);
+    border: 1px solid var(--gold);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px var(--gold-glow);
+    backdrop-filter: blur(12px);
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -12px) scale(0.94);
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    font-family: 'Cormorant Garamond', serif;
+    border-radius: 2px;
+  }
+  .pin-info.visible { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  .pin-info .pi-name {
+    color: var(--gold);
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+  .pin-info .pi-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .pin-info .pi-desc {
+    font-size: 13px; color: var(--text);
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .pin-info .pi-coord {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line-strong);
+  }
+
+  /* Map scan line (radar sweep) */
+  .chart::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      transparent 0%,
+      transparent 48%,
+      rgba(212,165,116,0.12) 49%,
+      rgba(212,165,116,0.35) 50%,
+      rgba(212,165,116,0.12) 51%,
+      transparent 52%,
+      transparent 100%);
+    animation: scanSweep 6s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: screen;
+    opacity: 0.6;
+  }
+  @keyframes scanSweep {
+    0%   { transform: translateY(-60%); }
+    100% { transform: translateY(60%); }
+  }
+
+  /* Map crosshair that follows cursor */
+  .chart-crosshair {
+    position: absolute; width: 1px; height: 100%;
+    background: linear-gradient(180deg, transparent, var(--gold) 40%, var(--gold) 60%, transparent);
+    top: 0; left: 0;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+    transition: opacity 0.3s;
+  }
+  .chart-crosshair.h { width: 100%; height: 1px; top: 0; background: linear-gradient(90deg, transparent, var(--gold) 40%, var(--gold) 60%, transparent); }
+  .chart:hover .chart-crosshair { opacity: 0.4; }
 
   /* Chat panel */
   .chat {
@@ -840,6 +1097,30 @@
     #ch1 .ch-title { font-size: 44px; }
     #ch2 .ch-title, #ch4 .ch-title { font-size: 40px; }
     .brand-center { display: none; }
+
+    /* Mobile map: smaller pins, tighter labels, compact sub-text */
+    .pin .core { width: 10px; height: 10px; }
+    .pin.ghost .core { width: 11px; height: 11px; }
+    .pin .label { font-size: 11px; letter-spacing: 0.05em; top: 14px; }
+    .pin[data-label="top"] .label { bottom: 14px; top: auto; }
+    .pin[data-label="right"] .label { left: 14px; }
+    .pin[data-label="left"] .label { right: 14px; }
+    .pin .sub { font-size: 8px; letter-spacing: 0.12em; margin-top: 2px; }
+    /* Hide sub-labels on vision pins to reduce clutter on narrow maps */
+    .pin.ghost .sub { display: none; }
+    /* Title less imposing on mobile */
+    .chart-title { font-size: 11px; top: 14px; left: 16px; letter-spacing: 0.08em; }
+    .chart-coords { font-size: 9px; bottom: 10px; left: 14px; }
+  }
+
+  @media (max-width: 520px) {
+    /* Very narrow: Mediterranean cluster collapses — nudge pins apart */
+    .pin[data-id="algarve"]   { left: 42% !important; top: 28% !important; }
+    .pin[data-id="marrakech"] { left: 44% !important; top: 56% !important; }
+    .pin[data-id="santorini"] { left: 66% !important; top: 36% !important; }
+    .pin[data-id="tulum"]     { left: 16% !important; top: 60% !important; }
+    .pin[data-id="bali"]      { left: 86% !important; top: 72% !important; }
+    .pin .label { font-size: 10px; }
   }
 </style>
 </head>
@@ -865,10 +1146,10 @@
 
 <!-- Progress dots -->
 <div class="progress" id="progress">
-  <button data-ch="0" data-label="The Man" class="active"></button>
-  <button data-ch="1" data-label="The Place"></button>
+  <button data-ch="0" data-label="The Founder" class="active"></button>
+  <button data-ch="1" data-label="The Brand"></button>
   <button data-ch="2" data-label="The Thesis"></button>
-  <button data-ch="3" data-label="The Network"></button>
+  <button data-ch="3" data-label="The Ecosystem"></button>
   <button data-ch="4" data-label="Marea"></button>
 </div>
 
@@ -896,13 +1177,13 @@
       <h1 class="ch-title">Emilio <em>Heredia</em></h1>
     </div>
     <div class="reveal">
-      <div class="name-sub" id="ch1Sub">Engineer · Founder · Papaya Playa</div>
+      <div class="name-sub char-line" id="ch1Sub">Engineer · Founder · Papaya Playa</div>
     </div>
     <div class="reveal">
       <p class="quote" id="ch1Quote">"Most of our guests leave having had an experience that has awoken their awareness of nature."</p>
     </div>
     <div class="reveal">
-      <div class="attribution" id="ch1Attr">— EMILIO HEREDIA · TULUM · MÉXICO</div>
+      <div class="attribution char-line" id="ch1Attr">— EMILIO HEREDIA · TULUM · MÉXICO</div>
     </div>
   </div>
   <div class="scroll-hint">
@@ -914,20 +1195,20 @@
 <!-- ============== CHAPTER 2: THE PLACE ============== -->
 <section class="chapter" id="ch2" data-ch="1">
   <div class="content">
-    <div class="reveal"><div class="ch-eyebrow" id="ch2Eyebrow"><em>01</em> · THE PLACE</div></div>
-    <div class="reveal"><h2 class="ch-title" id="ch2Title">One coastline. <em>One soul.</em></h2></div>
-    <div class="reveal"><p class="ch-body" id="ch2Body">Papaya Playa — a single hideaway on the Yucatán coast. Barefoot luxury, intimacy with the land. A decade of careful curation, guest by guest.</p></div>
+    <div class="reveal"><div class="ch-eyebrow" id="ch2Eyebrow"><em>01</em> · THE BRAND</div></div>
+    <div class="reveal"><h2 class="ch-title" id="ch2Title">Papaya Playa. <em>One anchor, infinite soil.</em></h2></div>
+    <div class="reveal"><p class="ch-body" id="ch2Body">A single hideaway on the Tulum shoreline, Quintana Roo — and the anchor brand of the Heredia ecosystem. Barefoot luxury, intimacy with the land. A decade of careful curation, guest by guest. Software now carries the soul — so the soil can multiply without the founder having to.</p></div>
     <div class="reveal stat-row">
       <div class="stat">
-        <div class="num">8,000</div>
+        <div class="num"><span class="count" data-target="8000" data-format="comma">0</span></div>
         <div class="lbl" id="ch2Stat1">Guests / year</div>
       </div>
       <div class="stat">
-        <div class="num">1</div>
+        <div class="num"><span class="count" data-target="1">0</span></div>
         <div class="lbl" id="ch2Stat2">Property</div>
       </div>
       <div class="stat">
-        <div class="num">10+</div>
+        <div class="num"><span class="count" data-target="10" data-suffix="+">0</span></div>
         <div class="lbl" id="ch2Stat3">Years curated</div>
       </div>
     </div>
@@ -950,15 +1231,22 @@
 <!-- ============== CHAPTER 4: THE NETWORK ============== -->
 <section class="chapter" id="ch4" data-ch="3">
   <div class="content">
-    <div class="reveal"><div class="ch-eyebrow" id="ch4Eyebrow"><em>03</em> · THE NETWORK</div></div>
+    <div class="reveal"><div class="ch-eyebrow" id="ch4Eyebrow"><em>03</em> · THE ECOSYSTEM</div></div>
     <div class="reveal"><h2 class="ch-title" id="ch4Title">Same soul. <em>More soil.</em></h2></div>
-    <div class="reveal"><p class="ch-body" id="ch4Body">Properties personally selected by Emilio. Lyra ships the rails — booking, concierge, guest journey, travel-agent onboarding. He keeps the curation.</p></div>
+    <div class="reveal"><p class="ch-body" id="ch4Body">A hospitality brand becomes an ecosystem the moment software starts carrying the soul. Lyra ships the rails so Papaya Playa's grammar — tone, taste, ritual — lives inside every booking, every concierge reply, every travel-agent handoff. The founder stays rare. The feeling scales.</p></div>
+    <ul class="rails-stack reveal" id="railsStack">
+      <li><span class="r-n">01</span><span class="r-t" data-rail="booking">Booking engine</span><span class="r-d" data-rail-d="booking">direct, commission-light, Emilio-curated rates</span></li>
+      <li><span class="r-n">02</span><span class="r-t" data-rail="concierge">Marea · AI concierge</span><span class="r-d" data-rail-d="concierge">24/7 brand voice, bilingual, remembers every guest</span></li>
+      <li><span class="r-n">03</span><span class="r-t" data-rail="journey">Guest journey OS</span><span class="r-d" data-rail-d="journey">pre-arrival → in-stay → post-stay, one timeline</span></li>
+      <li><span class="r-n">04</span><span class="r-t" data-rail="agents">Travel-agent portal</span><span class="r-d" data-rail-d="agents">onboard partners, quote in minutes, track commissions</span></li>
+      <li><span class="r-n">05</span><span class="r-t" data-rail="ops">Multi-property ops</span><span class="r-d" data-rail-d="ops">one dashboard, every soil — taste preserved by template</span></li>
+    </ul>
     <ul class="network-list reveal" id="networkList">
-      <li class="live"><span>Tulum · Papaya Playa</span><span class="tag" data-tag="live">Live</span></li>
-      <li><span>Algarve · Portugal</span><span class="tag" data-tag="vision">Vision</span></li>
-      <li><span>Santorini · Greece</span><span class="tag" data-tag="vision">Vision</span></li>
-      <li><span>Marrakech · Morocco</span><span class="tag" data-tag="vision">Vision</span></li>
-      <li><span>Bali · Indonesia</span><span class="tag" data-tag="vision">Vision</span></li>
+      <li class="live"><span>Tulum, Quintana Roo · Papaya Playa</span><span class="tag" data-tag="live">Live</span></li>
+      <li><span>Sagres · Algarve, Portugal</span><span class="tag" data-tag="vision">Vision</span></li>
+      <li><span>Oía · Santorini, Greece</span><span class="tag" data-tag="vision">Vision</span></li>
+      <li><span>Marrakech, Morocco</span><span class="tag" data-tag="vision">Vision</span></li>
+      <li><span>Ubud · Bali, Indonesia</span><span class="tag" data-tag="vision">Vision</span></li>
     </ul>
   </div>
 </section>
@@ -968,29 +1256,38 @@
   <div class="stage">
     <div class="chart" id="chart">
       <div class="chart-bg"></div>
+      <div class="chart-crosshair" id="crossV"></div>
+      <div class="chart-crosshair h" id="crossH"></div>
       <div class="chart-title" id="chartTitle"><em>Heredia Network</em> — live footprint &amp; vision territories</div>
       <div class="chart-coords" id="chartCoords">LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1</div>
       <svg class="connections" id="connections" preserveAspectRatio="none"></svg>
+      <div class="pin-info" id="pinInfo">
+        <div class="pi-name"></div>
+        <div class="pi-sub"></div>
+        <div class="pi-desc"></div>
+        <div class="pi-coord"></div>
+      </div>
 
-      <div class="pin live" style="left: 23%; top: 52%;" data-id="tulum">
+      <!-- Positions via equirectangular projection: x = (lng+180)/360, y = (90-lat)/180 -->
+      <div class="pin live" style="left: 26%; top: 39%;" data-id="tulum" data-label="bottom">
         <div class="core"></div>
-        <div class="label">Tulum<span class="sub" data-sub="live">Papaya Playa · Live</span></div>
+        <div class="label">Tulum · Q. Roo<span class="sub" data-sub="live">Papaya Playa · Live</span></div>
       </div>
-      <div class="pin ghost" style="left: 47%; top: 38%;" data-id="algarve">
+      <div class="pin ghost" style="left: 47.5%; top: 29%;" data-id="algarve" data-label="top">
         <div class="core"></div>
-        <div class="label">Algarve<span class="sub" data-sub="vision">Vision</span></div>
+        <div class="label">Sagres · Algarve<span class="sub" data-sub="vision">Vision</span></div>
       </div>
-      <div class="pin ghost" style="left: 56%; top: 42%;" data-id="santorini">
+      <div class="pin ghost" style="left: 57%; top: 30%;" data-id="santorini" data-label="right">
         <div class="core"></div>
-        <div class="label">Santorini<span class="sub" data-sub="vision">Vision</span></div>
+        <div class="label">Oía · Santorini<span class="sub" data-sub="vision">Vision</span></div>
       </div>
-      <div class="pin ghost" style="left: 50%; top: 50%;" data-id="marrakech">
+      <div class="pin ghost" style="left: 48%; top: 33%;" data-id="marrakech" data-label="bottom">
         <div class="core"></div>
         <div class="label">Marrakech<span class="sub" data-sub="vision">Vision</span></div>
       </div>
-      <div class="pin ghost" style="left: 78%; top: 65%;" data-id="bali">
+      <div class="pin ghost" style="left: 82%; top: 55%;" data-id="bali" data-label="left">
         <div class="core"></div>
-        <div class="label">Bali<span class="sub" data-sub="vision">Vision</span></div>
+        <div class="label">Ubud · Bali<span class="sub" data-sub="vision">Vision</span></div>
       </div>
     </div>
 
@@ -1131,9 +1428,9 @@
       ch1Quote: "\"Most of our guests leave having had an experience that has awoken their awareness of nature.\"",
       ch1Attr: "— EMILIO HEREDIA · TULUM · MÉXICO",
       scrollHint: "SCROLL TO BEGIN",
-      ch2Eyebrow: "<em>01</em> · THE PLACE",
-      ch2Title: "One coastline. <em>One soul.</em>",
-      ch2Body: "Papaya Playa — a single hideaway on the Yucatán coast. Barefoot luxury, intimacy with the land. A decade of careful curation, guest by guest.",
+      ch2Eyebrow: "<em>01</em> · THE BRAND",
+      ch2Title: "Papaya Playa. <em>One anchor, infinite soil.</em>",
+      ch2Body: "A single hideaway on the Tulum shoreline, Quintana Roo — and the anchor brand of the Heredia ecosystem. Barefoot luxury, intimacy with the land. A decade of careful curation, guest by guest. Software now carries the soul — so the soil can multiply without the founder having to.",
       ch2Stat1: "Guests / year",
       ch2Stat2: "Property",
       ch2Stat3: "Years curated",
@@ -1141,9 +1438,9 @@
       thesisW1: "Primitive",
       thesisW2: "<em>Sophistication</em>",
       ch3Body: "Barefoot luxury. Intimacy with the land. More rare than any marble lobby in Manhattan — and impossible to franchise.",
-      ch4Eyebrow: "<em>03</em> · THE NETWORK",
+      ch4Eyebrow: "<em>03</em> · THE ECOSYSTEM",
       ch4Title: "Same soul. <em>More soil.</em>",
-      ch4Body: "Properties personally selected by Emilio. Lyra ships the rails — booking, concierge, guest journey, travel-agent onboarding. He keeps the curation.",
+      ch4Body: "A hospitality brand becomes an ecosystem the moment software starts carrying the soul. Lyra ships the rails so Papaya Playa's grammar — tone, taste, ritual — lives inside every booking, every concierge reply, every travel-agent handoff. The founder stays rare. The feeling scales.",
       tagLive: "Live",
       tagVision: "Vision",
       chartTitle: "<em>Heredia Network</em> — live footprint &amp; vision territories",
@@ -1161,7 +1458,7 @@
       welcome: "I'm *Marea* — Emilio Heredia's concierge. I carry his story, his grammar, his taste. Ask me anything, or tap a thread below. Hold *space* to speak.",
       welcomeReset: "I'm *Marea* — ready again. What would you like to explore?",
       meta: "— Marea · by Emilio Heredia",
-      progress: ["The Man", "The Place", "The Thesis", "The Network", "Marea"],
+      progress: ["The Founder", "The Brand", "The Thesis", "The Ecosystem", "Marea"],
       kbdHint: ['HOLD', 'TO SPEAK', 'NAVIGATE'],
       voiceLabel: "LISTENING"
     },
@@ -1171,9 +1468,9 @@
       ch1Quote: "\"La mayoría de nuestros huéspedes se marchan tras una experiencia que ha despertado su conciencia de la naturaleza.\"",
       ch1Attr: "— EMILIO HEREDIA · TULUM · MÉXICO",
       scrollHint: "DESLIZA PARA COMENZAR",
-      ch2Eyebrow: "<em>01</em> · EL LUGAR",
-      ch2Title: "Una costa. <em>Un alma.</em>",
-      ch2Body: "Papaya Playa — un único refugio en la costa de Yucatán. Lujo descalzo, intimidad con la tierra. Una década de curaduría cuidadosa, huésped a huésped.",
+      ch2Eyebrow: "<em>01</em> · LA MARCA",
+      ch2Title: "Papaya Playa. <em>Un ancla, tierra infinita.</em>",
+      ch2Body: "Un único refugio en la costa de Tulum, Quintana Roo — y la marca ancla del ecosistema Heredia. Lujo descalzo, intimidad con la tierra. Una década de curaduría cuidadosa, huésped a huésped. El software ahora carga el alma — para que la tierra se multiplique sin que el fundador tenga que hacerlo.",
       ch2Stat1: "Huéspedes / año",
       ch2Stat2: "Propiedad",
       ch2Stat3: "Años curados",
@@ -1181,9 +1478,9 @@
       thesisW1: "Sofisticación",
       thesisW2: "<em>Primitiva</em>",
       ch3Body: "Lujo descalzo. Intimidad con la tierra. Más rara que cualquier vestíbulo de mármol en Manhattan — e imposible de franquiciar.",
-      ch4Eyebrow: "<em>03</em> · LA RED",
+      ch4Eyebrow: "<em>03</em> · EL ECOSISTEMA",
       ch4Title: "Misma alma. <em>Más tierra.</em>",
-      ch4Body: "Propiedades seleccionadas personalmente por Emilio. Lyra entrega los rieles — reservas, concierge, recorrido del huésped, onboarding de agentes de viaje. Él mantiene la curaduría.",
+      ch4Body: "Una marca de hospitalidad se convierte en ecosistema en el momento en que el software empieza a llevar el alma. Lyra entrega los rieles para que la gramática de Papaya Playa — tono, gusto, ritual — viva dentro de cada reserva, cada respuesta de concierge, cada traspaso a agente de viajes. El fundador se mantiene raro. La sensación escala.",
       tagLive: "En vivo",
       tagVision: "Visión",
       chartTitle: "<em>Red Heredia</em> — presencia actual y territorios en visión",
@@ -1201,7 +1498,7 @@
       welcome: "Soy *Marea* — la concierge de Emilio Heredia. Llevo su historia, su gramática, su gusto. Pregúntame lo que quieras, o elige un hilo abajo. Mantén *espacio* para hablar.",
       welcomeReset: "Soy *Marea* — lista de nuevo. ¿Qué te gustaría explorar?",
       meta: "— Marea · por Emilio Heredia",
-      progress: ["El Hombre", "El Lugar", "La Tesis", "La Red", "Marea"],
+      progress: ["El Fundador", "La Marca", "La Tesis", "El Ecosistema", "Marea"],
       kbdHint: ['MANTÉN', 'PARA HABLAR', 'NAVEGAR'],
       voiceLabel: "ESCUCHANDO"
     }
@@ -1374,6 +1671,196 @@
 
     // Show kbd hint on ch5
     document.getElementById('kbdHint').classList.toggle('visible', ch === 4);
+
+    if (ch === 1) startCountUp();
+  }
+
+  /* ============================================================
+     STAT COUNT-UP
+     ============================================================ */
+  function startCountUp() {
+    document.querySelectorAll('#ch2 .count').forEach(el => {
+      if (el.dataset.done === '1') return;
+      el.dataset.done = '1';
+      const target = parseInt(el.dataset.target, 10);
+      const suffix = el.dataset.suffix || '';
+      const useComma = el.dataset.format === 'comma';
+      const dur = 1800;
+      const start = performance.now() + 600; // delay so it starts after reveal
+      const parent = el.closest('.num');
+      parent.classList.add('counting');
+      function step(now) {
+        const t = Math.max(0, (now - start) / dur);
+        if (t >= 1) {
+          el.textContent = (useComma ? target.toLocaleString('en-US') : target) + suffix;
+          parent.classList.remove('counting');
+          return;
+        }
+        const eased = 1 - Math.pow(1 - t, 3);
+        const v = Math.floor(target * eased);
+        el.textContent = (useComma ? v.toLocaleString('en-US') : v) + suffix;
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* ============================================================
+     MAP INTERACTIVITY — hover info + temp connection + live coords
+     ============================================================ */
+  const PIN_DATA = {
+    tulum: {
+      name: { en: 'Tulum', es: 'Tulum' },
+      sub:  { en: 'Papaya Playa · Live', es: 'Papaya Playa · En vivo' },
+      desc: {
+        en: '"Barefoot luxury. Intimacy with the land." A single hideaway on the Tulum shoreline, Quintana Roo — Mexico\'s Caribbean coast.',
+        es: '"Lujo descalzo. Intimidad con la tierra." Un único refugio en la costa de Tulum, Quintana Roo — la costa caribeña de México.'
+      },
+      coord: 'TULUM · QUINTANA ROO · MX · 20.21° N · 87.47° W'
+    },
+    algarve: {
+      name: { en: 'Sagres · Algarve', es: 'Sagres · Algarve' },
+      sub:  { en: 'Faro District · Portugal · Vision', es: 'Distrito de Faro · Portugal · Visión' },
+      desc: {
+        en: 'Atlantic cliffs. Portuguese tilework. The thesis moves east — same soul, new soil.',
+        es: 'Acantilados atlánticos. Azulejos portugueses. La tesis viaja al este — misma alma, nueva tierra.'
+      },
+      coord: 'SAGRES · FARO · PT · 37.00° N · 8.95° W'
+    },
+    santorini: {
+      name: { en: 'Oía · Santorini', es: 'Oía · Santorini' },
+      sub:  { en: 'South Aegean · Greece · Vision', es: 'Egeo Meridional · Grecia · Visión' },
+      desc: {
+        en: 'Volcanic caldera. Cycladic white. Ritual at sunset above the Aegean.',
+        es: 'Caldera volcánica. Blanco cicládico. Ritual al atardecer sobre el Egeo.'
+      },
+      coord: 'OÍA · CYCLADES · GR · 36.46° N · 25.37° E'
+    },
+    marrakech: {
+      name: { en: 'Marrakech', es: 'Marrakech' },
+      sub:  { en: 'Marrakech-Safi · Morocco · Vision', es: 'Marrakech-Safi · Marruecos · Visión' },
+      desc: {
+        en: 'Medina rhythm. Atlas silhouette. Slow mornings in the red city.',
+        es: 'Ritmo de medina. Silueta del Atlas. Mañanas lentas en la ciudad roja.'
+      },
+      coord: 'MARRAKECH · MARRAKECH-SAFI · MA · 31.63° N · 7.98° W'
+    },
+    bali: {
+      name: { en: 'Ubud · Bali', es: 'Ubud · Bali' },
+      sub:  { en: 'Bali Province · Indonesia · Vision', es: 'Provincia de Bali · Indonesia · Visión' },
+      desc: {
+        en: 'Rice terraces. Volcanic sand. The eastward reach of the thesis.',
+        es: 'Arrozales en terraza. Arena volcánica. El alcance del este de la tesis.'
+      },
+      coord: 'UBUD · BALI · ID · 8.52° S · 115.26° E'
+    }
+  };
+
+  function initMapInteractions() {
+    const chart = document.getElementById('chart');
+    const pinInfo = document.getElementById('pinInfo');
+    const connSvg = document.getElementById('connections');
+    const crossV = document.getElementById('crossV');
+    const crossH = document.getElementById('crossH');
+    const coordsEl = document.getElementById('chartCoords');
+    if (!chart) return;
+
+    let hoverLine = null;
+    const pins = document.querySelectorAll('.pin');
+
+    function showInfo(pin) {
+      const id = pin.dataset.id;
+      const data = PIN_DATA[id];
+      if (!data) return;
+      const lang = currentLang || 'en';
+      pinInfo.querySelector('.pi-name').textContent = data.name[lang];
+      pinInfo.querySelector('.pi-sub').textContent  = data.sub[lang];
+      pinInfo.querySelector('.pi-desc').textContent = data.desc[lang];
+      pinInfo.querySelector('.pi-coord').textContent = data.coord;
+
+      // position above pin, clamp to chart
+      const r = chart.getBoundingClientRect();
+      const p = pin.getBoundingClientRect();
+      const cx = p.left + p.width / 2 - r.left;
+      const cy = p.top - r.top;
+      const cardW = 230;
+      const clampedX = Math.min(Math.max(cx, cardW / 2 + 10), r.width - cardW / 2 - 10);
+      pinInfo.style.left = clampedX + 'px';
+      const belowThreshold = cy < 160;
+      pinInfo.style.top = belowThreshold ? (p.bottom - r.top + 16) + 'px' : (cy - 140) + 'px';
+      pinInfo.classList.add('visible');
+    }
+    function hideInfo() { pinInfo.classList.remove('visible'); }
+
+    function drawHoverLine(toPin) {
+      if (toPin.dataset.id === 'tulum') return;
+      const r = chart.getBoundingClientRect();
+      const from = document.querySelector('.pin[data-id="tulum"]').getBoundingClientRect();
+      const to = toPin.getBoundingClientRect();
+      const x1 = from.left + from.width / 2 - r.left;
+      const y1 = from.top + from.height / 2 - r.top;
+      const x2 = to.left + to.width / 2 - r.left;
+      const y2 = to.top + to.height / 2 - r.top;
+      const mx = (x1 + x2) / 2 + (y2 - y1) * 0.18;
+      const my = (y1 + y2) / 2 - (x2 - x1) * 0.18;
+
+      connSvg.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+      connSvg.setAttribute('width', r.width);
+      connSvg.setAttribute('height', r.height);
+
+      const ns = 'http://www.w3.org/2000/svg';
+      hoverLine = document.createElementNS(ns, 'path');
+      hoverLine.setAttribute('d', `M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`);
+      hoverLine.setAttribute('class', 'hover-line');
+      connSvg.appendChild(hoverLine);
+    }
+    function clearHoverLine() {
+      if (hoverLine && hoverLine.parentNode) hoverLine.parentNode.removeChild(hoverLine);
+      hoverLine = null;
+    }
+
+    pins.forEach(pin => {
+      pin.addEventListener('mouseenter', () => {
+        showInfo(pin);
+        drawHoverLine(pin);
+      });
+      pin.addEventListener('mouseleave', () => {
+        hideInfo();
+        clearHoverLine();
+      });
+      pin.addEventListener('click', () => {
+        document.querySelectorAll('.pin').forEach(p => p.classList.remove('active-pin'));
+        pin.classList.add('active-pin');
+        showInfo(pin);
+      });
+    });
+
+    // Cursor crosshair + live lat/lon (equirectangular inverse of 0–100% → world coords)
+    chart.addEventListener('mousemove', (e) => {
+      const r = chart.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+      crossV.style.transform = `translateX(${x}px)`;
+      crossH.style.transform = `translateY(${y}px)`;
+      const lng = (x / r.width) * 360 - 180;
+      const lat = 90 - (y / r.height) * 180;
+      const latStr = Math.abs(lat).toFixed(1) + '° ' + (lat >= 0 ? 'N' : 'S');
+      const lngStr = Math.abs(lng).toFixed(1) + '° ' + (lng >= 0 ? 'E' : 'W');
+      coordsEl.textContent = `LAT ${latStr} · LON ${lngStr} · HEREDIA NAV CHART · v0.1`;
+    });
+    chart.addEventListener('mouseleave', () => {
+      coordsEl.textContent = 'LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1';
+      hideInfo();
+      clearHoverLine();
+    });
+
+    // Click elsewhere on chart clears active pin
+    chart.addEventListener('click', (e) => {
+      if (!e.target.closest('.pin')) {
+        document.querySelectorAll('.pin').forEach(p => p.classList.remove('active-pin'));
+        hideInfo();
+      }
+    });
   }
 
   // Progress click
@@ -1669,6 +2156,113 @@
 
     // Progress labels
     progressButtons.forEach((b, i) => b.setAttribute('data-label', t.progress[i]));
+
+    applyTextAnimations();
+  }
+
+  /* Split titles & body copy into word spans for cascade animation.
+     Walks text nodes so inline <em> tags stay intact. */
+  function splitTextNodes(root, wrapBuilder) {
+    let counter = { n: 0 };
+    function walk(node, inheritEm) {
+      const children = Array.from(node.childNodes);
+      children.forEach(child => {
+        if (child.nodeType === 3) { // TEXT
+          const text = child.textContent;
+          if (!text.trim()) return;
+          const frag = document.createDocumentFragment();
+          const parts = text.split(/(\s+)/);
+          parts.forEach(p => {
+            if (!p) return;
+            if (/^\s+$/.test(p)) {
+              frag.appendChild(document.createTextNode(' '));
+            } else {
+              frag.appendChild(wrapBuilder(p, counter.n++, inheritEm));
+            }
+          });
+          child.replaceWith(frag);
+        } else if (child.nodeType === 1) {
+          walk(child, inheritEm || child.tagName === 'EM');
+        }
+      });
+    }
+    walk(root, false);
+  }
+
+  function applyTextAnimations() {
+    // Titles: word-mask + per-character reveal (layered premium effect)
+    document.querySelectorAll('.ch-title').forEach(el => {
+      if (el.dataset.orig) el.innerHTML = el.dataset.orig;
+      else el.dataset.orig = el.innerHTML;
+      splitTextNodes(el, (word, wi) => {
+        const wordStart = 0.25 + wi * 0.11;
+        const wrap = document.createElement('span');
+        wrap.className = 'word-wrap';
+        for (let i = 0; i < word.length; i++) {
+          const c = document.createElement('span');
+          c.className = 'c';
+          c.style.transitionDelay = (wordStart + i * 0.035).toFixed(2) + 's';
+          c.textContent = word[i];
+          wrap.appendChild(c);
+        }
+        return wrap;
+      });
+    });
+
+    // Body copy: word-cascade (unchanged)
+    document.querySelectorAll('.ch-body').forEach(el => {
+      if (el.dataset.orig) el.innerHTML = el.dataset.orig;
+      else el.dataset.orig = el.innerHTML;
+      splitTextNodes(el, (word, idx) => {
+        const delay = 0.65 + idx * 0.022;
+        const span = document.createElement('span');
+        span.className = 'w';
+        span.style.transitionDelay = delay.toFixed(2) + 's';
+        span.textContent = word;
+        return span;
+      });
+    });
+
+    // Short hero lines: per-character fade-blur (subtitle + attribution in ch1)
+    document.querySelectorAll('.char-line').forEach(el => {
+      if (el.dataset.charOrig) el.innerHTML = el.dataset.charOrig;
+      else el.dataset.charOrig = el.innerHTML;
+      let ci = 0;
+      function walk(node) {
+        Array.from(node.childNodes).forEach(child => {
+          if (child.nodeType === 3) {
+            const frag = document.createDocumentFragment();
+            for (const ch of child.textContent) {
+              if (ch === ' ') {
+                frag.appendChild(document.createTextNode('\u00A0'));
+                continue;
+              }
+              const s = document.createElement('span');
+              s.className = 'c';
+              s.style.transitionDelay = (0.55 + ci * 0.03).toFixed(2) + 's';
+              s.textContent = ch;
+              frag.appendChild(s);
+              ci++;
+            }
+            child.replaceWith(frag);
+          } else if (child.nodeType === 1) walk(child);
+        });
+      }
+      walk(el);
+    });
+
+    document.querySelectorAll('.ch-body').forEach(el => {
+      if (el.dataset.orig) el.innerHTML = el.dataset.orig;
+      else el.dataset.orig = el.innerHTML;
+      splitTextNodes(el, (word, idx) => {
+        const delay = 0.65 + idx * 0.022;
+        const span = document.createElement('span');
+        span.className = 'w';
+        span.style.transitionDelay = delay.toFixed(2) + 's';
+        span.textContent = word;
+        return span;
+      });
+    });
   }
 
   document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -1813,6 +2407,10 @@
     else setTimeout(waitForGlobe, 100);
   }
   waitForGlobe();
+
+  // Initial text-animation pass (EN baked into HTML — no setLang yet)
+  applyTextAnimations();
+  initMapInteractions();
 </script>
 </body>
 </html>
