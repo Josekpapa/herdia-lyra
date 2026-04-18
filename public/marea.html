@@ -116,6 +116,25 @@
   .topbar-right {
     display: flex; align-items: center; gap: 10px;
   }
+  .marea-stack-links {
+    display: none;
+    align-items: center;
+    gap: 14px;
+    margin-right: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .marea-stack-links a {
+    color: var(--text-faint);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .marea-stack-links a:hover { color: var(--gold); }
+  @media (min-width: 900px) {
+    .marea-stack-links { display: flex; }
+  }
   .lang-toggle {
     display: flex;
     border: 1px solid var(--line-strong);
@@ -1447,9 +1466,15 @@
     <div class="lyra-mark">L<span class="dot">·</span>Y<span class="dot">·</span>R<span class="dot">·</span>A</div>
     <div class="brand-center">HEREDIA <span class="x">×</span> LYRA · <em id="tagline">Same soul. More soil.</em></div>
     <div class="topbar-right">
+      <div class="marea-stack-links" aria-label="Fidelis tools">
+        <a href="/fidelis">Fidelis</a>
+        <a href="/agent">Agent</a>
+        <a href="/tracker">Tracker</a>
+      </div>
       <div class="lang-toggle">
         <button class="lang-btn active" data-lang="en">EN</button>
         <button class="lang-btn" data-lang="es">ES</button>
+        <button class="lang-btn" data-lang="de">DE</button>
       </div>
     </div>
   </div>
@@ -1766,6 +1791,41 @@
         ],
         mapAction: ['algarve', 'santorini', 'marrakech', 'bali']
       }
+    },
+    de: {
+      story: {
+        user: "Erzähl mir Emilios Geschichte.",
+        reply: [
+          "Emilio Heredia begann als Elektroingenieur — Abschlüsse in Elektronik und Finanzen, später Chairman von Finanzinstituten in New York und Mexiko-Stadt. Von außen die perfekte Karriere.",
+          "Doch dreißig Jahre lang ging er parallel einen leiseren Weg: Yoga, Karate, Tao, Körperpsychotherapie. Der Konferenzraum und der Atem, Seite an Seite.",
+          "Als er *Papaya Playa* in Tulum gründete, baute er kein Hotel. Er bewies eine These: dass *primitive Sophistication* — barfußer Luxus, Intimität mit dem Land — seltener sein kann als jede Marmorkulisse in Manhattan.",
+          "Seine eigenen Worte: *\"Mein wichtigstes Hobby ist es, intensiv zu leben.\"*",
+          "Heute empfängt er ~8.000 Gäste pro Jahr an einer einzigen mexikanischen Küste."
+        ],
+        mapAction: null
+      },
+      portugal: {
+        user: "Ich plane im September Portugal mit meiner Freundin — ruhig, nah am Meer, so wie Emilio es wählen würde.",
+        reply: [
+          "Ich höre dich. Du fragst nicht nach einem Hotel — du fragst nach einem *Gefühl.* Demselben, das Emilio sucht: Natur unverdünnt, Intimität ohne Pose, Zeit die sich langsam beugt.",
+          "Im Moment ist Emilios einziges Zuhause Papaya Playa — hier in Tulum. Eine Adresse. Bewusst gewählt.",
+          "*[Heredia Network · latente Territorien scannen…]*",
+          "Doch die Algarve — die Klippen bei Carrapateira und die Dörfer im Hinterland von Monchique — passt exakt zu Emilios Grammatik. Wilder Atlantik, kein Neon, die Einheimischen kochen noch wie ihre Großmütter.",
+          "Gleiche Seele wie Tulum. Neuer Boden. Soll ich dir eine September-Route skizzieren?"
+        ],
+        mapAction: ['algarve']
+      },
+      scale: {
+        user: "Was kann Marea für mich tun?",
+        reply: [
+          "Denk an mich als Emilios Präsenz — jederzeit verfügbar. Ich trage seine Geschichte, seine Grammatik, seinen Geschmack — und spreche so, wie er sprechen würde.",
+          "Für Gäste: Ich plane deinen Aufenthalt, erledige Dokumente, merke mir Vorlieben und begrüße dich wie einen alten Freund.",
+          "*[Marea · Gästereise orchestrieren…]*",
+          "Für Partner-Properties: Onboarding, Buchungsfluss, Concierge-Schicht, Reisebüro-Anbindung. Dieselbe Seele auf jedem neuen Boden.",
+          "Emilio behält die Kuratelie. Lyra liefert die Schienen. Du bekommst das Gefühl — überall."
+        ],
+        mapAction: ['algarve', 'santorini', 'marrakech', 'bali']
+      }
     }
   };
 
@@ -1779,6 +1839,11 @@
       "Esa es una pregunta que vale la pena meditar.",
       "Emilio diría: *la respuesta siempre está más cerca de la naturaleza de lo que crees.*",
       "Prueba uno de los hilos abajo — o pregúntame sobre su historia, Portugal, o qué hace Marea."
+    ],
+    de: [
+      "Das ist eine Frage, die man sich stellen sollte.",
+      "Emilio würde sagen: *Die Antwort ist immer näher an der Natur, als du denkst.*",
+      "Probiere einen der Fäden unten — oder frag nach seiner Geschichte, Portugal oder was Marea tut."
     ]
   };
 
@@ -1862,6 +1927,46 @@
       progress: ["El Fundador", "La Fragua", "La Tesis", "Los Rieles", "Marea"],
       kbdHint: ['MANTÉN', 'PARA HABLAR', 'NAVEGAR'],
       voiceLabel: "ESCUCHANDO"
+    },
+    de: {
+      tagline: "Gleiche Seele. Mehr Boden.",
+      ch1Sub: "Ingenieur · Gründer · Papaya Playa",
+      ch1Quote: "\"Die meisten unserer Gäste verlassen uns mit einer Erfahrung, die ihr Bewusstsein für die Natur geweckt hat.\"",
+      ch1Attr: "— EMILIO HEREDIA · TULUM · MEXIKO",
+      scrollHint: "SCROLL ZUM START",
+      ch2Eyebrow: "<em>01</em> · DIE SCHMIEDE",
+      ch2Title: "Papaya Playa. <em>Die Schmiede.</em>",
+      ch2Body: "Ein Refugium an Tulums Küste, Quintana Roo — und die Schmiede, in der die Heredia-Grammatik bewiesen wurde. Barfuß-Luxus, Intimität mit dem Land. Ein Jahrzehnt Kuratelie, Gast für Gast. Die Software trägt jetzt die Seele — damit die Grammatik reisen kann, ohne dass der Gründer es muss.",
+      ch2Stat1: "Jahre geschmiedet",
+      ch2Stat2: "Lebendige Grammatik",
+      ch2Stat3: "Boden voraus",
+      ch3Eyebrow: "<em>02</em> · DIE THESE",
+      thesisW1: "Primitive",
+      thesisW2: "<em>Sophistication</em>",
+      ch3Body: "Barfuß-Luxus. Intimität mit dem Land. Seltener als jede Marmorkulisse in Manhattan — und unmöglich zu franchisen.",
+      ch4Eyebrow: "<em>03</em> · DIE SCHIENEN",
+      ch4Title: "Sieben Schienen. <em>Ein Portfolio.</em>",
+      ch4Body: "Eine Hospitality-Marke wird zum Ökosystem, sobald Software die Seele trägt. Zwei Schienen sind live. Fünf sind Entwürfe — warten darauf, benannt zu werden. Das ist eine Landkarte fürs Gespräch, kein Manifest.",
+      tagLive: "Live",
+      tagVision: "Vision",
+      chartTitle: "<em>Heredia Network</em> — Live-Fußabdruck &amp; Vision",
+      chartCoords: "LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1",
+      subLive: "Papaya Playa · Live",
+      subVision: "Vision",
+      headByline: "von Emilio Heredia",
+      headSub: "Emilios KI-Concierge · Powered by Lyra",
+      resetBtn: "↺ Zurücksetzen",
+      inputPlaceholder: "Frag Marea…",
+      promptsLabel: "→ Schnellprompts",
+      prompt1: "Erzähl mir Emilios Geschichte.",
+      prompt2: "Ich plane im September Portugal mit meiner Freundin.",
+      prompt3: "Was kann Marea für mich tun?",
+      welcome: "Ich bin *Marea* — Emilio Heredias Concierge. Ich trage seine Geschichte, seine Grammatik, seinen Geschmack. Frag mich alles oder tippe einen Faden unten. Halte *Leertaste* zum Sprechen.",
+      welcomeReset: "Ich bin *Marea* — wieder bereit. Was möchtest du erkunden?",
+      meta: "— Marea · von Emilio Heredia",
+      progress: ["Der Gründer", "Die Schmiede", "Die These", "Die Schienen", "Marea"],
+      kbdHint: ['HALTE', 'ZUM SPRECHEN', 'NAVIGATION'],
+      voiceLabel: "HÖRT ZU"
     }
   };
 
@@ -2402,9 +2507,9 @@
 
     const lower = val.toLowerCase();
     let matchedKey = null;
-    if (lower.includes('story') || lower.includes('emilio') || lower.includes('who') || lower.includes('historia') || lower.includes('quién') || lower.includes('quien')) matchedKey = 'story';
-    else if (lower.includes('portugal') || lower.includes('algarve') || lower.includes('europe') || lower.includes('girlfriend') || lower.includes('novia') || lower.includes('europa')) matchedKey = 'portugal';
-    else if (lower.includes('marea') || lower.includes('lyra') || lower.includes('scale') || lower.includes('what') || lower.includes('do for') || lower.includes('qué puede') || lower.includes('que puede') || lower.includes('trabajar')) matchedKey = 'scale';
+    if (lower.includes('story') || lower.includes('emilio') || lower.includes('who') || lower.includes('historia') || lower.includes('quién') || lower.includes('quien') || lower.includes('geschichte') || lower.includes('wer ist')) matchedKey = 'story';
+    else if (lower.includes('portugal') || lower.includes('algarve') || lower.includes('europe') || lower.includes('girlfriend') || lower.includes('novia') || lower.includes('europa') || lower.includes('freundin')) matchedKey = 'portugal';
+    else if (lower.includes('marea') || lower.includes('lyra') || lower.includes('scale') || lower.includes('what') || lower.includes('do for') || lower.includes('qué puede') || lower.includes('que puede') || lower.includes('trabajar') || lower.includes('was kann') || lower.includes('was macht')) matchedKey = 'scale';
 
     if (matchedKey) {
       busy = true;
@@ -2464,11 +2569,15 @@
   function setLang(lang) {
     if (!I18N[lang]) return;
     currentLang = lang;
+    try { localStorage.setItem('lyra.locale', lang); } catch (e) {}
     const t = I18N[lang];
     document.documentElement.lang = lang;
     document.querySelectorAll('.lang-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.lang === lang);
     });
+    if (typeof recognition !== 'undefined' && recognition) {
+      recognition.lang = lang === 'es' ? 'es-ES' : lang === 'de' ? 'de-DE' : 'en-US';
+    }
 
     const set = (id, html, isHtml) => {
       const el = document.getElementById(id);
@@ -2502,6 +2611,11 @@
     set('promptsLabel', t.promptsLabel);
     set('voiceLabel', t.voiceLabel);
 
+    const kh = document.getElementById('kbdHint');
+    if (kh && t.kbdHint && t.kbdHint.length >= 3) {
+      kh.innerHTML = `<span>${t.kbdHint[0]} <kbd>SPACE</kbd> ${t.kbdHint[1]}</span><span>·</span><span><kbd>↑↓</kbd> ${t.kbdHint[2]}</span>`;
+    }
+
     document.querySelectorAll('[data-sub="live"]').forEach(el => el.textContent = t.subLive);
     document.querySelectorAll('[data-sub="vision"]').forEach(el => el.textContent = t.subVision);
     document.querySelectorAll('[data-tag="live"]').forEach(el => el.textContent = t.tagLive);
@@ -2517,6 +2631,11 @@
 
     // Progress labels
     progressButtons.forEach((b, i) => b.setAttribute('data-label', t.progress[i]));
+
+    document.querySelectorAll('.marea-stack-links a').forEach(a => {
+      const base = (a.getAttribute('href') || '').split('?')[0];
+      a.setAttribute('href', base + (currentLang === 'en' ? '' : '?lang=' + currentLang));
+    });
 
     applyTextAnimations();
   }
@@ -2692,7 +2811,7 @@
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SR) {
       recognition = new SR();
-      recognition.lang = currentLang === 'es' ? 'es-ES' : 'en-US';
+      recognition.lang = currentLang === 'es' ? 'es-ES' : currentLang === 'de' ? 'de-DE' : 'en-US';
       recognition.interimResults = true;
       recognition.continuous = true;
       recognition.onresult = (e) => {
@@ -2794,7 +2913,7 @@
   function flSubmitName() {
     const raw = FL.nameInput.value.trim();
     const safe = raw.replace(/[*<>&]/g, '').slice(0, 40);
-    FL.data.name = safe || (currentLang === 'es' ? 'amigo' : 'friend');
+    FL.data.name = safe || (currentLang === 'es' ? 'amigo' : currentLang === 'de' ? 'Freund' : 'friend');
     updateIntentPrompt();
     flStep('intent');
   }
@@ -2809,9 +2928,10 @@
     const safeName = n.replace(/[<>&]/g, '');
     const prompts = {
       en: n ? `What brings you here, <em>${safeName}</em>?` : 'What brings you here?',
-      es: n ? `¿Qué te trae aquí, <em>${safeName}</em>?` : '¿Qué te trae aquí?'
+      es: n ? `¿Qué te trae aquí, <em>${safeName}</em>?` : '¿Qué te trae aquí?',
+      de: n ? `Was führt dich hierher, <em>${safeName}</em>?` : 'Was führt dich hierher?'
     };
-    document.getElementById('flIntentPrompt').innerHTML = prompts[currentLang];
+    document.getElementById('flIntentPrompt').innerHTML = prompts[currentLang] || prompts.en;
   }
 
   document.querySelectorAll('.fl-chip').forEach(chip => {
@@ -2858,6 +2978,12 @@
         agent: `Bienvenido, *${name}*. Reservas para otros — así que seré breve. El Portal de Socios Heredia es donde cotizas, rastreas comisiones y mantienes a cada cliente dentro de nuestra gramática. Aquí tu entrada:`,
         tax: `Bienvenido, *${name}*. Ayudas a fundadores a mantener su residencia limpia — igual que Emilio. Él construyó *Fidelis* justo para esto: un copiloto fiscal para la silla del asesor, con cada número atado a una fuente determinista. Aquí la superficie:`,
         curious: `Bienvenido, *${name}*. No vienes a reservar — vienes a entender. Bien. Pregúntame sobre Emilio, Papaya Playa, el portafolio por venir, o qué es Lyra en realidad.`
+      },
+      de: {
+        guest: `Willkommen, *${name}*. Ich bin Marea. ${taste.length ? `Du hast ${taste.join(' · ')} gewählt — ich behalte das im Kopf. ` : ''}Sag mir, was du planst, oder tippe unten einen Faden. Halte *Leertaste* zum Sprechen.`,
+        agent: `Willkommen, *${name}*. Du buchst für andere — also kurz: Das Heredia Partner Portal ist, wo du anbietest, Provisionen trackst und jeden Mandanten in unserer Grammatik hältst. Hier dein Einstieg:`,
+        tax: `Willkommen, *${name}*. Du hilfst Gründern, Aufenthalt sauber zu halten — wie Emilio. Er hat *Fidelis* dafür gebaut: einen Steuer-Copiloten für den Beraterstuhl, jede Zahl mit deterministischer Quelle. Hier die Oberfläche:`,
+        curious: `Willkommen, *${name}*. Du bist nicht hier zum Buchen — sondern zum Verstehen. Gut. Frag mich nach Emilio, Papaya Playa, dem Portfolio voraus oder was Lyra wirklich ist.`
       }
     };
     addMessage('assistant', WELCOME[currentLang][intent]);
@@ -2900,6 +3026,49 @@
         cta: 'Entrar a Fidelis',
         accent: '#8CA68F'
       }
+    },
+    de: {
+      agent: {
+        eyebrow: 'HEREDIA PARTNER PORTAL · Reiseberater',
+        title: 'Angebote in Minuten. <em>Jede Provision im Blick.</em>',
+        sub: 'Ein Partner-Portal mit derselben Grammatik. Onboarding, Angebot, Bestätigung, Zahlung — ohne den Marea-Ton zu verlieren.',
+        cta: 'Zum Portal',
+        accent: '#5B8DEF'
+      },
+      tax: {
+        eyebrow: 'FIDELIS · Steuer-Copilot für den Berater',
+        title: 'Jede Zahl mit <em>Quelle</em>.',
+        sub: 'Von Lyra für lizenzierte Berater. Aufenthalts-Tracking, Szenarien, Dokumenten-Import, auditfähige Memos. Deterministische Tools. Zitierte Antworten.',
+        cta: 'Fidelis öffnen',
+        accent: '#8CA68F'
+      }
+    }
+  };
+
+  const PORTAL_HANDOFF = {
+    en: {
+      opening: 'Opening…',
+      titleTax: 'Taking you to the <em>live workspace</em>.',
+      titleAgent: 'Opening your <em>partner workspace</em>.',
+      subTax: 'The Fidelis workspace: per-client chat, ten deterministic calculators, fiscal form parsing, branded PDF memos, audit log. The advisor stays in command; the agent just shows the work.',
+      subAgent: 'The Heredia Partner Portal: quote in minutes, curated packages with Papaya Playa\'s soul, live commission tracking, direct concierge handoff to Marea for every guest.',
+      back: '← back to Marea'
+    },
+    es: {
+      opening: 'Abriendo…',
+      titleTax: 'Te llevamos a la <em>herramienta en vivo</em>.',
+      titleAgent: 'Abrimos tu <em>espacio de socio</em>.',
+      subTax: 'El espacio de trabajo de Fidelis: chat por cliente, diez calculadoras deterministas, parseo de formularios fiscales, memos PDF marcados, bitácora de auditoría. El asesor se mantiene al mando; el agente solo muestra el trabajo.',
+      subAgent: 'El Portal de Socios Heredia: cotización en minutos, paquetes curados con alma de Papaya Playa, rastreo de comisiones en vivo, y traspaso directo al concierge con Marea para cada huésped.',
+      back: '← volver a Marea'
+    },
+    de: {
+      opening: 'Öffnen…',
+      titleTax: 'Wir bringen dich zum <em>Live-Arbeitsraum</em>.',
+      titleAgent: 'Wir öffnen deinen <em>Partner-Arbeitsraum</em>.',
+      subTax: 'Der Fidelis-Arbeitsraum: Chat pro Mandant, zehn deterministische Rechner, Formular-Parsing, gebrandete PDF-Memos, Audit-Log. Der Berater führt; der Agent zeigt die Arbeit.',
+      subAgent: 'Das Heredia Partner Portal: Angebote in Minuten, kuratierte Pakete mit Papaya-Playa-Seele, Live-Provisionen, direkte Concierge-Übergabe an Marea.',
+      back: '← zurück zu Marea'
     }
   };
 
@@ -2931,24 +3100,19 @@
   function openPortal(intent) {
     const p = PORTALS[currentLang][intent];
     const label = intent === 'tax' ? 'FIDELIS' : 'PARTNER PORTAL';
-    const longSub = intent === 'tax'
-      ? (currentLang === 'es'
-          ? 'El espacio de trabajo de Fidelis: chat por cliente, diez calculadoras deterministas, parseo de formularios fiscales, memos PDF marcados, bitácora de auditoría. El asesor se mantiene al mando; el agente solo muestra el trabajo.'
-          : 'The Fidelis workspace: per-client chat, ten deterministic calculators, fiscal form parsing, branded PDF memos, audit log. The advisor stays in command; the agent just shows the work.')
-      : (currentLang === 'es'
-          ? 'El Portal de Socios Heredia: cotización en minutos, paquetes curados con alma de Papaya Playa, rastreo de comisiones en vivo, y traspaso directo al concierge con Marea para cada huésped.'
-          : 'The Heredia Partner Portal: quote in minutes, curated packages with Papaya Playa\'s soul, live commission tracking, direct concierge handoff to Marea for every guest.');
+    const ph = PORTAL_HANDOFF[currentLang] || PORTAL_HANDOFF.en;
+    const longSub = intent === 'tax' ? ph.subTax : ph.subAgent;
     const target = intent === 'tax' ? '/agent' : '/tracker';
     const overlay = document.createElement('div');
     overlay.className = 'portal-overlay';
     overlay.style.setProperty('--accent', p.accent);
     overlay.innerHTML = `
       <div class="portal-overlay-inner">
-        <div class="portal-eyebrow">${label} · ${currentLang === 'es' ? 'Abriendo…' : 'Opening…'}</div>
-        <div class="portal-title">${currentLang === 'es' ? 'Te llevamos a la <em>herramienta en vivo</em>.' : 'Taking you to the <em>live workspace</em>.'}</div>
+        <div class="portal-eyebrow">${label} · ${ph.opening}</div>
+        <div class="portal-title">${intent === 'tax' ? ph.titleTax : ph.titleAgent}</div>
         <div class="portal-sub">${longSub}</div>
         <div class="portal-loader"></div>
-        <button class="portal-close">${currentLang === 'es' ? '← volver a Marea' : '← back to Marea'}</button>
+        <button class="portal-close">${ph.back}</button>
       </div>
     `;
     document.body.appendChild(overlay);
@@ -3006,6 +3170,28 @@
         { scenario: 'scale', text: "¿Qué es Lyra, en realidad?" },
         { scenario: 'portugal', text: "¿Por qué Portugal en la visión?" }
       ]
+    },
+    de: {
+      guest: [
+        { scenario: 'story', text: "Erzähl mir Emilios Geschichte." },
+        { scenario: 'portugal', text: "Ich plane im September Portugal mit meiner Freundin." },
+        { scenario: 'scale', text: "Was kann Marea für mich tun?" }
+      ],
+      agent: [
+        { scenario: 'scale', text: "Führ mich durch das Partner Portal." },
+        { scenario: 'portugal', text: "Kann ich Algarve für einen Kunden anbieten?" },
+        { scenario: 'story', text: "Wer ist Emilio Heredia?" }
+      ],
+      tax: [
+        { scenario: 'scale', text: "Wie passt Fidelis in dieses Ökosystem?" },
+        { scenario: 'portugal', text: "Steuern in Portugal für einen Gründer?" },
+        { scenario: 'story', text: "Wie sieht Emilios Aufenthaltsprofil aus?" }
+      ],
+      curious: [
+        { scenario: 'story', text: "Erzähl mir Emilios Geschichte." },
+        { scenario: 'scale', text: "Was ist Lyra eigentlich?" },
+        { scenario: 'portugal', text: "Warum Portugal in der Vision?" }
+      ]
     }
   };
 
@@ -3031,7 +3217,15 @@
   }
   window.__flSkipAll = flSkipAll;
 
-  // Initial text-animation pass (EN baked into HTML — no setLang yet)
+  (function initLocaleFromLyra() {
+    const params = new URLSearchParams(location.search);
+    const qs = params.get('lang');
+    let stored = null;
+    try { stored = localStorage.getItem('lyra.locale'); } catch (e) {}
+    const pick = (qs && I18N[qs]) ? qs : (stored && I18N[stored] ? stored : null);
+    if (pick) setLang(pick);
+  })();
+
   applyTextAnimations();
   initMapInteractions();
 
@@ -3046,7 +3240,7 @@
   (function initDemoMode() {
     const params = new URLSearchParams(location.search);
     const lang = params.get('lang');
-    if (lang === 'es' || lang === 'en') setLang(lang);
+    if (lang === 'es' || lang === 'en' || lang === 'de') setLang(lang);
 
     const demo = params.get('demo');
     if (!demo) return;

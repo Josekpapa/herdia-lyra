@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import LyraLanguageSwitcher from "../components/ui/LyraLanguageSwitcher.astro";
 
 interface Props {
   title?: string;
@@ -21,14 +22,14 @@ const isActive = (href: string) => {
   return path === href || path.startsWith(href + "/");
 };
 
-const navItems: Array<{ href: string; label: string; code: string }> = [
-  { href: "/marea.html", label: "Marea", code: "00" },
-  { href: "/fidelis", label: "Fidelis", code: "01" },
-  { href: "/agent", label: "Agent", code: "02" },
-  { href: "/scenarios", label: "Scenarios", code: "03" },
-  { href: "/intake", label: "Intake", code: "04" },
-  { href: "/tracker", label: "Tracker", code: "05" },
-  { href: "/audit", label: "Audit", code: "06" },
+const navItems: Array<{ href: string; label: string; code: string; key: string }> = [
+  { href: "/marea.html", label: "Marea", code: "00", key: "marea" },
+  { href: "/fidelis", label: "Fidelis", code: "01", key: "fidelis" },
+  { href: "/agent", label: "Agent", code: "02", key: "agent" },
+  { href: "/scenarios", label: "Scenarios", code: "03", key: "scenarios" },
+  { href: "/intake", label: "Intake", code: "04", key: "intake" },
+  { href: "/tracker", label: "Tracker", code: "05", key: "tracker" },
+  { href: "/audit", label: "Audit", code: "06", key: "audit" },
 ];
 ---
 
@@ -81,7 +82,8 @@ const navItems: Array<{ href: string; label: string; code: string }> = [
               href={item.href}
               class:list={["nav-link", isActive(item.href) && "is-active"]}
             >
-              <span class="mr-2 text-ink-500/70">{item.code}</span>{item.label}
+              <span class="mr-2 text-ink-500/70">{item.code}</span>
+              <span data-shell-i18n={`nav.${item.key}`}>{item.label}</span>
             </a>
           ))}
           {user && user.role === "admin" && (
@@ -89,13 +91,15 @@ const navItems: Array<{ href: string; label: string; code: string }> = [
               href="/team"
               class:list={["nav-link", isActive("/team") && "is-active"]}
             >
-              <span class="mr-2 text-ink-500/70">07</span>Team
+              <span class="mr-2 text-ink-500/70">07</span>
+              <span data-shell-i18n="nav.team">Team</span>
             </a>
           )}
         </nav>
 
-        <!-- Right side: user / CTA -->
-        <div class="flex items-center gap-4 py-3">
+        <!-- Right side: language + user / CTA -->
+        <div class="flex items-center gap-3 py-3 sm:gap-4">
+          <LyraLanguageSwitcher />
           {user ? (
             <div class="hidden items-center gap-3 sm:flex">
               <div class="text-right leading-tight">
@@ -105,18 +109,26 @@ const navItems: Array<{ href: string; label: string; code: string }> = [
                 <div class="text-xs text-ink-200">{user.email}</div>
               </div>
               <form method="post" action="/api/auth/logout">
-                <button class="btn-link">Sign out</button>
+                <button type="submit" class="btn-link" data-shell-i18n="cta.signout">
+                  Sign out
+                </button>
               </form>
             </div>
           ) : authOn ? (
-            <a href="/login" class="btn-primary">Sign in</a>
+            <a href="/login" class="btn-primary" data-shell-i18n="cta.signin">Sign in</a>
           ) : (
-            <a href="/agent" class="btn-primary">Launch agent</a>
+            <a href="/agent" class="btn-primary" data-shell-i18n="cta.launch">Launch agent</a>
           )}
         </div>
       </div>
       <div class="hairline-x"></div>
     </header>
+
+    <div class="lyra-unified-strip" aria-hidden="false">
+      <p class="lyra-unified-strip-inner" data-shell-i18n="strip.line">
+        Travel & tax in one stack — Marea, Fidelis, and tools share this session.
+      </p>
+    </div>
 
     <!-- Mobile nav strip -->
     <div class="md:hidden">
@@ -129,7 +141,7 @@ const navItems: Array<{ href: string; label: string; code: string }> = [
               isActive(item.href) ? "text-white" : "text-ink-400 hover:text-white"
             ]}
           >
-            {item.label}
+            <span data-shell-i18n={`nav.${item.key}`}>{item.label}</span>
           </a>
         ))}
       </div>
@@ -144,19 +156,23 @@ const navItems: Array<{ href: string; label: string; code: string }> = [
       <div class="hairline-x opacity-60"></div>
       <div class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-10 sm:flex-row sm:items-start sm:justify-between">
         <div class="max-w-xl">
-          <div class="kicker mb-2">Disclosure</div>
-          <p class="text-sm leading-relaxed text-ink-300">
+          <div class="kicker mb-2" data-shell-i18n="footer.kicker">Disclosure</div>
+          <p class="text-sm leading-relaxed text-ink-300" data-shell-i18n="footer.disclosure">
             Fidelis is informational. Residency rules depend on treaties, ties,
             and facts the tool doesn't know about. Consult a qualified tax
             professional before making decisions.
           </p>
         </div>
         <div class="flex flex-col gap-1 text-right">
-          <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-500">
+          <span
+            class="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-500"
+            data-shell-i18n="footer.built"
+          >
             Built with Astro · Groq
           </span>
           <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-500/70">
-            © {new Date().getFullYear()} Fidelis
+            © {new Date().getFullYear()}{" "}
+            <span data-shell-i18n="footer.copy">Fidelis</span>
           </span>
         </div>
       </div>

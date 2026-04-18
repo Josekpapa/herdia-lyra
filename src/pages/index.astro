@@ -4,5 +4,6 @@
  * Fidelis editorial + tools: /fidelis, /agent, /tracker, etc.
  */
 export const prerender = true;
-return Astro.redirect("/marea.html", 307);
+const q = Astro.url.search;
+return Astro.redirect(`/marea.html${q}`, 307);
 ---

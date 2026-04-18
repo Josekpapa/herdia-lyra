@@ -6,6 +6,7 @@ import BigStat from "../../components/landing/BigStat.astro";
 import Capability from "../../components/landing/Capability.astro";
 import ToolRow from "../../components/landing/ToolRow.astro";
 import FlowCaption from "../../components/landing/FlowCaption.astro";
+import LyraLanguageSwitcher from "../../components/ui/LyraLanguageSwitcher.astro";
 ---
 
 <!doctype html>
@@ -39,10 +40,10 @@ import FlowCaption from "../../components/landing/FlowCaption.astro";
         <div class="dial shrink-0"><span id="hud-pct">00</span></div>
         <div class="depth-hud-copy min-w-0">
           <span class="depth-hud-ch"
-            >CH · <span id="hud-ch">00</span> / 05</span
+            ><span data-shell-i18n="landing.hud.ch">CH ·</span> <span id="hud-ch">00</span><span data-shell-i18n="landing.hud.of"> / 05</span></span
           >
-          <span class="depth-hud-sub">SCROLL DEPTH</span>
-          <span class="depth-hud-hint hidden sm:block">↑↓ NAVIGATE · / → AGENT</span>
+          <span class="depth-hud-sub" data-shell-i18n="landing.hud.depth">SCROLL DEPTH</span>
+          <span class="depth-hud-hint hidden sm:block" data-shell-i18n="landing.hud.hint">↑↓ NAVIGATE · / → AGENT</span>
         </div>
       </div>
     </div>
@@ -182,10 +183,14 @@ import FlowCaption from "../../components/landing/FlowCaption.astro";
           </span>
         </a>
         <p class="landing-tagline mx-auto hidden text-center md:block lg:mx-0">
-          <span class="text-[var(--marea-gold)]">FIDELIS</span> × <span class="text-[var(--marea-lyra)]">LYRA</span>
-          <span class="text-[color-mix(in_oklab,var(--marea-text)_35%,transparent)]"> · </span>
-          <em>Same rigor. More room.</em>
+          <span class="text-[var(--marea-gold)]" data-shell-i18n="landing.tagline.gold">FIDELIS</span>
+          <span class="text-[color-mix(in_oklab,var(--marea-text)_35%,transparent)]"> × </span>
+          <span class="text-[var(--marea-lyra)]" data-shell-i18n="landing.tagline.lyra">LYRA</span>
+          <span class="text-[color-mix(in_oklab,var(--marea-text)_35%,transparent)]" data-shell-i18n="landing.tagline.rest"> · </span>
+          <em data-shell-i18n="landing.tagline.em">Same rigor. More room.</em>
         </p>
+        <div class="flex shrink-0 items-center gap-3 md:gap-4">
+          <LyraLanguageSwitcher />
         <nav class="flex shrink-0 items-center gap-6 font-mono text-[10.5px] tracking-[0.22em] text-[color-mix(in_oklab,var(--marea-text)_55%,transparent)]">
           <a href="/marea.html" class="transition hover:text-[var(--marea-text)]">/marea</a>
           <a href="/agent" class="transition hover:text-[var(--marea-text)]">/agent</a>
@@ -194,9 +199,16 @@ import FlowCaption from "../../components/landing/FlowCaption.astro";
           <a href="/tracker" class="hidden transition hover:text-[var(--marea-text)] md:inline">/tracker</a>
           <a href="/audit" class="hidden transition hover:text-[var(--marea-text)] md:inline">/audit</a>
         </nav>
+        </div>
       </div>
       <div class="landing-header-hairline" aria-hidden="true"></div>
     </header>
+
+    <div class="lyra-unified-strip relative z-30" aria-hidden="false">
+      <p class="lyra-unified-strip-inner !py-2 !text-[8px] md:!text-[9px]" data-shell-i18n="strip.line">
+        Travel & tax in one stack — Marea, Fidelis, and tools share this session.
+      </p>
+    </div>
 
     <!-- Right-edge chapter rail (glass overlay; highlights active chapter while scrolling) -->
     <aside
