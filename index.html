@@ -1399,6 +1399,818 @@
   }
   .portal-close:hover { border-color: var(--gold); color: var(--gold); }
 
+  /* ========== AGENT CHAMBER (Fidelis + Partner Portal) ========== */
+  :root {
+    --sage: #8CA68F;
+    --sage-soft: #A8BBA8;
+    --sage-glow: rgba(140, 166, 143, 0.25);
+    --paper: #0C1620;
+    --paper-mid: #122030;
+  }
+  .chamber {
+    position: fixed; inset: 0;
+    background: linear-gradient(180deg, #0B1420 0%, #071019 100%);
+    z-index: 600;
+    opacity: 0;
+    transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1);
+    display: grid;
+    grid-template-rows: 64px 1fr;
+    grid-template-columns: 260px 1fr;
+    grid-template-areas:
+      "topbar topbar"
+      "sidebar stage";
+    overflow: hidden;
+    --accent: var(--sage);
+    --accent-soft: var(--sage-soft);
+    --accent-glow: var(--sage-glow);
+  }
+  .chamber.partner {
+    --accent: #5B8DEF;
+    --accent-soft: #8DB0F5;
+    --accent-glow: rgba(91,141,239,0.28);
+  }
+  .chamber.visible { opacity: 1; }
+  .chamber::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 0%, var(--accent-glow) 0%, transparent 55%);
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ch-topbar {
+    grid-area: topbar;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    background: rgba(10,18,28,0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 2;
+    position: relative;
+  }
+  .ch-back {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-mute);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.22em;
+    padding: 8px 14px;
+    cursor: none;
+    text-transform: uppercase;
+    transition: all 0.25s;
+  }
+  .ch-back:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateX(-3px);
+  }
+  .ch-brand {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .ch-brand-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .ch-brand-mark em {
+    color: var(--accent);
+    font-style: italic; font-weight: 400;
+  }
+  .ch-brand-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.25em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    padding-left: 14px;
+    border-left: 1px solid rgba(255,255,255,0.08);
+  }
+  .ch-meta {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .ch-meta .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    animation: pulseDot 2.4s ease-in-out infinite;
+  }
+  @keyframes pulseDot {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+  .ch-sidebar {
+    grid-area: sidebar;
+    background: rgba(10,18,28,0.55);
+    backdrop-filter: blur(8px);
+    border-right: 1px solid rgba(255,255,255,0.04);
+    padding: 28px 0;
+    display: flex; flex-direction: column;
+    z-index: 1;
+    position: relative;
+  }
+  .ch-tab {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: transparent; border: none;
+    color: var(--text-mute);
+    cursor: none;
+    text-align: left;
+    transition: all 0.3s;
+    border-left: 2px solid transparent;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; font-weight: 300;
+    position: relative;
+  }
+  .ch-tab .ch-tab-n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    transition: color 0.3s;
+  }
+  .ch-tab:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.02);
+  }
+  .ch-tab.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: linear-gradient(90deg, var(--accent-glow) 0%, transparent 80%);
+  }
+  .ch-tab.active .ch-tab-n { color: var(--accent); }
+  .ch-tab.done .ch-tab-n::after {
+    content: '✓';
+    margin-left: 4px;
+    color: var(--accent);
+  }
+  .ch-sidebar-footer {
+    margin-top: auto;
+    padding: 20px 24px 8px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .ch-sidebar-footer .sample-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px dashed rgba(255,255,255,0.1);
+    color: var(--text-mute);
+    margin-top: 8px;
+    font-size: 8px;
+  }
+
+  .ch-stage {
+    grid-area: stage;
+    overflow-y: auto;
+    padding: 40px 56px 64px;
+    z-index: 1;
+    position: relative;
+  }
+  .ch-stage::-webkit-scrollbar { width: 4px; }
+  .ch-stage::-webkit-scrollbar-track { background: transparent; }
+  .ch-stage::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 2px; }
+
+  .ch-panel { display: none; }
+  .ch-panel.active {
+    display: block;
+    animation: chFade 0.55s cubic-bezier(0.22,1,0.36,1);
+  }
+  @keyframes chFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  .ch-eyebrow-xl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .ch-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px; font-weight: 300;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    max-width: 680px;
+  }
+  .ch-headline em {
+    color: var(--accent);
+    font-style: italic; font-weight: 400;
+  }
+  .ch-lede {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 300; line-height: 1.6;
+    color: var(--text-mute);
+    max-width: 580px;
+    margin-bottom: 32px;
+  }
+
+  /* Client card */
+  .client-card {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
+    padding: 24px;
+    background: rgba(15,28,46,0.4);
+    border: 1px solid rgba(140,166,143,0.18);
+    border-radius: 3px;
+    margin-bottom: 28px;
+  }
+  .client-avatar {
+    width: 96px; height: 96px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
+    color: #06111C;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+  .client-meta { display: flex; flex-direction: column; gap: 10px; }
+  .client-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 300;
+    color: var(--text);
+  }
+  .client-name em { color: var(--accent); font-style: italic; }
+  .client-tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .client-row {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .client-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    color: var(--text-mute);
+    text-transform: uppercase;
+  }
+  .client-pill.warn {
+    border-color: rgba(212,165,116,0.3);
+    color: var(--gold);
+    background: rgba(212,165,116,0.05);
+  }
+  .client-pill.ok {
+    border-color: rgba(140,166,143,0.3);
+    color: var(--accent);
+    background: rgba(140,166,143,0.06);
+  }
+
+  /* Agent chat lines (Fidelis speaking) */
+  .agent-says {
+    position: relative;
+    padding: 18px 22px 18px 42px;
+    background: linear-gradient(135deg, rgba(140,166,143,0.06) 0%, rgba(15,28,46,0.3) 100%);
+    border-left: 2px solid var(--accent);
+    border-radius: 2px;
+    margin-bottom: 18px;
+  }
+  .agent-says::before {
+    content: '';
+    position: absolute;
+    left: 16px; top: 22px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+  .agent-says p {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 300; line-height: 1.6;
+    color: var(--text);
+    margin: 0 0 8px;
+  }
+  .agent-says p:last-child { margin-bottom: 0; }
+  .agent-says .emph {
+    color: var(--accent-soft);
+    font-weight: 400;
+  }
+  .agent-says .tool-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 1px 6px;
+    background: rgba(140,166,143,0.1);
+    border: 1px solid rgba(140,166,143,0.25);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.05em;
+    color: var(--accent-soft);
+    margin: 0 2px;
+    vertical-align: baseline;
+  }
+
+  /* Citation row */
+  .citations {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+  }
+  .citation {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.08em;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    transition: all 0.25s;
+    cursor: none;
+  }
+  .citation:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .citation .cite-n {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Scenarios grid */
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .scenario-col {
+    padding: 20px;
+    background: rgba(15,28,46,0.35);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 3px;
+    transition: all 0.3s;
+  }
+  .scenario-col.winner {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(140,166,143,0.08) 0%, rgba(15,28,46,0.4) 100%);
+    box-shadow: 0 0 0 1px var(--accent-glow);
+  }
+  .sc-flag {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .sc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 400;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .sc-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .sc-row {
+    display: flex; justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .sc-row:last-child { border-bottom: none; }
+  .sc-lbl {
+    color: var(--text-faint);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .sc-val {
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .scenario-col.winner .sc-val { color: var(--accent-soft); }
+  .sc-winner-tag {
+    margin-top: 14px;
+    padding: 6px 10px;
+    background: var(--accent);
+    color: #06111C;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  /* Residency strip */
+  .residency-wrap {
+    padding: 24px;
+    background: rgba(15,28,46,0.3);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 3px;
+    margin-bottom: 24px;
+  }
+  .residency-title {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 16px;
+  }
+  .residency-title h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400;
+    color: var(--text);
+  }
+  .residency-title .yr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+  }
+  .residency-strip {
+    position: relative;
+    display: flex;
+    height: 38px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .residency-seg {
+    height: 100%;
+    transition: opacity 0.3s;
+  }
+  .residency-seg.mx { background: linear-gradient(180deg, var(--accent) 0%, rgba(140,166,143,0.6) 100%); }
+  .residency-seg.pt { background: linear-gradient(180deg, #B89DCC 0%, rgba(184,157,204,0.6) 100%); }
+  .residency-seg.us { background: linear-gradient(180deg, #D4A574 0%, rgba(212,165,116,0.6) 100%); }
+  .residency-seg.none { background: rgba(255,255,255,0.03); }
+  .residency-line183 {
+    position: absolute;
+    left: 50.1%; top: -6px; bottom: -6px;
+    width: 1px;
+    background: var(--gold);
+    pointer-events: none;
+  }
+  .residency-line183::after {
+    content: '183';
+    position: absolute;
+    top: -18px; left: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+  .residency-months {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    margin-top: 6px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .residency-legend {
+    display: flex; gap: 20px; margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .leg-item {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-mute);
+    letter-spacing: 0.08em;
+  }
+  .leg-item .sw {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+  }
+  .leg-item.mx .sw { background: var(--accent); }
+  .leg-item.pt .sw { background: #B89DCC; }
+  .leg-item.us .sw { background: var(--gold); }
+  .leg-item .cnt { color: var(--text); font-variant-numeric: tabular-nums; }
+
+  /* Memo preview */
+  .memo-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 24px;
+    align-items: start;
+  }
+  .memo-preview {
+    aspect-ratio: 8.5/11;
+    background: linear-gradient(180deg, #F5EFE4 0%, #E8DFCD 100%);
+    color: #1C2028;
+    padding: 36px 32px;
+    border-radius: 2px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    line-height: 1.5;
+    overflow: hidden;
+    position: relative;
+  }
+  .memo-preview::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--accent);
+  }
+  .memo-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400;
+    color: #0C1620;
+    margin-bottom: 2px;
+  }
+  .memo-brand em { color: var(--accent); font-style: italic; }
+  .memo-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; letter-spacing: 0.22em;
+    color: #6B7278;
+    text-transform: uppercase;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  .memo-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px; font-weight: 500;
+    color: #0C1620;
+    margin: 12px 0 4px;
+  }
+  .memo-p {
+    color: #3A4250;
+    margin-bottom: 8px;
+    font-size: 9px;
+    line-height: 1.55;
+  }
+  .memo-num {
+    display: flex; justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+  }
+  .memo-num strong { color: #0C1620; }
+  .memo-foot {
+    position: absolute;
+    bottom: 24px; left: 32px; right: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px; letter-spacing: 0.2em;
+    color: #8D9299;
+    text-transform: uppercase;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+  .memo-side {
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .memo-stat {
+    padding: 14px 16px;
+    background: rgba(15,28,46,0.35);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 2px;
+  }
+  .memo-stat-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .memo-stat-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 300;
+    color: var(--text);
+  }
+  .memo-stat-val em { color: var(--accent); font-style: italic; }
+
+  /* CTA primary */
+  .ch-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 22px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.3s;
+    text-decoration: none;
+    margin-top: 16px;
+  }
+  .ch-cta:hover {
+    background: var(--accent);
+    color: #06111C;
+  }
+  .ch-cta .arr { transition: transform 0.3s; }
+  .ch-cta:hover .arr { transform: translateX(4px); }
+
+  .ch-step {
+    position: absolute;
+    bottom: 24px; right: 32px;
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    z-index: 3;
+  }
+  .ch-step-next {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-mute);
+    padding: 7px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    cursor: none;
+    transition: all 0.25s;
+  }
+  .ch-step-next:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .ch-step-next.done {
+    background: var(--accent);
+    color: #06111C;
+    border-color: var(--accent);
+  }
+
+  /* Partner-specific UI */
+  .property-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .property-card {
+    padding: 18px;
+    background: rgba(15,28,46,0.4);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 3px;
+    cursor: none;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .property-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .property-card.selected {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(91,141,239,0.08) 0%, rgba(15,28,46,0.5) 100%);
+    box-shadow: 0 0 0 1px var(--accent-glow);
+  }
+  .property-card.draft { border-style: dashed; opacity: 0.55; }
+  .prop-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; font-weight: 400;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .prop-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .prop-meta {
+    display: flex; gap: 10px; margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-mute);
+  }
+  .prop-meta .sep { color: var(--text-faint); }
+  .property-card.selected .prop-name { color: var(--accent-soft); }
+
+  .quote-builder {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+  }
+  .quote-form {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .quote-field {
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .quote-field label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .quote-field input, .quote-field select {
+    background: rgba(15,28,46,0.4);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 300;
+    padding: 10px 12px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.25s;
+    cursor: none;
+  }
+  .quote-field input:focus, .quote-field select:focus {
+    border-color: var(--accent);
+  }
+  .quote-summary {
+    padding: 24px;
+    background: linear-gradient(180deg, rgba(91,141,239,0.06) 0%, rgba(15,28,46,0.5) 100%);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    height: max-content;
+  }
+  .quote-sum-row {
+    display: flex; justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+  }
+  .quote-sum-row.big {
+    margin-top: 6px;
+    border-top: 1px solid var(--accent);
+    border-bottom: none;
+    padding-top: 14px;
+  }
+  .quote-sum-row.big .val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 300;
+    color: var(--accent-soft);
+  }
+  .quote-sum-row .val { color: var(--text); font-variant-numeric: tabular-nums; }
+  .quote-sum-row.commission .val { color: var(--gold); }
+
+  .commission-ledger {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .led-card {
+    padding: 20px;
+    background: rgba(15,28,46,0.35);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 3px;
+  }
+  .led-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .led-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 300;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .led-val em { color: var(--accent); font-style: italic; }
+  .led-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-mute);
+    margin-top: 4px;
+  }
+
+  @media (max-width: 980px) {
+    .chamber {
+      grid-template-columns: 1fr;
+      grid-template-rows: 56px auto 1fr;
+      grid-template-areas:
+        "topbar"
+        "sidebar"
+        "stage";
+    }
+    .ch-sidebar {
+      flex-direction: row;
+      padding: 8px;
+      overflow-x: auto;
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .ch-tab {
+      flex-shrink: 0;
+      padding: 10px 16px;
+      border-left: none;
+      border-bottom: 2px solid transparent;
+    }
+    .ch-tab.active { border-left-color: transparent; border-bottom-color: var(--accent); }
+    .ch-sidebar-footer { display: none; }
+    .ch-stage { padding: 24px; }
+    .ch-headline { font-size: 28px; }
+    .scenario-grid, .property-grid, .commission-ledger { grid-template-columns: 1fr; }
+    .memo-grid, .quote-builder { grid-template-columns: 1fr; }
+    .ch-brand-sub { display: none; }
+  }
+
   @media (max-width: 980px) {
     #ch2 .content, #ch4 .content { margin: 0 auto; text-align: center; }
     .stage { grid-template-columns: 1fr; grid-template-rows: 40vh 60vh; }
@@ -2929,33 +3741,542 @@
   }
 
   function openPortal(intent) {
-    const p = PORTALS[currentLang][intent];
-    const label = intent === 'tax' ? 'FIDELIS' : 'PARTNER PORTAL';
-    const longSub = intent === 'tax'
-      ? (currentLang === 'es'
-          ? 'El espacio de trabajo de Fidelis: chat por cliente, diez calculadoras deterministas, parseo de formularios fiscales, memos PDF marcados, bitácora de auditoría. El asesor se mantiene al mando; el agente solo muestra el trabajo.'
-          : 'The Fidelis workspace: per-client chat, ten deterministic calculators, fiscal form parsing, branded PDF memos, audit log. The advisor stays in command; the agent just shows the work.')
-      : (currentLang === 'es'
-          ? 'El Portal de Socios Heredia: cotización en minutos, paquetes curados con alma de Papaya Playa, rastreo de comisiones en vivo, y traspaso directo al concierge con Marea para cada huésped.'
-          : 'The Heredia Partner Portal: quote in minutes, curated packages with Papaya Playa\'s soul, live commission tracking, direct concierge handoff to Marea for every guest.');
-    const overlay = document.createElement('div');
-    overlay.className = 'portal-overlay';
-    overlay.style.setProperty('--accent', p.accent);
-    overlay.innerHTML = `
-      <div class="portal-overlay-inner">
-        <div class="portal-eyebrow">${label} · ${currentLang === 'es' ? 'Preparando tu cámara' : 'Preparing your chamber'}</div>
-        <div class="portal-title">${currentLang === 'es' ? 'El agente te está <em>llevando adentro</em>.' : 'The agent is <em>walking you in</em>.'}</div>
-        <div class="portal-sub">${longSub}</div>
-        <div class="portal-loader"></div>
-        <button class="portal-close">${currentLang === 'es' ? '← volver a Marea' : '← back to Marea'}</button>
+    if (intent === 'tax') return openChamber('fidelis');
+    if (intent === 'agent') return openChamber('partner');
+  }
+
+  /* ============================================================
+     AGENT CHAMBERS — Fidelis (tax) + Partner Portal (agent)
+     ============================================================ */
+  const CHAMBER_DEFS = {
+    fidelis: {
+      cls: '',
+      brand: `<span>Fidelis</span> <em>·</em>`,
+      sub: 'TAX COPILOT · FOR THE ADVISOR\'S CHAIR',
+      meta: 'SESSION · FID-2043',
+      tabs: [
+        { id: 'client',    n: '01', name: 'Client' },
+        { id: 'scenarios', n: '02', name: 'Scenarios' },
+        { id: 'residency', n: '03', name: 'Residency' },
+        { id: 'memo',      n: '04', name: 'Memo' }
+      ],
+      footer: 'FIDELIS · v0.1 · Lyra',
+      sampleBadge: 'SAMPLE · not advisory'
+    },
+    partner: {
+      cls: 'partner',
+      brand: `<span>Heredia</span> <em>Partner Portal</em>`,
+      sub: 'PARTNER · TRAVEL AGENTS',
+      meta: 'AGENCY · SR-0119',
+      tabs: [
+        { id: 'properties',  n: '01', name: 'Properties' },
+        { id: 'quote',       n: '02', name: 'Quote' },
+        { id: 'client',      n: '03', name: 'Client preview' },
+        { id: 'commission',  n: '04', name: 'Commission' }
+      ],
+      footer: 'PARTNER PORTAL · v0.1 · Lyra',
+      sampleBadge: 'SAMPLE · live build coming'
+    }
+  };
+
+  function openChamber(which) {
+    const def = CHAMBER_DEFS[which];
+    const isEs = currentLang === 'es';
+    const chamber = document.createElement('div');
+    chamber.className = 'chamber ' + def.cls;
+    chamber.innerHTML = `
+      <div class="ch-topbar">
+        <button class="ch-back">← ${isEs ? 'volver a Marea' : 'back to Marea'}</button>
+        <div class="ch-brand">
+          <div class="ch-brand-mark">${def.brand}</div>
+          <div class="ch-brand-sub">${def.sub}</div>
+        </div>
+        <div class="ch-meta"><span class="dot"></span><span>${def.meta}</span></div>
       </div>
+      <nav class="ch-sidebar">
+        ${def.tabs.map((t,i) => `
+          <button class="ch-tab ${i===0?'active':''}" data-tab="${t.id}">
+            <span class="ch-tab-n">${t.n}</span>
+            <span>${t.name}</span>
+          </button>
+        `).join('')}
+        <div class="ch-sidebar-footer">
+          <div>${def.footer}</div>
+          <div class="sample-badge">${def.sampleBadge}</div>
+        </div>
+      </nav>
+      <main class="ch-stage">
+        ${which === 'fidelis' ? fidelisPanels(isEs) : partnerPanels(isEs)}
+        <div class="ch-step">
+          <span id="chStepLabel">${isEs ? 'Paso' : 'Step'} 1 ${isEs?'de':'of'} 4</span>
+          <button class="ch-step-next" id="chStepNext">${isEs ? 'Siguiente →' : 'Next →'}</button>
+        </div>
+      </main>
     `;
-    document.body.appendChild(overlay);
-    requestAnimationFrame(() => overlay.classList.add('visible'));
-    overlay.querySelector('.portal-close').addEventListener('click', () => {
-      overlay.classList.remove('visible');
-      setTimeout(() => overlay.remove(), 500);
+    document.body.appendChild(chamber);
+    requestAnimationFrame(() => chamber.classList.add('visible'));
+
+    const tabs = chamber.querySelectorAll('.ch-tab');
+    const panels = chamber.querySelectorAll('.ch-panel');
+    const stepLbl = chamber.querySelector('#chStepLabel');
+    const stepBtn = chamber.querySelector('#chStepNext');
+    let idx = 0;
+
+    function showTab(i) {
+      idx = i;
+      tabs.forEach((t, k) => {
+        t.classList.toggle('active', k === i);
+        if (k < i) t.classList.add('done');
+      });
+      panels.forEach((p, k) => p.classList.toggle('active', k === i));
+      stepLbl.textContent = `${isEs ? 'Paso' : 'Step'} ${i+1} ${isEs?'de':'of'} ${tabs.length}`;
+      const isLast = i === tabs.length - 1;
+      stepBtn.textContent = isLast
+        ? (isEs ? '✓ Completo' : '✓ Complete')
+        : (isEs ? 'Siguiente →' : 'Next →');
+      stepBtn.classList.toggle('done', isLast);
+      chamber.querySelector('.ch-stage').scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    tabs.forEach((t, i) => t.addEventListener('click', () => showTab(i)));
+    stepBtn.addEventListener('click', () => {
+      if (idx < tabs.length - 1) showTab(idx + 1);
     });
+    chamber.querySelector('.ch-back').addEventListener('click', () => {
+      chamber.classList.remove('visible');
+      setTimeout(() => chamber.remove(), 550);
+    });
+    // Esc closes
+    const escClose = (e) => {
+      if (e.key === 'Escape') {
+        chamber.classList.remove('visible');
+        setTimeout(() => chamber.remove(), 550);
+        document.removeEventListener('keydown', escClose);
+      }
+    };
+    document.addEventListener('keydown', escClose);
+  }
+
+  function fidelisPanels(isEs) {
+    const t = isEs ? {
+      client_eyebrow: 'CLIENTE · EMILIO HEREDIA',
+      client_headline: 'Tu cliente está dividido entre <em>México</em> y <em>Portugal</em>.',
+      client_lede: 'Vista del asesor — un solo cliente, una sola sesión. Fidelis abre con lo que importa: los riesgos que no puedes perderte.',
+      client_name_html: 'Emilio <em>Heredia</em>',
+      client_tagline: 'Revisión de residencia dual · 2026',
+      pill_role: 'FUNDADOR · CEO',
+      pill_mx: 'MX · Residente fiscal',
+      pill_pt: 'PT · NHR solicitado',
+      pill_warn: '64 días para gatillo 183-PT',
+      says_1: '<span class="emph">247 días en MX</span> al corriente, <span class="emph">118 en PT</span>. Vas <span class="emph">64 días</span> del test 183-PT. Si el cliente planea Portugal en septiembre, el gatillo se activa en octubre.',
+      says_2: 'Corrí <span class="tool-chip">spt_test()</span> y <span class="tool-chip">pt_nhr_eligibility()</span>. Si mantiene el patrón actual, el tratamiento NHR aplica por 10 años desde aprobación. La recomendación: <span class="emph">formalizar NHR antes de septiembre</span>, acortar presencia MX en Q4.',
+      sc_eyebrow: 'ESCENARIOS · COMPARACIÓN',
+      sc_headline: 'Tres tratamientos. <em>Un ganador claro.</em>',
+      sc_lede: 'Modelado lado a lado. Cada número proviene de una herramienta determinista. Cada tasa cita su fuente.',
+      sc_a: 'Residente MX',
+      sc_b: 'Portugal NHR',
+      sc_c: 'Split · 90/90',
+      sc_sub_a: 'Status actual',
+      sc_sub_b: 'Propuesto',
+      sc_sub_c: 'Alternativa',
+      sc_gross: 'Ingreso bruto', sc_eff: 'Tasa efectiva', sc_take: 'Take-home', sc_soc: 'Contrib. sociales', sc_net: 'Patrimonio · año 1',
+      sc_winner: '✓ Recomendado · ahorro de $48.2k',
+      res_eyebrow: 'RESIDENCIA · 365 DÍAS',
+      res_headline: 'La línea <em>183</em> no es sugerencia.',
+      res_lede: 'Cada segmento es un día físico. La línea dorada es el umbral de 183 días. Cruzarla en PT activa residencia fiscal.',
+      res_title: 'Ventana 2026 — Emilio Heredia',
+      res_yr: 'AÑO EN CURSO',
+      memo_eyebrow: 'MEMO · UN CLIC',
+      memo_headline: 'Un memo <em>audit-grade</em>. <em>Listo para firmar.</em>',
+      memo_lede: 'Toda conversación se convierte en un memo marcado con bitácora completa: cada turno, cada herramienta, cada cita, cada token. El asesor firma; el agente respalda.',
+      memo_brand: 'Fidelis',
+      memo_brand_em: 'Memo',
+      memo_sub: 'PREP. POR ASESOR · REV. AGENTE',
+      memo_h1: 'Resumen ejecutivo',
+      memo_p1: 'El cliente debe formalizar NHR en Portugal antes de superar 183 días. Escenario recomendado: Split 90/90 con entrada formal a NHR en Q3 2026.',
+      memo_h2: 'Impacto fiscal · año 1',
+      memo_foot: 'AUDITADO · 23 CITAS · 8 HERRAMIENTAS · 14 MIN',
+      memo_tokens_lbl: 'Tokens · turno',
+      memo_tokens: '<em>3,842</em>',
+      memo_cost_lbl: 'Costo · sesión',
+      memo_cost: '<em>$0.47</em>',
+      memo_audit_lbl: 'Bitácora',
+      memo_audit: '<em>✓</em> firmable',
+      cta: 'Probar Fidelis'
+    } : {
+      client_eyebrow: 'CLIENT · EMILIO HEREDIA',
+      client_headline: 'Your client is split between <em>Mexico</em> and <em>Portugal</em>.',
+      client_lede: 'The advisor\'s view — one client, one session. Fidelis opens with what matters: the risks you can\'t miss.',
+      client_name_html: 'Emilio <em>Heredia</em>',
+      client_tagline: 'Dual-residency review · 2026',
+      pill_role: 'FOUNDER · CEO',
+      pill_mx: 'MX · Tax resident',
+      pill_pt: 'PT · NHR applied',
+      pill_warn: '64 days from 183-PT trigger',
+      says_1: '<span class="emph">247 days in MX</span> YTD, <span class="emph">118 in PT</span>. You\'re <span class="emph">64 days</span> from the 183-PT test. If the client plans Portugal in September, the trigger fires in October.',
+      says_2: 'I ran <span class="tool-chip">spt_test()</span> and <span class="tool-chip">pt_nhr_eligibility()</span>. If he holds the current pattern, NHR treatment applies for 10 years from approval. The call: <span class="emph">formalize NHR before September</span>, shorten MX presence in Q4.',
+      sc_eyebrow: 'SCENARIOS · SIDE BY SIDE',
+      sc_headline: 'Three treatments. <em>One clear winner.</em>',
+      sc_lede: 'Modeled side-by-side. Every number comes from a deterministic tool. Every rate cites its source.',
+      sc_a: 'MX resident',
+      sc_b: 'Portugal NHR',
+      sc_c: 'Split · 90/90',
+      sc_sub_a: 'Status quo',
+      sc_sub_b: 'Proposed',
+      sc_sub_c: 'Alternative',
+      sc_gross: 'Gross income', sc_eff: 'Effective rate', sc_take: 'Take-home', sc_soc: 'Social contrib.', sc_net: 'Net wealth · yr 1',
+      sc_winner: '✓ Recommended · $48.2k saved',
+      res_eyebrow: 'RESIDENCY · 365 DAYS',
+      res_headline: 'The <em>183</em> line is not a suggestion.',
+      res_lede: 'Each segment is a physical day. The gold line is the 183-day threshold. Crossing it in PT triggers tax residency.',
+      res_title: '2026 window — Emilio Heredia',
+      res_yr: 'CURRENT YEAR',
+      memo_eyebrow: 'MEMO · ONE CLICK',
+      memo_headline: 'An <em>audit-grade</em> memo. <em>Ready to sign.</em>',
+      memo_lede: 'Any conversation becomes a branded memo with full audit log — every turn, every tool call, every citation, every token. The advisor signs; the agent backs it up.',
+      memo_brand: 'Fidelis',
+      memo_brand_em: 'Memo',
+      memo_sub: 'PREP. BY ADVISOR · REV. AGENT',
+      memo_h1: 'Executive summary',
+      memo_p1: 'Client should formalize NHR in Portugal before crossing 183 days. Recommended scenario: Split 90/90 with formal NHR entry in Q3 2026.',
+      memo_h2: 'Tax impact · year 1',
+      memo_foot: 'AUDITED · 23 CITATIONS · 8 TOOLS · 14 MIN',
+      memo_tokens_lbl: 'Tokens · turn',
+      memo_tokens: '<em>3,842</em>',
+      memo_cost_lbl: 'Session cost',
+      memo_cost: '<em>$0.47</em>',
+      memo_audit_lbl: 'Audit log',
+      memo_audit: '<em>✓</em> signable',
+      cta: 'Try Fidelis'
+    };
+
+    return `
+      <section class="ch-panel active" data-panel="client">
+        <div class="ch-eyebrow-xl">${t.client_eyebrow}</div>
+        <h2 class="ch-headline">${t.client_headline}</h2>
+        <p class="ch-lede">${t.client_lede}</p>
+        <div class="client-card">
+          <div class="client-avatar">EH</div>
+          <div class="client-meta">
+            <div class="client-name">${t.client_name_html}</div>
+            <div class="client-tagline">${t.client_tagline}</div>
+            <div class="client-row">
+              <span class="client-pill">${t.pill_role}</span>
+              <span class="client-pill ok">${t.pill_mx}</span>
+              <span class="client-pill ok">${t.pill_pt}</span>
+              <span class="client-pill warn">${t.pill_warn}</span>
+            </div>
+          </div>
+        </div>
+        <div class="agent-says">
+          <p>${t.says_1}</p>
+          <p>${t.says_2}</p>
+          <div class="citations">
+            <a class="citation"><span class="cite-n">[1]</span> IRS · Pub. 519</a>
+            <a class="citation"><span class="cite-n">[2]</span> SAT · LISR art. 9</a>
+            <a class="citation"><span class="cite-n">[3]</span> PT · DL 442-A/88 · NHR</a>
+            <a class="citation"><span class="cite-n">[4]</span> OECD · Model art. 4</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="scenarios">
+        <div class="ch-eyebrow-xl">${t.sc_eyebrow}</div>
+        <h2 class="ch-headline">${t.sc_headline}</h2>
+        <p class="ch-lede">${t.sc_lede}</p>
+        <div class="scenario-grid">
+          <div class="scenario-col">
+            <div class="sc-flag">🇲🇽</div>
+            <div class="sc-title">${t.sc_a}</div>
+            <div class="sc-sub">${t.sc_sub_a}</div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_gross}</span><span class="sc-val">$420,000</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_eff}</span><span class="sc-val">32.4%</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_take}</span><span class="sc-val">$283,920</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_soc}</span><span class="sc-val">$12,400</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_net}</span><span class="sc-val">$271,520</span></div>
+          </div>
+          <div class="scenario-col winner">
+            <div class="sc-flag">🇵🇹</div>
+            <div class="sc-title">${t.sc_b}</div>
+            <div class="sc-sub">${t.sc_sub_b}</div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_gross}</span><span class="sc-val">$420,000</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_eff}</span><span class="sc-val">20.0%</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_take}</span><span class="sc-val">$336,000</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_soc}</span><span class="sc-val">$16,200</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_net}</span><span class="sc-val">$319,800</span></div>
+            <div class="sc-winner-tag">${t.sc_winner}</div>
+          </div>
+          <div class="scenario-col">
+            <div class="sc-flag">🌐</div>
+            <div class="sc-title">${t.sc_c}</div>
+            <div class="sc-sub">${t.sc_sub_c}</div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_gross}</span><span class="sc-val">$420,000</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_eff}</span><span class="sc-val">26.1%</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_take}</span><span class="sc-val">$310,380</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_soc}</span><span class="sc-val">$14,300</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_net}</span><span class="sc-val">$296,080</span></div>
+          </div>
+        </div>
+        <div class="agent-says">
+          <p>Tool chain: <span class="tool-chip">mx_isr_brackets()</span> <span class="tool-chip">pt_nhr_rate()</span> <span class="tool-chip">totalization()</span> <span class="tool-chip">spt_test()</span>.</p>
+          <p>${isEs ? 'Recomendación asume NHR aprobado Q3. Sensibilidad: ±4.1% por cambio en asignación días.' : 'Recommendation assumes NHR approval Q3. Sensitivity: ±4.1% per day-allocation shift.'}</p>
+          <div class="citations">
+            <a class="citation"><span class="cite-n">[1]</span> SAT · ISR art. 152</a>
+            <a class="citation"><span class="cite-n">[2]</span> PT · NHR rate · CIRS</a>
+            <a class="citation"><span class="cite-n">[3]</span> MX-PT · DTC 1999</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="residency">
+        <div class="ch-eyebrow-xl">${t.res_eyebrow}</div>
+        <h2 class="ch-headline">${t.res_headline}</h2>
+        <p class="ch-lede">${t.res_lede}</p>
+        <div class="residency-wrap">
+          <div class="residency-title">
+            <h4>${t.res_title}</h4>
+            <span class="yr">${t.res_yr}</span>
+          </div>
+          <div class="residency-strip" id="resStrip">
+            <div class="residency-seg mx" style="width: 18%"></div>
+            <div class="residency-seg pt" style="width: 8%"></div>
+            <div class="residency-seg mx" style="width: 14%"></div>
+            <div class="residency-seg us" style="width: 4%"></div>
+            <div class="residency-seg mx" style="width: 22%"></div>
+            <div class="residency-seg pt" style="width: 14%"></div>
+            <div class="residency-seg mx" style="width: 8%"></div>
+            <div class="residency-seg pt" style="width: 12%"></div>
+            <div class="residency-line183"></div>
+          </div>
+          <div class="residency-months">
+            <span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span>
+            <span>J</span><span>A</span><span>S</span><span>O</span><span>N</span><span>D</span>
+          </div>
+          <div class="residency-legend">
+            <div class="leg-item mx"><span class="sw"></span>MX <span class="cnt">247</span></div>
+            <div class="leg-item pt"><span class="sw"></span>PT <span class="cnt">118</span></div>
+            <div class="leg-item us"><span class="sw"></span>US <span class="cnt">14</span></div>
+          </div>
+        </div>
+        <div class="agent-says">
+          <p>${isEs ? 'Línea 183 cruzada en PT el día <span class="emph">296</span>. Si NHR se aprueba antes, la exposición se limita a 20% flat. Si no, tasa progresiva hasta 48%.' : 'PT 183 line crosses on day <span class="emph">296</span>. If NHR is approved first, exposure caps at 20% flat. If not, progressive rate up to 48%.'}</p>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="memo">
+        <div class="ch-eyebrow-xl">${t.memo_eyebrow}</div>
+        <h2 class="ch-headline">${t.memo_headline}</h2>
+        <p class="ch-lede">${t.memo_lede}</p>
+        <div class="memo-grid">
+          <div class="memo-preview">
+            <div class="memo-brand">${t.memo_brand} <em>${t.memo_brand_em}</em></div>
+            <div class="memo-sub">${t.memo_sub}</div>
+            <div class="memo-h">${t.memo_h1}</div>
+            <div class="memo-p">${t.memo_p1}</div>
+            <div class="memo-h">${t.memo_h2}</div>
+            <div class="memo-num"><span>${t.sc_take} · MX</span><strong>$283,920</strong></div>
+            <div class="memo-num"><span>${t.sc_take} · PT NHR</span><strong>$336,000</strong></div>
+            <div class="memo-num"><span>Δ</span><strong style="color: var(--accent);">+ $52,080</strong></div>
+            <div class="memo-foot">${t.memo_foot}</div>
+          </div>
+          <div class="memo-side">
+            <div class="memo-stat">
+              <div class="memo-stat-lbl">${t.memo_tokens_lbl}</div>
+              <div class="memo-stat-val">${t.memo_tokens}</div>
+            </div>
+            <div class="memo-stat">
+              <div class="memo-stat-lbl">${t.memo_cost_lbl}</div>
+              <div class="memo-stat-val">${t.memo_cost}</div>
+            </div>
+            <div class="memo-stat">
+              <div class="memo-stat-lbl">${t.memo_audit_lbl}</div>
+              <div class="memo-stat-val">${t.memo_audit}</div>
+            </div>
+            <a class="ch-cta" href="#" target="_blank" rel="noopener">
+              <span>${t.cta}</span>
+              <span class="arr">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function partnerPanels(isEs) {
+    const t = isEs ? {
+      prop_eyebrow: 'PROPIEDADES · RED HEREDIA',
+      prop_headline: 'Dos propiedades <em>vivas</em>. El portafolio, <em>por venir.</em>',
+      prop_lede: 'Selecciona la propiedad. El portal conoce tarifas, disponibilidad, y la gramática de cada casa.',
+      prop1_name: 'Papaya Playa', prop1_sub: 'TULUM · QUINTANA ROO', prop1_meta: '22 habitaciones · DESDE $480/N',
+      prop2_name: 'Casa Marea Alta', prop2_sub: 'SAGRES · ALGARVE (Q4)', prop2_meta: '14 habitaciones · DESDE €520/N',
+      prop3_name: 'Draft · Santorini',  prop3_sub: 'OÍA · GRECIA', prop3_meta: 'por venir',
+      prop4_name: 'Draft · Marrakech',  prop4_sub: 'MEDINA · MARRUECOS', prop4_meta: 'por venir',
+      prop5_name: 'Draft · Ubud',       prop5_sub: 'BALI · INDONESIA', prop5_meta: 'por venir',
+      prop6_name: '+ 5 más', prop6_sub: 'RED HEREDIA', prop6_meta: 'alcance completo',
+      q_eyebrow: 'COTIZACIÓN · EN TIEMPO REAL',
+      q_headline: 'Cotiza en <em>minutos</em>. Envía <em>con estilo</em>.',
+      q_lede: 'Cuatro campos. Una liga. El cliente abre la propuesta y ve exactamente la voz de Marea — con tu comisión, tu nombre, tu relación.',
+      q_dates: 'Fechas', q_guests: 'Huéspedes', q_room: 'Habitación', q_addons: 'Añadidos',
+      q_room_opts: ['Suite jardín', 'Suite cenote', 'Casa completa'],
+      q_addon_opts: ['Ritual de bienvenida', 'Chef privado', 'Sesión temazcal', 'Ninguno'],
+      q_nights: '5 noches', q_rate: 'Tarifa/noche', q_subtotal: 'Subtotal',
+      q_service: 'Servicio · 12%', q_taxes: 'Impuestos', q_total: 'Total · cliente',
+      q_commission: 'Tu comisión · 14%',
+      q_send: 'Enviar al cliente',
+      cp_eyebrow: 'VISTA DEL CLIENTE',
+      cp_headline: 'Lo que tu cliente recibe. <em>Tu comisión, invisible.</em>',
+      cp_lede: 'Una sola liga. Marea saluda al cliente por nombre, responde en su idioma, conoce las preferencias. Tu relación queda intacta.',
+      cp_card_title: 'Bienvenido a <em>Papaya Playa</em>, Daniel.',
+      cp_card_body: 'Sofia te envió esta propuesta. La preparé con su ayuda — 5 noches en Suite cenote del 14 al 19 de septiembre, con ritual de bienvenida y cena privada la primera noche. ¿Hablamos del detalle?',
+      cp_meta: 'MAREA · RESPONDIENDO EN ES · 2:14 AM',
+      com_eyebrow: 'COMISIONES · TRAZABILIDAD TOTAL',
+      com_headline: 'Cada peso. Cada noche. <em>Contado.</em>',
+      com_lede: 'Comisión en tiempo real. Confirmada al check-in, pagada al check-out. Sin conciliación, sin disputas.',
+      com_pending_lbl: 'Pendiente', com_pending: '<em>$2,184</em>',
+      com_cleared_lbl: 'Cobrada · mes', com_cleared: '<em>$18,730</em>',
+      com_ytd_lbl: 'YTD · 2026', com_ytd: '<em>$104,240</em>',
+      com_pending_sub: '3 reservas en estadía',
+      com_cleared_sub: '12 reservas liquidadas',
+      com_ytd_sub: '47 reservas · 286 noches',
+      cta: 'Onboard tu agencia'
+    } : {
+      prop_eyebrow: 'PROPERTIES · HEREDIA NETWORK',
+      prop_headline: 'Two properties <em>live</em>. The portfolio, <em>ahead.</em>',
+      prop_lede: 'Pick the property. The portal knows its rates, availability, and the grammar of every house.',
+      prop1_name: 'Papaya Playa', prop1_sub: 'TULUM · QUINTANA ROO', prop1_meta: '22 rooms · FROM $480/N',
+      prop2_name: 'Casa Marea Alta', prop2_sub: 'SAGRES · ALGARVE (Q4)', prop2_meta: '14 rooms · FROM €520/N',
+      prop3_name: 'Draft · Santorini', prop3_sub: 'OÍA · GREECE', prop3_meta: 'ahead',
+      prop4_name: 'Draft · Marrakech', prop4_sub: 'MEDINA · MOROCCO', prop4_meta: 'ahead',
+      prop5_name: 'Draft · Ubud',      prop5_sub: 'BALI · INDONESIA', prop5_meta: 'ahead',
+      prop6_name: '+ 5 more', prop6_sub: 'HEREDIA NETWORK', prop6_meta: 'full reach',
+      q_eyebrow: 'QUOTE · LIVE',
+      q_headline: 'Quote in <em>minutes</em>. Send <em>in your voice</em>.',
+      q_lede: 'Four fields. One link. Your client opens the proposal and gets exactly Marea\'s voice — with your commission, your name, your relationship.',
+      q_dates: 'Dates', q_guests: 'Guests', q_room: 'Room', q_addons: 'Add-ons',
+      q_room_opts: ['Garden suite', 'Cenote suite', 'Whole house'],
+      q_addon_opts: ['Welcome ritual', 'Private chef', 'Temazcal session', 'None'],
+      q_nights: '5 nights', q_rate: 'Rate/night', q_subtotal: 'Subtotal',
+      q_service: 'Service · 12%', q_taxes: 'Taxes', q_total: 'Total · client',
+      q_commission: 'Your commission · 14%',
+      q_send: 'Send to client',
+      cp_eyebrow: 'CLIENT PREVIEW',
+      cp_headline: 'What your client receives. <em>Your commission, invisible.</em>',
+      cp_lede: 'One link. Marea greets the client by name, answers in their language, remembers preferences. Your relationship stays intact.',
+      cp_card_title: 'Welcome to <em>Papaya Playa</em>, Daniel.',
+      cp_card_body: 'Sofia sent you this proposal. I prepared it with her — 5 nights in the Cenote suite from Sept 14 to 19, with welcome ritual and private dinner the first night. Shall we walk through it?',
+      cp_meta: 'MAREA · ANSWERING IN EN · 2:14 AM',
+      com_eyebrow: 'COMMISSION · FULL TRACE',
+      com_headline: 'Every dollar. Every night. <em>Counted.</em>',
+      com_lede: 'Commission tracks live. Confirmed at check-in, paid at check-out. No reconciliation, no disputes.',
+      com_pending_lbl: 'Pending', com_pending: '<em>$2,184</em>',
+      com_cleared_lbl: 'Cleared · month', com_cleared: '<em>$18,730</em>',
+      com_ytd_lbl: 'YTD · 2026', com_ytd: '<em>$104,240</em>',
+      com_pending_sub: '3 bookings in-stay',
+      com_cleared_sub: '12 bookings settled',
+      com_ytd_sub: '47 bookings · 286 nights',
+      cta: 'Onboard your agency'
+    };
+
+    return `
+      <section class="ch-panel active" data-panel="properties">
+        <div class="ch-eyebrow-xl">${t.prop_eyebrow}</div>
+        <h2 class="ch-headline">${t.prop_headline}</h2>
+        <p class="ch-lede">${t.prop_lede}</p>
+        <div class="property-grid">
+          <div class="property-card selected"><div class="prop-name">${t.prop1_name}</div><div class="prop-sub">${t.prop1_sub}</div><div class="prop-meta">${t.prop1_meta}</div></div>
+          <div class="property-card"><div class="prop-name">${t.prop2_name}</div><div class="prop-sub">${t.prop2_sub}</div><div class="prop-meta">${t.prop2_meta}</div></div>
+          <div class="property-card draft"><div class="prop-name">${t.prop3_name}</div><div class="prop-sub">${t.prop3_sub}</div><div class="prop-meta">${t.prop3_meta}</div></div>
+          <div class="property-card draft"><div class="prop-name">${t.prop4_name}</div><div class="prop-sub">${t.prop4_sub}</div><div class="prop-meta">${t.prop4_meta}</div></div>
+          <div class="property-card draft"><div class="prop-name">${t.prop5_name}</div><div class="prop-sub">${t.prop5_sub}</div><div class="prop-meta">${t.prop5_meta}</div></div>
+          <div class="property-card draft"><div class="prop-name">${t.prop6_name}</div><div class="prop-sub">${t.prop6_sub}</div><div class="prop-meta">${t.prop6_meta}</div></div>
+        </div>
+        <div class="agent-says">
+          <p>${isEs ? 'Seleccionaste <span class="emph">Papaya Playa</span>. Tarifas al día, disponibilidad sincronizada, tratamiento de agente preferente activo.' : 'You picked <span class="emph">Papaya Playa</span>. Rates current, availability synced, preferred-agent treatment active.'}</p>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="quote">
+        <div class="ch-eyebrow-xl">${t.q_eyebrow}</div>
+        <h2 class="ch-headline">${t.q_headline}</h2>
+        <p class="ch-lede">${t.q_lede}</p>
+        <div class="quote-builder">
+          <div class="quote-form">
+            <div class="quote-field">
+              <label>${t.q_dates}</label>
+              <input type="text" value="Sep 14 → Sep 19, 2026" readonly />
+            </div>
+            <div class="quote-field">
+              <label>${t.q_guests}</label>
+              <input type="text" value="2 adults" readonly />
+            </div>
+            <div class="quote-field">
+              <label>${t.q_room}</label>
+              <select>
+                ${t.q_room_opts.map((o,i) => `<option ${i===1?'selected':''}>${o}</option>`).join('')}
+              </select>
+            </div>
+            <div class="quote-field">
+              <label>${t.q_addons}</label>
+              <select>
+                ${t.q_addon_opts.map((o,i) => `<option ${i===0?'selected':''}>${o}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="quote-summary">
+            <div class="quote-sum-row"><span class="lbl">${t.q_nights}</span><span class="val">5 × $620</span></div>
+            <div class="quote-sum-row"><span class="lbl">${t.q_rate}</span><span class="val">$620</span></div>
+            <div class="quote-sum-row"><span class="lbl">${t.q_subtotal}</span><span class="val">$3,100</span></div>
+            <div class="quote-sum-row"><span class="lbl">${t.q_service}</span><span class="val">$372</span></div>
+            <div class="quote-sum-row"><span class="lbl">${t.q_taxes}</span><span class="val">$295</span></div>
+            <div class="quote-sum-row big"><span class="lbl">${t.q_total}</span><span class="val">$3,767</span></div>
+            <div class="quote-sum-row commission"><span class="lbl">${t.q_commission}</span><span class="val">$434</span></div>
+          </div>
+        </div>
+        <div class="agent-says" style="margin-top: 24px;">
+          <p>${isEs ? 'Cotización generada. Liga de cliente lista en <span class="emph">heredia.link/q/SR-0119</span>. Caducidad: 7 días.' : 'Quote generated. Client link ready at <span class="emph">heredia.link/q/SR-0119</span>. Expires in 7 days.'}</p>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="client">
+        <div class="ch-eyebrow-xl">${t.cp_eyebrow}</div>
+        <h2 class="ch-headline">${t.cp_headline}</h2>
+        <p class="ch-lede">${t.cp_lede}</p>
+        <div class="client-card" style="grid-template-columns: 72px 1fr;">
+          <div class="client-avatar" style="width: 56px; height: 56px; font-size: 20px;">M</div>
+          <div class="client-meta">
+            <div class="client-name" style="font-size: 22px;">${t.cp_card_title}</div>
+            <p style="font-family: Inter; font-size: 13px; color: var(--text-mute); line-height: 1.6; margin: 4px 0 0;">${t.cp_card_body}</p>
+            <div class="client-tagline" style="margin-top: 10px;">${t.cp_meta}</div>
+          </div>
+        </div>
+        <div class="agent-says">
+          <p>${isEs ? 'Marea responde directo al cliente en su idioma. Cuando tengan duda, tú ves el hilo — no tienes que estar despierto.' : 'Marea replies directly to the client in their language. When they have a question, you see the thread — you don\'t have to stay up.'}</p>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="commission">
+        <div class="ch-eyebrow-xl">${t.com_eyebrow}</div>
+        <h2 class="ch-headline">${t.com_headline}</h2>
+        <p class="ch-lede">${t.com_lede}</p>
+        <div class="commission-ledger">
+          <div class="led-card">
+            <div class="led-lbl">${t.com_pending_lbl}</div>
+            <div class="led-val">${t.com_pending}</div>
+            <div class="led-sub">${t.com_pending_sub}</div>
+          </div>
+          <div class="led-card">
+            <div class="led-lbl">${t.com_cleared_lbl}</div>
+            <div class="led-val">${t.com_cleared}</div>
+            <div class="led-sub">${t.com_cleared_sub}</div>
+          </div>
+          <div class="led-card">
+            <div class="led-lbl">${t.com_ytd_lbl}</div>
+            <div class="led-val">${t.com_ytd}</div>
+            <div class="led-sub">${t.com_ytd_sub}</div>
+          </div>
+        </div>
+        <a class="ch-cta" href="#"><span>${t.cta}</span><span class="arr">→</span></a>
+      </section>
+    `;
   }
 
   const INTENT_PROMPTS = {
