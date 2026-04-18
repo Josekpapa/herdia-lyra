@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Emilio Heredia × Lyra — Marea</title>
+<title>Lyra × Marea — A Hospitality AI Ecosystem</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -115,25 +115,6 @@
   .brand-center .x { color: var(--gold); margin: 0 8px; font-style: italic; }
   .topbar-right {
     display: flex; align-items: center; gap: 10px;
-  }
-  .marea-stack-links {
-    display: none;
-    align-items: center;
-    gap: 14px;
-    margin-right: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-  .marea-stack-links a {
-    color: var(--text-faint);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .marea-stack-links a:hover { color: var(--gold); }
-  @media (min-width: 900px) {
-    .marea-stack-links { display: flex; }
   }
   .lang-toggle {
     display: flex;
@@ -249,39 +230,81 @@
   .chapter.active .reveal:nth-child(6) { transition-delay: 1.25s; }
 
   /* Word-mask + per-character cascade (premium effect) */
+  /* ──────────────────────────────────────────────────────────
+     REMOTION-STYLE PER-CHARACTER REVEAL
+     Spring curve (0.16, 1, 0.3, 1 = Expo out), blur-in,
+     depth translate, compound transition. Feels cinematic.
+     ────────────────────────────────────────────────────────── */
   .word-wrap {
     display: inline-block;
     overflow: hidden;
     vertical-align: baseline;
-    padding-bottom: 0.12em;
+    padding: 0.04em 0.06em 0.14em 0.06em;
+    margin: -0.04em -0.06em -0.14em -0.06em;
     line-height: 1.05;
+    perspective: 900px;
   }
   .word-wrap .c {
     display: inline-block;
-    transform: translateY(110%) rotate(4deg);
+    transform: translateY(120%) translateZ(-40px) rotateX(-28deg);
     opacity: 0;
+    filter: blur(10px);
+    transform-origin: 50% 100%;
     transition:
-      transform 0.95s cubic-bezier(0.22,1,0.36,1),
-      opacity 0.75s ease-out;
+      transform 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity, filter;
   }
-  .chapter.active .word-wrap .c { transform: translateY(0) rotate(0); opacity: 1; }
-  .word-wrap + .word-wrap { margin-left: 0.22em; }
+  .chapter.active .word-wrap .c {
+    transform: translateY(0) translateZ(0) rotateX(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+  .word-wrap + .word-wrap { margin-left: 0.14em; }
 
-  /* Tracking-in for eyebrows */
+  /* Tracking-in for eyebrows — widen then settle */
   .ch-eyebrow {
     letter-spacing: 1.2em;
     opacity: 0;
-    transition: letter-spacing 1.4s cubic-bezier(0.22,1,0.36,1), opacity 1.2s ease-out;
+    filter: blur(6px);
+    transition:
+      letter-spacing 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .chapter.active .ch-eyebrow { letter-spacing: 0.42em; opacity: 1; transition-delay: 0.15s; }
+  .chapter.active .ch-eyebrow {
+    letter-spacing: 0.42em;
+    opacity: 1;
+    filter: blur(0);
+    transition-delay: 0.15s;
+  }
 
   /* Body copy word-fade */
+  /* Sub-hero / body copy — per-character Remotion reveal */
+  .ch-body .c {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(10px) translateZ(-8px);
+    filter: blur(6px);
+    transition:
+      opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity, filter;
+  }
+  .chapter.active .ch-body .c {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+    filter: blur(0);
+  }
+  /* Legacy word-level reveal kept as fallback */
   .ch-body .w {
     display: inline-block;
     opacity: 0;
     transform: translateY(6px);
     filter: blur(3px);
-    transition: opacity 0.9s ease-out, transform 0.9s cubic-bezier(0.22,1,0.36,1), filter 0.9s ease-out;
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .chapter.active .ch-body .w { opacity: 1; transform: translateY(0); filter: blur(0); }
 
@@ -301,13 +324,14 @@
   /* Char cascade for short hero lines (subtitle/attribution) */
   .char-line .c {
     display: inline-block;
-    transform: translateY(8px);
+    transform: translateY(12px) translateZ(-6px);
     opacity: 0;
-    filter: blur(4px);
+    filter: blur(6px);
     transition:
-      transform 0.7s cubic-bezier(0.22,1,0.36,1),
-      opacity 0.7s ease-out,
-      filter 0.7s ease-out;
+      transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity, filter;
   }
   .chapter.active .char-line .c { transform: translateY(0); opacity: 1; filter: blur(0); }
 
@@ -357,12 +381,13 @@
     z-index: 2;
   }
   .portrait {
+    position: relative;
     width: 130px; height: 130px; border-radius: 50%;
     background: linear-gradient(145deg, #5C3D1E 0%, #D4A574 60%, #E8C99A 100%);
     display: flex; align-items: center; justify-content: center;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 52px; color: #1A1208;
-    letter-spacing: 0.04em;
+    font-size: 68px; color: #1A1208;
+    letter-spacing: 0.02em;
     font-weight: 400;
     margin: 0 auto 36px;
     border: 1px solid rgba(212,165,116,0.4);
@@ -371,6 +396,43 @@
       0 0 0 20px rgba(212,165,116,0.025),
       0 0 120px var(--gold-glow);
     animation: portraitBreathe 5s ease-in-out infinite;
+    overflow: visible;
+  }
+  .portrait .portrait-mark {
+    position: relative;
+    display: inline-block;
+    z-index: 2;
+    line-height: 0.9;
+    font-style: italic;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.22);
+  }
+  .portrait .portrait-mark em { font-style: italic; font-weight: 400; }
+  /* Orbit ring — conic gradient, slow rotation */
+  .portrait .portrait-ring {
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+    padding: 1px;
+    background: conic-gradient(
+      from 0deg,
+      rgba(212,165,116,0) 0deg,
+      rgba(212,165,116,0.55) 40deg,
+      rgba(232,201,154,0.85) 90deg,
+      rgba(212,165,116,0) 180deg,
+      rgba(212,165,116,0) 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: portraitOrbit 14s linear infinite;
+    opacity: 0.8;
+    pointer-events: none;
+  }
+  @keyframes portraitOrbit {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
   @keyframes portraitBreathe {
     0%, 100% { box-shadow: 0 0 0 10px rgba(212,165,116,0.05), 0 0 0 20px rgba(212,165,116,0.025), 0 0 80px var(--gold-glow); }
@@ -1418,6 +1480,818 @@
   }
   .portal-close:hover { border-color: var(--gold); color: var(--gold); }
 
+  /* ========== AGENT CHAMBER (Fidelis + Partner Portal) ========== */
+  :root {
+    --sage: #8CA68F;
+    --sage-soft: #A8BBA8;
+    --sage-glow: rgba(140, 166, 143, 0.25);
+    --paper: #0C1620;
+    --paper-mid: #122030;
+  }
+  .chamber {
+    position: fixed; inset: 0;
+    background: linear-gradient(180deg, #0B1420 0%, #071019 100%);
+    z-index: 600;
+    opacity: 0;
+    transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1);
+    display: grid;
+    grid-template-rows: 64px 1fr;
+    grid-template-columns: 260px 1fr;
+    grid-template-areas:
+      "topbar topbar"
+      "sidebar stage";
+    overflow: hidden;
+    --accent: var(--sage);
+    --accent-soft: var(--sage-soft);
+    --accent-glow: var(--sage-glow);
+  }
+  .chamber.partner {
+    --accent: #5B8DEF;
+    --accent-soft: #8DB0F5;
+    --accent-glow: rgba(91,141,239,0.28);
+  }
+  .chamber.visible { opacity: 1; }
+  .chamber::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 0%, var(--accent-glow) 0%, transparent 55%);
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ch-topbar {
+    grid-area: topbar;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    background: rgba(10,18,28,0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 2;
+    position: relative;
+  }
+  .ch-back {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-mute);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.22em;
+    padding: 8px 14px;
+    cursor: none;
+    text-transform: uppercase;
+    transition: all 0.25s;
+  }
+  .ch-back:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateX(-3px);
+  }
+  .ch-brand {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .ch-brand-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .ch-brand-mark em {
+    color: var(--accent);
+    font-style: italic; font-weight: 400;
+  }
+  .ch-brand-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.25em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    padding-left: 14px;
+    border-left: 1px solid rgba(255,255,255,0.08);
+  }
+  .ch-meta {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .ch-meta .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    animation: pulseDot 2.4s ease-in-out infinite;
+  }
+  @keyframes pulseDot {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+  .ch-sidebar {
+    grid-area: sidebar;
+    background: rgba(10,18,28,0.55);
+    backdrop-filter: blur(8px);
+    border-right: 1px solid rgba(255,255,255,0.04);
+    padding: 28px 0;
+    display: flex; flex-direction: column;
+    z-index: 1;
+    position: relative;
+  }
+  .ch-tab {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: transparent; border: none;
+    color: var(--text-mute);
+    cursor: none;
+    text-align: left;
+    transition: all 0.3s;
+    border-left: 2px solid transparent;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; font-weight: 300;
+    position: relative;
+  }
+  .ch-tab .ch-tab-n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    transition: color 0.3s;
+  }
+  .ch-tab:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.02);
+  }
+  .ch-tab.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: linear-gradient(90deg, var(--accent-glow) 0%, transparent 80%);
+  }
+  .ch-tab.active .ch-tab-n { color: var(--accent); }
+  .ch-tab.done .ch-tab-n::after {
+    content: '✓';
+    margin-left: 4px;
+    color: var(--accent);
+  }
+  .ch-sidebar-footer {
+    margin-top: auto;
+    padding: 20px 24px 8px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .ch-sidebar-footer .sample-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px dashed rgba(255,255,255,0.1);
+    color: var(--text-mute);
+    margin-top: 8px;
+    font-size: 8px;
+  }
+
+  .ch-stage {
+    grid-area: stage;
+    overflow-y: auto;
+    padding: 40px 56px 64px;
+    z-index: 1;
+    position: relative;
+  }
+  .ch-stage::-webkit-scrollbar { width: 4px; }
+  .ch-stage::-webkit-scrollbar-track { background: transparent; }
+  .ch-stage::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 2px; }
+
+  .ch-panel { display: none; }
+  .ch-panel.active {
+    display: block;
+    animation: chFade 0.55s cubic-bezier(0.22,1,0.36,1);
+  }
+  @keyframes chFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  .ch-eyebrow-xl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .ch-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px; font-weight: 300;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    max-width: 680px;
+  }
+  .ch-headline em {
+    color: var(--accent);
+    font-style: italic; font-weight: 400;
+  }
+  .ch-lede {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 300; line-height: 1.6;
+    color: var(--text-mute);
+    max-width: 580px;
+    margin-bottom: 32px;
+  }
+
+  /* Client card */
+  .client-card {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
+    padding: 24px;
+    background: rgba(15,28,46,0.4);
+    border: 1px solid rgba(140,166,143,0.18);
+    border-radius: 3px;
+    margin-bottom: 28px;
+  }
+  .client-avatar {
+    width: 96px; height: 96px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-soft) 100%);
+    color: #06111C;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+  .client-meta { display: flex; flex-direction: column; gap: 10px; }
+  .client-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 300;
+    color: var(--text);
+  }
+  .client-name em { color: var(--accent); font-style: italic; }
+  .client-tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .client-row {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .client-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    color: var(--text-mute);
+    text-transform: uppercase;
+  }
+  .client-pill.warn {
+    border-color: rgba(212,165,116,0.3);
+    color: var(--gold);
+    background: rgba(212,165,116,0.05);
+  }
+  .client-pill.ok {
+    border-color: rgba(140,166,143,0.3);
+    color: var(--accent);
+    background: rgba(140,166,143,0.06);
+  }
+
+  /* Agent chat lines (Fidelis speaking) */
+  .agent-says {
+    position: relative;
+    padding: 18px 22px 18px 42px;
+    background: linear-gradient(135deg, rgba(140,166,143,0.06) 0%, rgba(15,28,46,0.3) 100%);
+    border-left: 2px solid var(--accent);
+    border-radius: 2px;
+    margin-bottom: 18px;
+  }
+  .agent-says::before {
+    content: '';
+    position: absolute;
+    left: 16px; top: 22px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+  .agent-says p {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 300; line-height: 1.6;
+    color: var(--text);
+    margin: 0 0 8px;
+  }
+  .agent-says p:last-child { margin-bottom: 0; }
+  .agent-says .emph {
+    color: var(--accent-soft);
+    font-weight: 400;
+  }
+  .agent-says .tool-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 1px 6px;
+    background: rgba(140,166,143,0.1);
+    border: 1px solid rgba(140,166,143,0.25);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.05em;
+    color: var(--accent-soft);
+    margin: 0 2px;
+    vertical-align: baseline;
+  }
+
+  /* Citation row */
+  .citations {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+  }
+  .citation {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.08em;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    transition: all 0.25s;
+    cursor: none;
+  }
+  .citation:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .citation .cite-n {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Scenarios grid */
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .scenario-col {
+    padding: 20px;
+    background: rgba(15,28,46,0.35);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 3px;
+    transition: all 0.3s;
+  }
+  .scenario-col.winner {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(140,166,143,0.08) 0%, rgba(15,28,46,0.4) 100%);
+    box-shadow: 0 0 0 1px var(--accent-glow);
+  }
+  .sc-flag {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .sc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 400;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .sc-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .sc-row {
+    display: flex; justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .sc-row:last-child { border-bottom: none; }
+  .sc-lbl {
+    color: var(--text-faint);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .sc-val {
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .scenario-col.winner .sc-val { color: var(--accent-soft); }
+  .sc-winner-tag {
+    margin-top: 14px;
+    padding: 6px 10px;
+    background: var(--accent);
+    color: #06111C;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  /* Residency strip */
+  .residency-wrap {
+    padding: 24px;
+    background: rgba(15,28,46,0.3);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 3px;
+    margin-bottom: 24px;
+  }
+  .residency-title {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 16px;
+  }
+  .residency-title h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400;
+    color: var(--text);
+  }
+  .residency-title .yr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+  }
+  .residency-strip {
+    position: relative;
+    display: flex;
+    height: 38px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .residency-seg {
+    height: 100%;
+    transition: opacity 0.3s;
+  }
+  .residency-seg.mx { background: linear-gradient(180deg, var(--accent) 0%, rgba(140,166,143,0.6) 100%); }
+  .residency-seg.pt { background: linear-gradient(180deg, #B89DCC 0%, rgba(184,157,204,0.6) 100%); }
+  .residency-seg.us { background: linear-gradient(180deg, #D4A574 0%, rgba(212,165,116,0.6) 100%); }
+  .residency-seg.none { background: rgba(255,255,255,0.03); }
+  .residency-line183 {
+    position: absolute;
+    left: 50.1%; top: -6px; bottom: -6px;
+    width: 1px;
+    background: var(--gold);
+    pointer-events: none;
+  }
+  .residency-line183::after {
+    content: '183';
+    position: absolute;
+    top: -18px; left: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+  .residency-months {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    margin-top: 6px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .residency-legend {
+    display: flex; gap: 20px; margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .leg-item {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-mute);
+    letter-spacing: 0.08em;
+  }
+  .leg-item .sw {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+  }
+  .leg-item.mx .sw { background: var(--accent); }
+  .leg-item.pt .sw { background: #B89DCC; }
+  .leg-item.us .sw { background: var(--gold); }
+  .leg-item .cnt { color: var(--text); font-variant-numeric: tabular-nums; }
+
+  /* Memo preview */
+  .memo-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 24px;
+    align-items: start;
+  }
+  .memo-preview {
+    aspect-ratio: 8.5/11;
+    background: linear-gradient(180deg, #F5EFE4 0%, #E8DFCD 100%);
+    color: #1C2028;
+    padding: 36px 32px;
+    border-radius: 2px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    line-height: 1.5;
+    overflow: hidden;
+    position: relative;
+  }
+  .memo-preview::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--accent);
+  }
+  .memo-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400;
+    color: #0C1620;
+    margin-bottom: 2px;
+  }
+  .memo-brand em { color: var(--accent); font-style: italic; }
+  .memo-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; letter-spacing: 0.22em;
+    color: #6B7278;
+    text-transform: uppercase;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  .memo-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px; font-weight: 500;
+    color: #0C1620;
+    margin: 12px 0 4px;
+  }
+  .memo-p {
+    color: #3A4250;
+    margin-bottom: 8px;
+    font-size: 9px;
+    line-height: 1.55;
+  }
+  .memo-num {
+    display: flex; justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+  }
+  .memo-num strong { color: #0C1620; }
+  .memo-foot {
+    position: absolute;
+    bottom: 24px; left: 32px; right: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px; letter-spacing: 0.2em;
+    color: #8D9299;
+    text-transform: uppercase;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+  .memo-side {
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .memo-stat {
+    padding: 14px 16px;
+    background: rgba(15,28,46,0.35);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 2px;
+  }
+  .memo-stat-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .memo-stat-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 300;
+    color: var(--text);
+  }
+  .memo-stat-val em { color: var(--accent); font-style: italic; }
+
+  /* CTA primary */
+  .ch-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 22px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.3s;
+    text-decoration: none;
+    margin-top: 16px;
+  }
+  .ch-cta:hover {
+    background: var(--accent);
+    color: #06111C;
+  }
+  .ch-cta .arr { transition: transform 0.3s; }
+  .ch-cta:hover .arr { transform: translateX(4px); }
+
+  .ch-step {
+    position: absolute;
+    bottom: 24px; right: 32px;
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    z-index: 3;
+  }
+  .ch-step-next {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-mute);
+    padding: 7px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    cursor: none;
+    transition: all 0.25s;
+  }
+  .ch-step-next:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .ch-step-next.done {
+    background: var(--accent);
+    color: #06111C;
+    border-color: var(--accent);
+  }
+
+  /* Partner-specific UI */
+  .property-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .property-card {
+    padding: 18px;
+    background: rgba(15,28,46,0.4);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 3px;
+    cursor: none;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .property-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .property-card.selected {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(91,141,239,0.08) 0%, rgba(15,28,46,0.5) 100%);
+    box-shadow: 0 0 0 1px var(--accent-glow);
+  }
+  .property-card.draft { border-style: dashed; opacity: 0.55; }
+  .prop-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; font-weight: 400;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .prop-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .prop-meta {
+    display: flex; gap: 10px; margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-mute);
+  }
+  .prop-meta .sep { color: var(--text-faint); }
+  .property-card.selected .prop-name { color: var(--accent-soft); }
+
+  .quote-builder {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+  }
+  .quote-form {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .quote-field {
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .quote-field label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .quote-field input, .quote-field select {
+    background: rgba(15,28,46,0.4);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 300;
+    padding: 10px 12px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.25s;
+    cursor: none;
+  }
+  .quote-field input:focus, .quote-field select:focus {
+    border-color: var(--accent);
+  }
+  .quote-summary {
+    padding: 24px;
+    background: linear-gradient(180deg, rgba(91,141,239,0.06) 0%, rgba(15,28,46,0.5) 100%);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    height: max-content;
+  }
+  .quote-sum-row {
+    display: flex; justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+  }
+  .quote-sum-row.big {
+    margin-top: 6px;
+    border-top: 1px solid var(--accent);
+    border-bottom: none;
+    padding-top: 14px;
+  }
+  .quote-sum-row.big .val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 300;
+    color: var(--accent-soft);
+  }
+  .quote-sum-row .val { color: var(--text); font-variant-numeric: tabular-nums; }
+  .quote-sum-row.commission .val { color: var(--gold); }
+
+  .commission-ledger {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .led-card {
+    padding: 20px;
+    background: rgba(15,28,46,0.35);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 3px;
+  }
+  .led-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .led-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 300;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .led-val em { color: var(--accent); font-style: italic; }
+  .led-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-mute);
+    margin-top: 4px;
+  }
+
+  @media (max-width: 980px) {
+    .chamber {
+      grid-template-columns: 1fr;
+      grid-template-rows: 56px auto 1fr;
+      grid-template-areas:
+        "topbar"
+        "sidebar"
+        "stage";
+    }
+    .ch-sidebar {
+      flex-direction: row;
+      padding: 8px;
+      overflow-x: auto;
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .ch-tab {
+      flex-shrink: 0;
+      padding: 10px 16px;
+      border-left: none;
+      border-bottom: 2px solid transparent;
+    }
+    .ch-tab.active { border-left-color: transparent; border-bottom-color: var(--accent); }
+    .ch-sidebar-footer { display: none; }
+    .ch-stage { padding: 24px; }
+    .ch-headline { font-size: 28px; }
+    .scenario-grid, .property-grid, .commission-ledger { grid-template-columns: 1fr; }
+    .memo-grid, .quote-builder { grid-template-columns: 1fr; }
+    .ch-brand-sub { display: none; }
+  }
+
   @media (max-width: 980px) {
     #ch2 .content, #ch4 .content { margin: 0 auto; text-align: center; }
     .stage { grid-template-columns: 1fr; grid-template-rows: 40vh 60vh; }
@@ -1464,13 +2338,8 @@
 <div class="fixed-ui">
   <div class="topbar-frame">
     <div class="lyra-mark">L<span class="dot">·</span>Y<span class="dot">·</span>R<span class="dot">·</span>A</div>
-    <div class="brand-center">HEREDIA <span class="x">×</span> LYRA · <em id="tagline">Same soul. More soil.</em></div>
+    <div class="brand-center">LYRA <span class="x">×</span> MAREA · <em id="tagline">Same soul. More soil.</em></div>
     <div class="topbar-right">
-      <div class="marea-stack-links" aria-label="Fidelis tools">
-        <a href="/fidelis">Fidelis</a>
-        <a href="/agent">Agent</a>
-        <a href="/tracker">Tracker</a>
-      </div>
       <div class="lang-toggle">
         <button class="lang-btn active" data-lang="en">EN</button>
         <button class="lang-btn" data-lang="es">ES</button>
@@ -1502,24 +2371,27 @@
   <span><kbd>↑↓</kbd> NAVIGATE</span>
 </div>
 
-<!-- ============== CHAPTER 1: THE MAN ============== -->
+<!-- ============== CHAPTER 1: THE ECOSYSTEM ============== -->
 <section class="chapter active" id="ch1" data-ch="0">
   <div class="ambient-particles" id="ambientParticles"></div>
   <div class="ch1-content">
     <div class="reveal">
-      <div class="portrait" id="portrait">EH</div>
+      <div class="portrait" id="portrait">
+        <span class="portrait-ring"></span>
+        <span class="portrait-mark"><em>M</em></span>
+      </div>
     </div>
     <div class="reveal">
-      <h1 class="ch-title">Emilio <em>Heredia</em></h1>
+      <h1 class="ch-title">An <em>ecosystem</em>,<br/>not an app.</h1>
     </div>
     <div class="reveal">
-      <div class="name-sub char-line" id="ch1Sub">Engineer · Founder · Papaya Playa</div>
+      <div class="name-sub char-line" id="ch1Sub">Concierge · Advisor · Partner · Memory · Pricing · Corporate · Operations</div>
     </div>
     <div class="reveal">
-      <p class="quote" id="ch1Quote">"Most of our guests leave having had an experience that has awoken their awareness of nature."</p>
+      <p class="quote" id="ch1Quote">"A hospitality brand becomes an ecosystem the moment software carries the soul — so the grammar travels without the founder having to."</p>
     </div>
     <div class="reveal">
-      <div class="attribution char-line" id="ch1Attr">— EMILIO HEREDIA · TULUM · MÉXICO</div>
+      <div class="attribution char-line" id="ch1Attr">— LYRA × MAREA · SEVEN RAILS · ONE PORTFOLIO</div>
     </div>
   </div>
   <div class="scroll-hint">
@@ -1533,7 +2405,7 @@
   <div class="content">
     <div class="reveal"><div class="ch-eyebrow" id="ch2Eyebrow"><em>01</em> · THE BRAND</div></div>
     <div class="reveal"><h2 class="ch-title" id="ch2Title">Papaya Playa. <em>The forge.</em></h2></div>
-    <div class="reveal"><p class="ch-body" id="ch2Body">A hideaway on the Tulum shoreline, Quintana Roo — and the forge where the Heredia grammar was proven. Barefoot luxury, intimacy with the land. A decade of curation, guest by guest. The software now carries the soul — so the grammar travels without the founder having to.</p></div>
+    <div class="reveal"><p class="ch-body" id="ch2Body">A hideaway on the Tulum shoreline, Quintana Roo — and the forge where the house grammar was proven. Barefoot luxury, intimacy with the land. A decade of curation, guest by guest. The software now carries the soul — so the grammar travels without the founder having to.</p></div>
     <div class="reveal stat-row">
       <div class="stat">
         <div class="num"><span class="count" data-target="10" data-suffix="+">0</span></div>
@@ -1596,8 +2468,8 @@
       <div class="chart-bg"></div>
       <div class="chart-crosshair" id="crossV"></div>
       <div class="chart-crosshair h" id="crossH"></div>
-      <div class="chart-title" id="chartTitle"><em>Heredia Network</em> — live footprint &amp; vision territories</div>
-      <div class="chart-coords" id="chartCoords">LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1</div>
+      <div class="chart-title" id="chartTitle"><em>Portfolio Network</em> — live footprint &amp; vision territories</div>
+      <div class="chart-coords" id="chartCoords">LAT 0° · LON 0° · PORTFOLIO NAV CHART · v0.1</div>
       <svg class="connections" id="connections" preserveAspectRatio="none"></svg>
       <div class="pin-info" id="pinInfo">
         <div class="pi-name"></div>
@@ -1631,10 +2503,10 @@
 
     <div class="chat">
       <div class="chat-head">
-        <div class="avatar" id="avatar">EH</div>
+        <div class="avatar" id="avatar">◉</div>
         <div class="head-info">
-          <div class="head-name">Marea <span id="headByline" style="color:var(--text-faint);font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;">by Emilio Heredia</span></div>
-          <div class="head-sub" id="headSub">Emilio's AI Concierge · Powered by Lyra</div>
+          <div class="head-name">Marea <span id="headByline" style="color:var(--text-faint);font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;">by Lyra</span></div>
+          <div class="head-sub" id="headSub">The concierge layer · Rail 01 of 07</div>
         </div>
         <button class="reset-btn" id="resetBtn" onclick="resetDemo()">↺ Reset</button>
       </div>
@@ -1665,7 +2537,7 @@
             </button>
             <button class="fl-chip" data-intent="curious">
               <span class="chip-name">Just curious</span>
-              <span class="chip-sub">I want to know Emilio's story.</span>
+              <span class="chip-sub">I want to understand the ecosystem.</span>
             </button>
           </div>
         </div>
@@ -1703,7 +2575,7 @@
       <div class="prompts">
         <div class="prompts-label" id="promptsLabel">→ Quick prompts</div>
         <button class="prompt-btn" data-scenario="story">
-          <span class="num">01</span><span class="prompt-text">Tell me Emilio's story.</span>
+          <span class="num">01</span><span class="prompt-text">Tell me the origin story.</span>
         </button>
         <button class="prompt-btn" data-scenario="portugal">
           <span class="num">02</span><span class="prompt-text">I'm planning Portugal in September with my girlfriend.</span>
@@ -1724,105 +2596,105 @@
   const SCENARIOS = {
     en: {
       story: {
-        user: "Tell me Emilio's story.",
+        user: "Tell me the origin story.",
         reply: [
-          "Emilio Heredia began as an electrical engineer — degrees in electronics and finance, then chairman of financial institutions in New York and Mexico City. From the outside, the perfect career.",
-          "But for thirty years he walked a quieter path in parallel: yoga, karate, Tao, corporal psychotherapy. The boardroom and the breath, side by side.",
-          "When he founded *Papaya Playa* in Tulum, he wasn't building a hotel. He was building a thesis: that *primitive sophistication* — barefoot luxury, intimacy with the land — could be more rare than any marble lobby in Manhattan.",
-          "His own words: *\"My main hobby is living with intensity.\"*",
-          "Today he hosts ~8,000 guests a year on a single Mexican coastline."
+          "The origin is a single boutique property on the Tulum shoreline — *Papaya Playa.* Built over a decade of curation, guest by guest. Barefoot luxury. Intimacy with the land.",
+          "From that forge emerged a *grammar* — a way of doing hospitality that refuses franchise logic. No marble lobbies. No scripted smiles. Nature undiluted, time that bends slowly.",
+          "The thesis: *primitive sophistication* is rarer, and more defensible, than any five-star uniform.",
+          "The problem was scale. A founder's taste doesn't survive duplication. Every new property dilutes the original.",
+          "Lyra's answer: encode the grammar in software. Seven rails. One portfolio. *Same soul, more soil.*"
         ],
         mapAction: null
       },
       portugal: {
-        user: "I'm planning Portugal in September with my girlfriend — somewhere quiet, close to the ocean, the kind of place Emilio would pick.",
+        user: "I'm planning Portugal in September with my girlfriend — somewhere quiet, close to the ocean, matching the ecosystem's taste.",
         reply: [
-          "I hear you. You're not asking for a hotel — you're asking for a *feeling.* The same one Emilio chases: nature undiluted, intimacy without performance, time that bends slowly.",
-          "Right now, Emilio's only home is Papaya Playa — here in Tulum. One property. Chosen carefully.",
-          "*[Heredia Network · scanning latent territories...]*",
-          "But the Algarve coast — the cliffs around Carrapateira and the inland villages of Monchique — fits Emilio's grammar exactly. Wild Atlantic, no neon, the locals still cook the way their grandmothers did.",
-          "Same soul as Tulum. New soil. Want me to sketch a September itinerary?"
+          "I hear you. You're not asking for a hotel — you're asking for a *feeling.* The one the ecosystem is built around: nature undiluted, intimacy without performance, time that bends slowly.",
+          "Right now, only one property is live: *Papaya Playa* in Tulum. Chosen carefully. The forge.",
+          "*[Portfolio Network · scanning latent territories...]*",
+          "The Algarve coast — the cliffs around Carrapateira and the inland villages of Monchique — fits the grammar exactly. Wild Atlantic, no neon, locals still cooking the way their grandmothers did.",
+          "Same soul as Tulum. New soil. Want me to sketch a September itinerary within the grammar?"
         ],
         mapAction: ['algarve']
       },
       scale: {
         user: "What can Marea do for me?",
         reply: [
-          "Think of me as Emilio's presence, available at any hour. I carry his story, his grammar, his taste — and I'm trained to speak the way he does.",
-          "For guests: I plan your stay, handle your documents, remember your preferences, and greet you like an old friend.",
-          "*[Marea · orchestrating guest journey...]*",
-          "For partner properties: onboarding, booking flow, concierge layer, travel-agent integration. Same soul across every new soil.",
-          "Emilio keeps the curation. Lyra handles the rails. And you get the feeling, wherever you land."
+          "Think of me as the concierge *rail* — always-on, bilingual, trained on the house grammar. I'm one of seven rails in the ecosystem.",
+          "For guests: I plan your stay, handle documents, remember preferences across properties, and greet you like an old friend.",
+          "*[Marea · orchestrating guest journey across rails...]*",
+          "For partners: I connect to the Partner Portal (bookings, commissions), to Fidelis (advisor-grade tax + residency), and soon to the memory rail that recognizes a guest on any soil.",
+          "Curation stays human. Lyra carries the rails. You get the feeling, wherever you land."
         ],
         mapAction: ['algarve', 'santorini', 'marrakech', 'bali']
       }
     },
     es: {
       story: {
-        user: "Cuéntame la historia de Emilio.",
+        user: "Cuéntame la historia origen.",
         reply: [
-          "Emilio Heredia empezó como ingeniero eléctrico — títulos en electrónica y finanzas, luego presidente de instituciones financieras en Nueva York y Ciudad de México. Desde afuera, la carrera perfecta.",
-          "Pero durante treinta años caminó un sendero más silencioso en paralelo: yoga, karate, Tao, psicoterapia corporal. La sala de juntas y la respiración, lado a lado.",
-          "Cuando fundó *Papaya Playa* en Tulum, no estaba construyendo un hotel. Estaba construyendo una tesis: que la *sofisticación primitiva* — lujo descalzo, intimidad con la tierra — podría ser más rara que cualquier vestíbulo de mármol en Manhattan.",
-          "Sus propias palabras: *\"Mi principal afición es vivir con intensidad.\"*",
-          "Hoy recibe a ~8,000 huéspedes al año en una sola costa mexicana."
+          "El origen es una sola propiedad boutique en la costa de Tulum — *Papaya Playa.* Construida durante una década de curaduría, huésped a huésped. Lujo descalzo. Intimidad con la tierra.",
+          "De esa fragua emergió una *gramática* — una forma de hacer hospitalidad que rechaza la lógica de franquicia. Sin vestíbulos de mármol. Sin sonrisas guionadas. Naturaleza sin diluir, tiempo que se curva despacio.",
+          "La tesis: la *sofisticación primitiva* es más rara, y más defendible, que cualquier uniforme cinco estrellas.",
+          "El problema era la escala. El gusto de un fundador no sobrevive la duplicación. Cada nueva propiedad diluye la original.",
+          "La respuesta de Lyra: codificar la gramática en software. Siete rieles. Un portafolio. *Misma alma, más tierra.*"
         ],
         mapAction: null
       },
       portugal: {
-        user: "Estoy planeando Portugal en septiembre con mi novia — un lugar tranquilo, cerca del océano, del tipo que elegiría Emilio.",
+        user: "Estoy planeando Portugal en septiembre con mi novia — un lugar tranquilo, cerca del océano, del tipo que encaje con la gramática.",
         reply: [
-          "Te escucho. No pides un hotel — pides una *sensación.* La misma que persigue Emilio: naturaleza sin diluir, intimidad sin actuación, tiempo que se curva despacio.",
-          "Ahora mismo, el único hogar de Emilio es Papaya Playa — aquí en Tulum. Una propiedad. Elegida con cuidado.",
-          "*[Red Heredia · escaneando territorios latentes...]*",
-          "Pero la costa del Algarve — los acantilados alrededor de Carrapateira y los pueblos del interior de Monchique — encaja exactamente con la gramática de Emilio. Atlántico salvaje, sin neón, los locales aún cocinan como lo hacían sus abuelas.",
-          "Misma alma que Tulum. Nueva tierra. ¿Quieres que te esboce un itinerario de septiembre?"
+          "Te escucho. No pides un hotel — pides una *sensación.* La misma alrededor de la cual se construyó el ecosistema: naturaleza sin diluir, intimidad sin actuación, tiempo que se curva despacio.",
+          "Ahora mismo solo una propiedad está viva: *Papaya Playa* en Tulum. Elegida con cuidado. La fragua.",
+          "*[Red del Portafolio · escaneando territorios latentes...]*",
+          "La costa del Algarve — los acantilados alrededor de Carrapateira y los pueblos del interior de Monchique — encaja exactamente con la gramática. Atlántico salvaje, sin neón, los locales aún cocinan como lo hacían sus abuelas.",
+          "Misma alma que Tulum. Nueva tierra. ¿Quieres que te esboce un itinerario de septiembre dentro de la gramática?"
         ],
         mapAction: ['algarve']
       },
       scale: {
         user: "¿Qué puede hacer Marea por mí?",
         reply: [
-          "Piensa en mí como la presencia de Emilio, disponible a cualquier hora. Llevo su historia, su gramática, su gusto — y estoy entrenada para hablar como él.",
-          "Para huéspedes: planeo tu estancia, manejo tus documentos, recuerdo tus preferencias, y te recibo como a un viejo amigo.",
-          "*[Marea · orquestando recorrido del huésped...]*",
-          "Para propiedades asociadas: onboarding, flujo de reservas, capa de concierge, integración con agente de viajes. Misma alma en cada nueva tierra.",
-          "Emilio mantiene la curaduría. Lyra lleva los rieles. Y tú recibes la sensación, dondequiera que aterrices."
+          "Piensa en mí como el *riel* concierge — siempre activo, bilingüe, entrenado en la gramática de la casa. Soy uno de siete rieles en el ecosistema.",
+          "Para huéspedes: planeo tu estancia, manejo documentos, recuerdo preferencias entre propiedades, y te recibo como a un viejo amigo.",
+          "*[Marea · orquestando recorrido del huésped entre rieles...]*",
+          "Para socios: me conecto al Portal de Socios (reservas, comisiones), a Fidelis (fiscal + residencia con grado de asesor), y pronto al riel de memoria que reconoce a un huésped en cualquier tierra.",
+          "La curaduría sigue siendo humana. Lyra carga los rieles. Tú recibes la sensación, dondequiera que aterrices."
         ],
         mapAction: ['algarve', 'santorini', 'marrakech', 'bali']
       }
     },
     de: {
       story: {
-        user: "Erzähl mir Emilios Geschichte.",
+        user: "Erzähl mir die Ursprungsgeschichte.",
         reply: [
-          "Emilio Heredia begann als Elektroingenieur — Abschlüsse in Elektronik und Finanzen, später Chairman von Finanzinstituten in New York und Mexiko-Stadt. Von außen die perfekte Karriere.",
-          "Doch dreißig Jahre lang ging er parallel einen leiseren Weg: Yoga, Karate, Tao, Körperpsychotherapie. Der Konferenzraum und der Atem, Seite an Seite.",
-          "Als er *Papaya Playa* in Tulum gründete, baute er kein Hotel. Er bewies eine These: dass *primitive Sophistication* — barfußer Luxus, Intimität mit dem Land — seltener sein kann als jede Marmorkulisse in Manhattan.",
-          "Seine eigenen Worte: *\"Mein wichtigstes Hobby ist es, intensiv zu leben.\"*",
-          "Heute empfängt er ~8.000 Gäste pro Jahr an einer einzigen mexikanischen Küste."
+          "Der Ursprung ist ein einziges Boutique-Hotel an Tulums Küste — *Papaya Playa.* Gebaut in einem Jahrzehnt der Kuratelie, Gast für Gast. Barfuß-Luxus. Intimität mit dem Land.",
+          "Aus dieser Schmiede entstand eine *Grammatik* — eine Art Hospitality zu machen, die Franchise-Logik ablehnt. Keine Marmorlobbys. Keine einstudierten Lächeln. Natur unverdünnt, Zeit die sich langsam beugt.",
+          "Die These: *primitive Sophistication* ist seltener und verteidigungsfähiger als jede Fünf-Sterne-Uniform.",
+          "Das Problem war die Skalierung. Der Geschmack eines Gründers überlebt keine Duplikation. Jedes neue Haus verdünnt das Original.",
+          "Lyras Antwort: die Grammatik in Software codieren. Sieben Schienen. Ein Portfolio. *Gleiche Seele, mehr Boden.*"
         ],
         mapAction: null
       },
       portugal: {
-        user: "Ich plane im September Portugal mit meiner Freundin — ruhig, nah am Meer, so wie Emilio es wählen würde.",
+        user: "Ich plane im September Portugal mit meiner Freundin — ruhig, nah am Meer, passend zur Grammatik des Ökosystems.",
         reply: [
-          "Ich höre dich. Du fragst nicht nach einem Hotel — du fragst nach einem *Gefühl.* Demselben, das Emilio sucht: Natur unverdünnt, Intimität ohne Pose, Zeit die sich langsam beugt.",
-          "Im Moment ist Emilios einziges Zuhause Papaya Playa — hier in Tulum. Eine Adresse. Bewusst gewählt.",
-          "*[Heredia Network · latente Territorien scannen…]*",
-          "Doch die Algarve — die Klippen bei Carrapateira und die Dörfer im Hinterland von Monchique — passt exakt zu Emilios Grammatik. Wilder Atlantik, kein Neon, die Einheimischen kochen noch wie ihre Großmütter.",
-          "Gleiche Seele wie Tulum. Neuer Boden. Soll ich dir eine September-Route skizzieren?"
+          "Ich höre dich. Du fragst nicht nach einem Hotel — du fragst nach einem *Gefühl.* Dem, um das das Ökosystem gebaut ist: Natur unverdünnt, Intimität ohne Pose, Zeit die sich langsam beugt.",
+          "Im Moment ist nur ein Haus live: *Papaya Playa* in Tulum. Bewusst gewählt. Die Schmiede.",
+          "*[Portfolio-Netzwerk · latente Territorien scannen…]*",
+          "Die Algarve — die Klippen bei Carrapateira und die Dörfer im Hinterland von Monchique — passt exakt zur Grammatik. Wilder Atlantik, kein Neon, Einheimische kochen noch wie ihre Großmütter.",
+          "Gleiche Seele wie Tulum. Neuer Boden. Soll ich dir eine September-Route innerhalb der Grammatik skizzieren?"
         ],
         mapAction: ['algarve']
       },
       scale: {
         user: "Was kann Marea für mich tun?",
         reply: [
-          "Denk an mich als Emilios Präsenz — jederzeit verfügbar. Ich trage seine Geschichte, seine Grammatik, seinen Geschmack — und spreche so, wie er sprechen würde.",
-          "Für Gäste: Ich plane deinen Aufenthalt, erledige Dokumente, merke mir Vorlieben und begrüße dich wie einen alten Freund.",
-          "*[Marea · Gästereise orchestrieren…]*",
-          "Für Partner-Properties: Onboarding, Buchungsfluss, Concierge-Schicht, Reisebüro-Anbindung. Dieselbe Seele auf jedem neuen Boden.",
-          "Emilio behält die Kuratelie. Lyra liefert die Schienen. Du bekommst das Gefühl — überall."
+          "Denk an mich als die *Concierge-Schiene* — immer aktiv, dreisprachig, trainiert auf der Hausgrammatik. Ich bin eine von sieben Schienen im Ökosystem.",
+          "Für Gäste: Ich plane deinen Aufenthalt, erledige Dokumente, merke mir Vorlieben über alle Häuser hinweg und begrüße dich wie einen alten Freund.",
+          "*[Marea · Gästereise zwischen Schienen orchestrieren…]*",
+          "Für Partner: Ich verbinde zum Partner-Portal (Buchungen, Provisionen), zu Fidelis (Berater-Steuer- und Aufenthaltstools), und bald zur Gedächtnis-Schiene, die einen Gast auf jedem Boden wiedererkennt.",
+          "Kuratelie bleibt menschlich. Lyra trägt die Schienen. Du bekommst das Gefühl — überall."
         ],
         mapAction: ['algarve', 'santorini', 'marrakech', 'bali']
       }
@@ -1832,31 +2704,31 @@
   const DEMO_FALLBACK = {
     en: [
       "That's a question worth sitting with.",
-      "Emilio would say: *the answer is always closer to nature than you think.*",
-      "Try one of the threads below — or ask me about his story, Portugal, or what Marea does."
+      "The ecosystem's premise: *the answer is always closer to nature than you think.*",
+      "Try a thread below — or ask me about the origin, Portugal, or what Marea does across the rails."
     ],
     es: [
       "Esa es una pregunta que vale la pena meditar.",
-      "Emilio diría: *la respuesta siempre está más cerca de la naturaleza de lo que crees.*",
-      "Prueba uno de los hilos abajo — o pregúntame sobre su historia, Portugal, o qué hace Marea."
+      "La premisa del ecosistema: *la respuesta siempre está más cerca de la naturaleza de lo que crees.*",
+      "Prueba un hilo abajo — o pregúntame sobre el origen, Portugal, o qué hace Marea entre los rieles."
     ],
     de: [
-      "Das ist eine Frage, die man sich stellen sollte.",
-      "Emilio würde sagen: *Die Antwort ist immer näher an der Natur, als du denkst.*",
-      "Probiere einen der Fäden unten — oder frag nach seiner Geschichte, Portugal oder was Marea tut."
+      "Das ist eine Frage, bei der es sich lohnt, zu verweilen.",
+      "Die Prämisse des Ökosystems: *Die Antwort ist immer näher an der Natur, als du denkst.*",
+      "Probiere einen Faden unten — oder frag nach dem Ursprung, Portugal oder was Marea über die Schienen hinweg tut."
     ]
   };
 
   const I18N = {
     en: {
       tagline: "Same soul. More soil.",
-      ch1Sub: "Engineer · Founder · Papaya Playa",
-      ch1Quote: "\"Most of our guests leave having had an experience that has awoken their awareness of nature.\"",
-      ch1Attr: "— EMILIO HEREDIA · TULUM · MÉXICO",
+      ch1Sub: "Concierge · Advisor · Partner · Memory · Pricing · Corporate · Operations",
+      ch1Quote: "\"A hospitality brand becomes an ecosystem the moment software carries the soul — so the grammar travels without the founder having to.\"",
+      ch1Attr: "— LYRA × MAREA · SEVEN RAILS · ONE PORTFOLIO",
       scrollHint: "SCROLL TO BEGIN",
       ch2Eyebrow: "<em>01</em> · THE FORGE",
       ch2Title: "Papaya Playa. <em>The forge.</em>",
-      ch2Body: "A hideaway on the Tulum shoreline, Quintana Roo — and the forge where the Heredia grammar was proven. Barefoot luxury, intimacy with the land. A decade of curation, guest by guest. The software now carries the soul — so the grammar travels without the founder having to.",
+      ch2Body: "A hideaway on the Tulum shoreline, Quintana Roo — and the forge where the house grammar was proven. Barefoot luxury, intimacy with the land. A decade of curation, guest by guest. The software now carries the soul — so the grammar travels without the founder having to.",
       ch2Stat1: "Years forged",
       ch2Stat2: "Living grammar",
       ch2Stat3: "Soil ahead",
@@ -1869,34 +2741,34 @@
       ch4Body: "A hospitality brand becomes an ecosystem the moment software carries the soul. Two rails are live. Five are drafts — waiting to be named. This is a map for a conversation, not a manifest.",
       tagLive: "Live",
       tagVision: "Vision",
-      chartTitle: "<em>Heredia Network</em> — live footprint &amp; vision territories",
-      chartCoords: "LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1",
+      chartTitle: "<em>Portfolio Network</em> — live footprint &amp; vision territories",
+      chartCoords: "LAT 0° · LON 0° · PORTFOLIO NAV CHART · v0.1",
       subLive: "Papaya Playa · Live",
       subVision: "Vision",
-      headByline: "by Emilio Heredia",
-      headSub: "Emilio's AI Concierge · Powered by Lyra",
+      headByline: "by Lyra",
+      headSub: "The concierge layer · Rail 01 of 07",
       resetBtn: "↺ Reset",
       inputPlaceholder: "Ask Marea…",
       promptsLabel: "→ Quick prompts",
-      prompt1: "Tell me Emilio's story.",
+      prompt1: "Tell me the origin story.",
       prompt2: "I'm planning Portugal in September with my girlfriend.",
       prompt3: "What can Marea do for me?",
-      welcome: "I'm *Marea* — Emilio Heredia's concierge. I carry his story, his grammar, his taste. Ask me anything, or tap a thread below. Hold *space* to speak.",
+      welcome: "I'm *Marea* — the concierge rail. I carry the house grammar — its story, its taste, its bilingual voice. Ask me anything, or tap a thread below. Hold *space* to speak.",
       welcomeReset: "I'm *Marea* — ready again. What would you like to explore?",
-      meta: "— Marea · by Emilio Heredia",
-      progress: ["The Founder", "The Forge", "The Thesis", "The Rails", "Marea"],
+      meta: "— Marea · by Lyra",
+      progress: ["The Ecosystem", "The Forge", "The Thesis", "The Rails", "Marea"],
       kbdHint: ['HOLD', 'TO SPEAK', 'NAVIGATE'],
       voiceLabel: "LISTENING"
     },
     es: {
       tagline: "Misma alma. Más tierra.",
-      ch1Sub: "Ingeniero · Fundador · Papaya Playa",
-      ch1Quote: "\"La mayoría de nuestros huéspedes se marchan tras una experiencia que ha despertado su conciencia de la naturaleza.\"",
-      ch1Attr: "— EMILIO HEREDIA · TULUM · MÉXICO",
+      ch1Sub: "Concierge · Asesor · Socio · Memoria · Precios · Corporativo · Operaciones",
+      ch1Quote: "\"Una marca de hospitalidad se convierte en ecosistema en el momento en que el software carga el alma — para que la gramática viaje sin que el fundador tenga que hacerlo.\"",
+      ch1Attr: "— LYRA × MAREA · SIETE RIELES · UN PORTAFOLIO",
       scrollHint: "DESLIZA PARA COMENZAR",
       ch2Eyebrow: "<em>01</em> · LA FRAGUA",
       ch2Title: "Papaya Playa. <em>La fragua.</em>",
-      ch2Body: "Un refugio en la costa de Tulum, Quintana Roo — y la fragua donde se probó la gramática Heredia. Lujo descalzo, intimidad con la tierra. Una década de curaduría, huésped a huésped. El software ahora carga el alma — para que la gramática viaje sin que el fundador tenga que hacerlo.",
+      ch2Body: "Un refugio en la costa de Tulum, Quintana Roo — y la fragua donde se probó la gramática de la casa. Lujo descalzo, intimidad con la tierra. Una década de curaduría, huésped a huésped. El software ahora carga el alma — para que la gramática viaje sin que el fundador tenga que hacerlo.",
       ch2Stat1: "Años forjando",
       ch2Stat2: "Gramática viva",
       ch2Stat3: "Tierra por venir",
@@ -1909,34 +2781,34 @@
       ch4Body: "Una marca de hospitalidad se convierte en ecosistema en el momento en que el software carga el alma. Dos rieles están vivos. Cinco son borradores — esperan a ser nombrados. Esto es un mapa para una conversación, no un manifiesto.",
       tagLive: "En vivo",
       tagVision: "Visión",
-      chartTitle: "<em>Red Heredia</em> — presencia actual y territorios en visión",
-      chartCoords: "LAT 0° · LON 0° · CARTA DE NAVEGACIÓN HEREDIA · v0.1",
+      chartTitle: "<em>Red del Portafolio</em> — presencia actual y territorios en visión",
+      chartCoords: "LAT 0° · LON 0° · CARTA DE NAVEGACIÓN DEL PORTAFOLIO · v0.1",
       subLive: "Papaya Playa · En vivo",
       subVision: "Visión",
-      headByline: "por Emilio Heredia",
-      headSub: "Concierge IA de Emilio · Impulsado por Lyra",
+      headByline: "por Lyra",
+      headSub: "La capa concierge · Riel 01 de 07",
       resetBtn: "↺ Reiniciar",
       inputPlaceholder: "Pregunta a Marea…",
       promptsLabel: "→ Preguntas rápidas",
-      prompt1: "Cuéntame la historia de Emilio.",
+      prompt1: "Cuéntame la historia origen.",
       prompt2: "Estoy planeando Portugal en septiembre con mi novia.",
       prompt3: "¿Qué puede hacer Marea por mí?",
-      welcome: "Soy *Marea* — la concierge de Emilio Heredia. Llevo su historia, su gramática, su gusto. Pregúntame lo que quieras, o elige un hilo abajo. Mantén *espacio* para hablar.",
+      welcome: "Soy *Marea* — el riel concierge. Llevo la gramática de la casa — su historia, su gusto, su voz bilingüe. Pregúntame lo que quieras, o elige un hilo abajo. Mantén *espacio* para hablar.",
       welcomeReset: "Soy *Marea* — lista de nuevo. ¿Qué te gustaría explorar?",
-      meta: "— Marea · por Emilio Heredia",
-      progress: ["El Fundador", "La Fragua", "La Tesis", "Los Rieles", "Marea"],
+      meta: "— Marea · por Lyra",
+      progress: ["El Ecosistema", "La Fragua", "La Tesis", "Los Rieles", "Marea"],
       kbdHint: ['MANTÉN', 'PARA HABLAR', 'NAVEGAR'],
       voiceLabel: "ESCUCHANDO"
     },
     de: {
       tagline: "Gleiche Seele. Mehr Boden.",
-      ch1Sub: "Ingenieur · Gründer · Papaya Playa",
-      ch1Quote: "\"Die meisten unserer Gäste verlassen uns mit einer Erfahrung, die ihr Bewusstsein für die Natur geweckt hat.\"",
-      ch1Attr: "— EMILIO HEREDIA · TULUM · MEXIKO",
+      ch1Sub: "Concierge · Berater · Partner · Gedächtnis · Preise · Corporate · Operations",
+      ch1Quote: "\"Eine Hospitality-Marke wird zum Ökosystem in dem Moment, in dem Software die Seele trägt — damit die Grammatik reisen kann, ohne dass der Gründer es muss.\"",
+      ch1Attr: "— LYRA × MAREA · SIEBEN SCHIENEN · EIN PORTFOLIO",
       scrollHint: "SCROLL ZUM START",
       ch2Eyebrow: "<em>01</em> · DIE SCHMIEDE",
       ch2Title: "Papaya Playa. <em>Die Schmiede.</em>",
-      ch2Body: "Ein Refugium an Tulums Küste, Quintana Roo — und die Schmiede, in der die Heredia-Grammatik bewiesen wurde. Barfuß-Luxus, Intimität mit dem Land. Ein Jahrzehnt Kuratelie, Gast für Gast. Die Software trägt jetzt die Seele — damit die Grammatik reisen kann, ohne dass der Gründer es muss.",
+      ch2Body: "Ein Refugium an Tulums Küste, Quintana Roo — und die Schmiede, in der die Hausgrammatik bewiesen wurde. Barfuß-Luxus, Intimität mit dem Land. Ein Jahrzehnt Kuratelie, Gast für Gast. Die Software trägt jetzt die Seele — damit die Grammatik reisen kann, ohne dass der Gründer es muss.",
       ch2Stat1: "Jahre geschmiedet",
       ch2Stat2: "Lebendige Grammatik",
       ch2Stat3: "Boden voraus",
@@ -1949,22 +2821,22 @@
       ch4Body: "Eine Hospitality-Marke wird zum Ökosystem, sobald Software die Seele trägt. Zwei Schienen sind live. Fünf sind Entwürfe — warten darauf, benannt zu werden. Das ist eine Landkarte fürs Gespräch, kein Manifest.",
       tagLive: "Live",
       tagVision: "Vision",
-      chartTitle: "<em>Heredia Network</em> — Live-Fußabdruck &amp; Vision",
-      chartCoords: "LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1",
+      chartTitle: "<em>Portfolio-Netzwerk</em> — Live-Fußabdruck &amp; Vision",
+      chartCoords: "LAT 0° · LON 0° · PORTFOLIO NAV CHART · v0.1",
       subLive: "Papaya Playa · Live",
       subVision: "Vision",
-      headByline: "von Emilio Heredia",
-      headSub: "Emilios KI-Concierge · Powered by Lyra",
+      headByline: "von Lyra",
+      headSub: "Die Concierge-Schicht · Schiene 01 von 07",
       resetBtn: "↺ Zurücksetzen",
       inputPlaceholder: "Frag Marea…",
       promptsLabel: "→ Schnellprompts",
-      prompt1: "Erzähl mir Emilios Geschichte.",
+      prompt1: "Erzähl mir die Ursprungsgeschichte.",
       prompt2: "Ich plane im September Portugal mit meiner Freundin.",
       prompt3: "Was kann Marea für mich tun?",
-      welcome: "Ich bin *Marea* — Emilio Heredias Concierge. Ich trage seine Geschichte, seine Grammatik, seinen Geschmack. Frag mich alles oder tippe einen Faden unten. Halte *Leertaste* zum Sprechen.",
+      welcome: "Ich bin *Marea* — die Concierge-Schiene. Ich trage die Hausgrammatik — ihre Geschichte, ihren Geschmack, ihre mehrsprachige Stimme. Frag mich alles oder tippe einen Faden unten. Halte *Leertaste* zum Sprechen.",
       welcomeReset: "Ich bin *Marea* — wieder bereit. Was möchtest du erkunden?",
-      meta: "— Marea · von Emilio Heredia",
-      progress: ["Der Gründer", "Die Schmiede", "Die These", "Die Schienen", "Marea"],
+      meta: "— Marea · von Lyra",
+      progress: ["Das Ökosystem", "Die Schmiede", "Die These", "Die Schienen", "Marea"],
       kbdHint: ['HALTE', 'ZUM SPRECHEN', 'NAVIGATION'],
       voiceLabel: "HÖRT ZU"
     }
@@ -2312,10 +3184,10 @@
       const lat = 90 - (y / r.height) * 180;
       const latStr = Math.abs(lat).toFixed(1) + '° ' + (lat >= 0 ? 'N' : 'S');
       const lngStr = Math.abs(lng).toFixed(1) + '° ' + (lng >= 0 ? 'E' : 'W');
-      coordsEl.textContent = `LAT ${latStr} · LON ${lngStr} · HEREDIA NAV CHART · v0.1`;
+      coordsEl.textContent = `LAT ${latStr} · LON ${lngStr} · PORTFOLIO NAV CHART · v0.1`;
     });
     chart.addEventListener('mouseleave', () => {
-      coordsEl.textContent = 'LAT 0° · LON 0° · HEREDIA NAV CHART · v0.1';
+      coordsEl.textContent = 'LAT 0° · LON 0° · PORTFOLIO NAV CHART · v0.1';
       hideInfo();
       clearHoverLine();
     });
@@ -2507,9 +3379,9 @@
 
     const lower = val.toLowerCase();
     let matchedKey = null;
-    if (lower.includes('story') || lower.includes('emilio') || lower.includes('who') || lower.includes('historia') || lower.includes('quién') || lower.includes('quien') || lower.includes('geschichte') || lower.includes('wer ist')) matchedKey = 'story';
-    else if (lower.includes('portugal') || lower.includes('algarve') || lower.includes('europe') || lower.includes('girlfriend') || lower.includes('novia') || lower.includes('europa') || lower.includes('freundin')) matchedKey = 'portugal';
-    else if (lower.includes('marea') || lower.includes('lyra') || lower.includes('scale') || lower.includes('what') || lower.includes('do for') || lower.includes('qué puede') || lower.includes('que puede') || lower.includes('trabajar') || lower.includes('was kann') || lower.includes('was macht')) matchedKey = 'scale';
+    if (lower.includes('story') || lower.includes('origin') || lower.includes('who built') || lower.includes('ecosystem') || lower.includes('historia') || lower.includes('origen') || lower.includes('quién') || lower.includes('quien') || lower.includes('ecosistema')) matchedKey = 'story';
+    else if (lower.includes('portugal') || lower.includes('algarve') || lower.includes('europe') || lower.includes('girlfriend') || lower.includes('novia') || lower.includes('europa')) matchedKey = 'portugal';
+    else if (lower.includes('marea') || lower.includes('lyra') || lower.includes('scale') || lower.includes('what') || lower.includes('do for') || lower.includes('qué puede') || lower.includes('que puede') || lower.includes('trabajar')) matchedKey = 'scale';
 
     if (matchedKey) {
       busy = true;
@@ -2569,15 +3441,11 @@
   function setLang(lang) {
     if (!I18N[lang]) return;
     currentLang = lang;
-    try { localStorage.setItem('lyra.locale', lang); } catch (e) {}
     const t = I18N[lang];
     document.documentElement.lang = lang;
     document.querySelectorAll('.lang-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.lang === lang);
     });
-    if (typeof recognition !== 'undefined' && recognition) {
-      recognition.lang = lang === 'es' ? 'es-ES' : lang === 'de' ? 'de-DE' : 'en-US';
-    }
 
     const set = (id, html, isHtml) => {
       const el = document.getElementById(id);
@@ -2611,11 +3479,6 @@
     set('promptsLabel', t.promptsLabel);
     set('voiceLabel', t.voiceLabel);
 
-    const kh = document.getElementById('kbdHint');
-    if (kh && t.kbdHint && t.kbdHint.length >= 3) {
-      kh.innerHTML = `<span>${t.kbdHint[0]} <kbd>SPACE</kbd> ${t.kbdHint[1]}</span><span>·</span><span><kbd>↑↓</kbd> ${t.kbdHint[2]}</span>`;
-    }
-
     document.querySelectorAll('[data-sub="live"]').forEach(el => el.textContent = t.subLive);
     document.querySelectorAll('[data-sub="vision"]').forEach(el => el.textContent = t.subVision);
     document.querySelectorAll('[data-tag="live"]').forEach(el => el.textContent = t.tagLive);
@@ -2631,11 +3494,6 @@
 
     // Progress labels
     progressButtons.forEach((b, i) => b.setAttribute('data-label', t.progress[i]));
-
-    document.querySelectorAll('.marea-stack-links a').forEach(a => {
-      const base = (a.getAttribute('href') || '').split('?')[0];
-      a.setAttribute('href', base + (currentLang === 'en' ? '' : '?lang=' + currentLang));
-    });
 
     applyTextAnimations();
   }
@@ -2670,40 +3528,67 @@
   }
 
   function applyTextAnimations() {
-    // Titles: word-mask + per-character reveal (layered premium effect)
+    /* ─────────────────────────────────────────────────────────
+       Remotion-style per-character cascade.
+       Titles  → per-char mask reveal (inside word-wrap clip)
+       Bodies  → per-char blur-translate reveal
+       Hero subs → per-char fade-blur with longer stagger
+       Stagger = ~22–30ms per char (cinematic), entry ~250–550ms
+       ───────────────────────────────────────────────────────── */
+
+    // ── Titles: mask-reveal word-wrap, per-character cascade
     document.querySelectorAll('.ch-title').forEach(el => {
       if (el.dataset.orig) el.innerHTML = el.dataset.orig;
       else el.dataset.orig = el.innerHTML;
+      let globalChar = 0;
       splitTextNodes(el, (word, wi) => {
-        const wordStart = 0.25 + wi * 0.11;
         const wrap = document.createElement('span');
         wrap.className = 'word-wrap';
         for (let i = 0; i < word.length; i++) {
           const c = document.createElement('span');
           c.className = 'c';
-          c.style.transitionDelay = (wordStart + i * 0.035).toFixed(2) + 's';
+          // Unified per-char stagger (not per-word) = smoother wave
+          c.style.transitionDelay = (0.22 + globalChar * 0.028).toFixed(3) + 's';
           c.textContent = word[i];
           wrap.appendChild(c);
+          globalChar++;
         }
         return wrap;
       });
     });
 
-    // Body copy: word-cascade (unchanged)
+    // ── Body copy (sub-hero): per-character blur-translate cascade
     document.querySelectorAll('.ch-body').forEach(el => {
       if (el.dataset.orig) el.innerHTML = el.dataset.orig;
       else el.dataset.orig = el.innerHTML;
-      splitTextNodes(el, (word, idx) => {
-        const delay = 0.65 + idx * 0.022;
-        const span = document.createElement('span');
-        span.className = 'w';
-        span.style.transitionDelay = delay.toFixed(2) + 's';
-        span.textContent = word;
-        return span;
-      });
+      let ci = 0;
+      function walk(node) {
+        Array.from(node.childNodes).forEach(child => {
+          if (child.nodeType === 3) { // TEXT
+            const frag = document.createDocumentFragment();
+            for (const ch of child.textContent) {
+              if (ch === ' ') {
+                frag.appendChild(document.createTextNode('\u00A0'));
+                continue;
+              }
+              const s = document.createElement('span');
+              s.className = 'c';
+              // Longer start delay so body follows the title
+              s.style.transitionDelay = (0.55 + ci * 0.012).toFixed(3) + 's';
+              s.textContent = ch;
+              frag.appendChild(s);
+              ci++;
+            }
+            child.replaceWith(frag);
+          } else if (child.nodeType === 1) {
+            walk(child);
+          }
+        });
+      }
+      walk(el);
     });
 
-    // Short hero lines: per-character fade-blur (subtitle + attribution in ch1)
+    // ── Short hero sub-lines (ch1 subtitle + attribution): char fade-blur
     document.querySelectorAll('.char-line').forEach(el => {
       if (el.dataset.charOrig) el.innerHTML = el.dataset.charOrig;
       else el.dataset.charOrig = el.innerHTML;
@@ -2719,7 +3604,7 @@
               }
               const s = document.createElement('span');
               s.className = 'c';
-              s.style.transitionDelay = (0.55 + ci * 0.03).toFixed(2) + 's';
+              s.style.transitionDelay = (0.65 + ci * 0.022).toFixed(3) + 's';
               s.textContent = ch;
               frag.appendChild(s);
               ci++;
@@ -2729,19 +3614,6 @@
         });
       }
       walk(el);
-    });
-
-    document.querySelectorAll('.ch-body').forEach(el => {
-      if (el.dataset.orig) el.innerHTML = el.dataset.orig;
-      else el.dataset.orig = el.innerHTML;
-      splitTextNodes(el, (word, idx) => {
-        const delay = 0.65 + idx * 0.022;
-        const span = document.createElement('span');
-        span.className = 'w';
-        span.style.transitionDelay = delay.toFixed(2) + 's';
-        span.textContent = word;
-        return span;
-      });
     });
   }
 
@@ -2913,7 +3785,7 @@
   function flSubmitName() {
     const raw = FL.nameInput.value.trim();
     const safe = raw.replace(/[*<>&]/g, '').slice(0, 40);
-    FL.data.name = safe || (currentLang === 'es' ? 'amigo' : currentLang === 'de' ? 'Freund' : 'friend');
+    FL.data.name = safe || (currentLang === 'es' ? 'amigo' : 'friend');
     updateIntentPrompt();
     flStep('intent');
   }
@@ -2928,10 +3800,9 @@
     const safeName = n.replace(/[<>&]/g, '');
     const prompts = {
       en: n ? `What brings you here, <em>${safeName}</em>?` : 'What brings you here?',
-      es: n ? `¿Qué te trae aquí, <em>${safeName}</em>?` : '¿Qué te trae aquí?',
-      de: n ? `Was führt dich hierher, <em>${safeName}</em>?` : 'Was führt dich hierher?'
+      es: n ? `¿Qué te trae aquí, <em>${safeName}</em>?` : '¿Qué te trae aquí?'
     };
-    document.getElementById('flIntentPrompt').innerHTML = prompts[currentLang] || prompts.en;
+    document.getElementById('flIntentPrompt').innerHTML = prompts[currentLang];
   }
 
   document.querySelectorAll('.fl-chip').forEach(chip => {
@@ -2969,21 +3840,21 @@
     const WELCOME = {
       en: {
         guest: `Welcome, *${name}*. I'm Marea. ${taste.length ? `You chose ${taste.join(' · ')} — I'll keep that in mind. ` : ''}Tell me what you're planning, or tap a thread below. Hold *space* to speak.`,
-        agent: `Welcome, *${name}*. You book for others — so I'll be brief. The Heredia Partner Portal is how you quote, track commissions, and keep every client inside our grammar. Here's your entry point:`,
-        tax: `Welcome, *${name}*. You help founders keep their residency clean — so does Emilio. He built *Fidelis* for exactly this: a tax copilot for the advisor's chair, with every number tied to a deterministic source. Here's the surface:`,
-        curious: `Welcome, *${name}*. You're not here to book — you're here to understand. Good. Ask me about Emilio, Papaya Playa, the portfolio ahead, or what Lyra actually is.`
+        agent: `Welcome, *${name}*. You book for others — so I'll be brief. The *Partner Portal* is how you quote, track commissions, and keep every client inside the grammar. Here's your entry point:`,
+        tax: `Welcome, *${name}*. You help founders keep their residency clean. *Fidelis* was built for exactly that chair: a tax copilot with deterministic tools, every number tied to a cited source, audit-grade memos. Here's the surface:`,
+        curious: `Welcome, *${name}*. You're not here to book — you're here to understand. Good. Ask me about the origin, Papaya Playa, the seven rails, or what Lyra actually *is*.`
       },
       es: {
         guest: `Bienvenido, *${name}*. Soy Marea. ${taste.length ? `Elegiste ${taste.join(' · ')} — lo tendré presente. ` : ''}Cuéntame qué planeas, o toca un hilo abajo. Mantén *espacio* para hablar.`,
-        agent: `Bienvenido, *${name}*. Reservas para otros — así que seré breve. El Portal de Socios Heredia es donde cotizas, rastreas comisiones y mantienes a cada cliente dentro de nuestra gramática. Aquí tu entrada:`,
-        tax: `Bienvenido, *${name}*. Ayudas a fundadores a mantener su residencia limpia — igual que Emilio. Él construyó *Fidelis* justo para esto: un copiloto fiscal para la silla del asesor, con cada número atado a una fuente determinista. Aquí la superficie:`,
-        curious: `Bienvenido, *${name}*. No vienes a reservar — vienes a entender. Bien. Pregúntame sobre Emilio, Papaya Playa, el portafolio por venir, o qué es Lyra en realidad.`
+        agent: `Bienvenido, *${name}*. Reservas para otros — así que seré breve. El *Portal de Socios* es donde cotizas, rastreas comisiones y mantienes a cada cliente dentro de la gramática. Aquí tu entrada:`,
+        tax: `Bienvenido, *${name}*. Ayudas a fundadores a mantener su residencia limpia. *Fidelis* fue construido justo para esa silla: un copiloto fiscal con herramientas deterministas, cada número atado a una fuente citada, memos con grado de auditoría. Aquí la superficie:`,
+        curious: `Bienvenido, *${name}*. No vienes a reservar — vienes a entender. Bien. Pregúntame sobre el origen, Papaya Playa, los siete rieles, o qué *es* Lyra en realidad.`
       },
       de: {
         guest: `Willkommen, *${name}*. Ich bin Marea. ${taste.length ? `Du hast ${taste.join(' · ')} gewählt — ich behalte das im Kopf. ` : ''}Sag mir, was du planst, oder tippe unten einen Faden. Halte *Leertaste* zum Sprechen.`,
-        agent: `Willkommen, *${name}*. Du buchst für andere — also kurz: Das Heredia Partner Portal ist, wo du anbietest, Provisionen trackst und jeden Mandanten in unserer Grammatik hältst. Hier dein Einstieg:`,
-        tax: `Willkommen, *${name}*. Du hilfst Gründern, Aufenthalt sauber zu halten — wie Emilio. Er hat *Fidelis* dafür gebaut: einen Steuer-Copiloten für den Beraterstuhl, jede Zahl mit deterministischer Quelle. Hier die Oberfläche:`,
-        curious: `Willkommen, *${name}*. Du bist nicht hier zum Buchen — sondern zum Verstehen. Gut. Frag mich nach Emilio, Papaya Playa, dem Portfolio voraus oder was Lyra wirklich ist.`
+        agent: `Willkommen, *${name}*. Du buchst für andere — also kurz: Das *Partner-Portal* ist, wo du anbietest, Provisionen trackst und jeden Mandanten in der Grammatik hältst. Hier dein Einstieg:`,
+        tax: `Willkommen, *${name}*. Du hilfst Gründern, Aufenthalt sauber zu halten. *Fidelis* wurde genau für diesen Stuhl gebaut: ein Steuer-Copilot mit deterministischen Tools, jede Zahl mit zitierter Quelle, auditfähige Memos. Hier die Oberfläche:`,
+        curious: `Willkommen, *${name}*. Du bist nicht hier zum Buchen — sondern zum Verstehen. Gut. Frag mich nach dem Ursprung, Papaya Playa, den sieben Schienen, oder was Lyra wirklich *ist*.`
       }
     };
     addMessage('assistant', WELCOME[currentLang][intent]);
@@ -2997,7 +3868,7 @@
   const PORTALS = {
     en: {
       agent: {
-        eyebrow: 'HEREDIA PARTNER PORTAL · Travel agents',
+        eyebrow: 'PARTNER PORTAL · Travel agents',
         title: 'Quote in minutes. <em>Track every commission.</em>',
         sub: 'A partner-facing portal built on the same grammar. Onboard, quote, confirm, and collect — without leaving Marea\'s tone.',
         cta: 'Enter the portal',
@@ -3013,7 +3884,7 @@
     },
     es: {
       agent: {
-        eyebrow: 'PORTAL DE SOCIOS HEREDIA · Agentes de viajes',
+        eyebrow: 'PORTAL DE SOCIOS · Agentes de viajes',
         title: 'Cotiza en minutos. <em>Rastrea cada comisión.</em>',
         sub: 'Un portal para socios con la misma gramática. Onboarding, cotización, confirmación, cobro — sin salir del tono de Marea.',
         cta: 'Entrar al portal',
@@ -3029,7 +3900,7 @@
     },
     de: {
       agent: {
-        eyebrow: 'HEREDIA PARTNER PORTAL · Reiseberater',
+        eyebrow: 'PARTNER-PORTAL · Reiseberater',
         title: 'Angebote in Minuten. <em>Jede Provision im Blick.</em>',
         sub: 'Ein Partner-Portal mit derselben Grammatik. Onboarding, Angebot, Bestätigung, Zahlung — ohne den Marea-Ton zu verlieren.',
         cta: 'Zum Portal',
@@ -3042,33 +3913,6 @@
         cta: 'Fidelis öffnen',
         accent: '#8CA68F'
       }
-    }
-  };
-
-  const PORTAL_HANDOFF = {
-    en: {
-      opening: 'Opening…',
-      titleTax: 'Taking you to the <em>live workspace</em>.',
-      titleAgent: 'Opening your <em>partner workspace</em>.',
-      subTax: 'The Fidelis workspace: per-client chat, ten deterministic calculators, fiscal form parsing, branded PDF memos, audit log. The advisor stays in command; the agent just shows the work.',
-      subAgent: 'The Heredia Partner Portal: quote in minutes, curated packages with Papaya Playa\'s soul, live commission tracking, direct concierge handoff to Marea for every guest.',
-      back: '← back to Marea'
-    },
-    es: {
-      opening: 'Abriendo…',
-      titleTax: 'Te llevamos a la <em>herramienta en vivo</em>.',
-      titleAgent: 'Abrimos tu <em>espacio de socio</em>.',
-      subTax: 'El espacio de trabajo de Fidelis: chat por cliente, diez calculadoras deterministas, parseo de formularios fiscales, memos PDF marcados, bitácora de auditoría. El asesor se mantiene al mando; el agente solo muestra el trabajo.',
-      subAgent: 'El Portal de Socios Heredia: cotización en minutos, paquetes curados con alma de Papaya Playa, rastreo de comisiones en vivo, y traspaso directo al concierge con Marea para cada huésped.',
-      back: '← volver a Marea'
-    },
-    de: {
-      opening: 'Öffnen…',
-      titleTax: 'Wir bringen dich zum <em>Live-Arbeitsraum</em>.',
-      titleAgent: 'Wir öffnen deinen <em>Partner-Arbeitsraum</em>.',
-      subTax: 'Der Fidelis-Arbeitsraum: Chat pro Mandant, zehn deterministische Rechner, Formular-Parsing, gebrandete PDF-Memos, Audit-Log. Der Berater führt; der Agent zeigt die Arbeit.',
-      subAgent: 'Das Heredia Partner Portal: Angebote in Minuten, kuratierte Pakete mit Papaya-Playa-Seele, Live-Provisionen, direkte Concierge-Übergabe an Marea.',
-      back: '← zurück zu Marea'
     }
   };
 
@@ -3098,97 +3942,607 @@
   }
 
   function openPortal(intent) {
-    const p = PORTALS[currentLang][intent];
-    const label = intent === 'tax' ? 'FIDELIS' : 'PARTNER PORTAL';
-    const ph = PORTAL_HANDOFF[currentLang] || PORTAL_HANDOFF.en;
-    const longSub = intent === 'tax' ? ph.subTax : ph.subAgent;
-    const target = intent === 'tax' ? '/agent' : '/tracker';
-    const overlay = document.createElement('div');
-    overlay.className = 'portal-overlay';
-    overlay.style.setProperty('--accent', p.accent);
-    overlay.innerHTML = `
-      <div class="portal-overlay-inner">
-        <div class="portal-eyebrow">${label} · ${ph.opening}</div>
-        <div class="portal-title">${intent === 'tax' ? ph.titleTax : ph.titleAgent}</div>
-        <div class="portal-sub">${longSub}</div>
-        <div class="portal-loader"></div>
-        <button class="portal-close">${ph.back}</button>
+    if (intent === 'tax') return openChamber('fidelis');
+    if (intent === 'agent') return openChamber('partner');
+  }
+
+  /* ============================================================
+     AGENT CHAMBERS — Fidelis (tax) + Partner Portal (agent)
+     ============================================================ */
+  const CHAMBER_DEFS = {
+    fidelis: {
+      cls: '',
+      brand: `<span>Fidelis</span> <em>·</em>`,
+      sub: 'TAX COPILOT · FOR THE ADVISOR\'S CHAIR',
+      meta: 'SESSION · FID-2043',
+      tabs: [
+        { id: 'client',    n: '01', name: 'Client' },
+        { id: 'scenarios', n: '02', name: 'Scenarios' },
+        { id: 'residency', n: '03', name: 'Residency' },
+        { id: 'memo',      n: '04', name: 'Memo' }
+      ],
+      footer: 'FIDELIS · v0.1 · Lyra',
+      sampleBadge: 'SAMPLE · not advisory'
+    },
+    partner: {
+      cls: 'partner',
+      brand: `<span>Marea</span> <em>Partner Portal</em>`,
+      sub: 'PARTNER · TRAVEL AGENTS',
+      meta: 'AGENCY · SR-0119',
+      tabs: [
+        { id: 'properties',  n: '01', name: 'Properties' },
+        { id: 'quote',       n: '02', name: 'Quote' },
+        { id: 'client',      n: '03', name: 'Client preview' },
+        { id: 'commission',  n: '04', name: 'Commission' }
+      ],
+      footer: 'PARTNER PORTAL · v0.1 · Lyra',
+      sampleBadge: 'SAMPLE · live build coming'
+    }
+  };
+
+  function openChamber(which) {
+    const def = CHAMBER_DEFS[which];
+    const isEs = currentLang === 'es';
+    const chamber = document.createElement('div');
+    chamber.className = 'chamber ' + def.cls;
+    chamber.innerHTML = `
+      <div class="ch-topbar">
+        <button class="ch-back">← ${isEs ? 'volver a Marea' : 'back to Marea'}</button>
+        <div class="ch-brand">
+          <div class="ch-brand-mark">${def.brand}</div>
+          <div class="ch-brand-sub">${def.sub}</div>
+        </div>
+        <div class="ch-meta"><span class="dot"></span><span>${def.meta}</span></div>
       </div>
+      <nav class="ch-sidebar">
+        ${def.tabs.map((t,i) => `
+          <button class="ch-tab ${i===0?'active':''}" data-tab="${t.id}">
+            <span class="ch-tab-n">${t.n}</span>
+            <span>${t.name}</span>
+          </button>
+        `).join('')}
+        <div class="ch-sidebar-footer">
+          <div>${def.footer}</div>
+          <div class="sample-badge">${def.sampleBadge}</div>
+        </div>
+      </nav>
+      <main class="ch-stage">
+        ${which === 'fidelis' ? fidelisPanels(isEs) : partnerPanels(isEs)}
+        <div class="ch-step">
+          <span id="chStepLabel">${isEs ? 'Paso' : 'Step'} 1 ${isEs?'de':'of'} 4</span>
+          <button class="ch-step-next" id="chStepNext">${isEs ? 'Siguiente →' : 'Next →'}</button>
+        </div>
+      </main>
     `;
-    document.body.appendChild(overlay);
-    requestAnimationFrame(() => overlay.classList.add('visible'));
-    const go = () => window.location.assign(target);
-    const timer = setTimeout(go, 1000);
-    overlay.querySelector('.portal-close').addEventListener('click', () => {
-      clearTimeout(timer);
-      overlay.classList.remove('visible');
-      setTimeout(() => overlay.remove(), 500);
+    document.body.appendChild(chamber);
+    requestAnimationFrame(() => chamber.classList.add('visible'));
+
+    const tabs = chamber.querySelectorAll('.ch-tab');
+    const panels = chamber.querySelectorAll('.ch-panel');
+    const stepLbl = chamber.querySelector('#chStepLabel');
+    const stepBtn = chamber.querySelector('#chStepNext');
+    let idx = 0;
+
+    function showTab(i) {
+      idx = i;
+      tabs.forEach((t, k) => {
+        t.classList.toggle('active', k === i);
+        if (k < i) t.classList.add('done');
+      });
+      panels.forEach((p, k) => p.classList.toggle('active', k === i));
+      stepLbl.textContent = `${isEs ? 'Paso' : 'Step'} ${i+1} ${isEs?'de':'of'} ${tabs.length}`;
+      const isLast = i === tabs.length - 1;
+      stepBtn.textContent = isLast
+        ? (isEs ? '✓ Completo' : '✓ Complete')
+        : (isEs ? 'Siguiente →' : 'Next →');
+      stepBtn.classList.toggle('done', isLast);
+      chamber.querySelector('.ch-stage').scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    tabs.forEach((t, i) => t.addEventListener('click', () => showTab(i)));
+    stepBtn.addEventListener('click', () => {
+      if (idx < tabs.length - 1) showTab(idx + 1);
     });
+    chamber.querySelector('.ch-back').addEventListener('click', () => {
+      chamber.classList.remove('visible');
+      setTimeout(() => chamber.remove(), 550);
+    });
+    // Esc closes
+    const escClose = (e) => {
+      if (e.key === 'Escape') {
+        chamber.classList.remove('visible');
+        setTimeout(() => chamber.remove(), 550);
+        document.removeEventListener('keydown', escClose);
+      }
+    };
+    document.addEventListener('keydown', escClose);
+  }
+
+  function fidelisPanels(isEs) {
+    const t = isEs ? {
+      client_eyebrow: 'CASO · FD-0119 · MUESTRA',
+      client_headline: 'Tu cliente está dividido entre <em>México</em> y <em>Portugal</em>.',
+      client_lede: 'Vista del asesor — un solo cliente, una sola sesión. Fidelis abre con lo que importa: los riesgos que no puedes perderte.',
+      client_name_html: 'Perfil <em>Fundador</em>',
+      client_tagline: 'Revisión de residencia dual · 2026',
+      pill_role: 'FUNDADOR · CEO',
+      pill_mx: 'MX · Residente fiscal',
+      pill_pt: 'PT · NHR solicitado',
+      pill_warn: '64 días para gatillo 183-PT',
+      says_1: '<span class="emph">247 días en MX</span> al corriente, <span class="emph">118 en PT</span>. Vas <span class="emph">64 días</span> del test 183-PT. Si el cliente planea Portugal en septiembre, el gatillo se activa en octubre.',
+      says_2: 'Corrí <span class="tool-chip">spt_test()</span> y <span class="tool-chip">pt_nhr_eligibility()</span>. Si mantiene el patrón actual, el tratamiento NHR aplica por 10 años desde aprobación. La recomendación: <span class="emph">formalizar NHR antes de septiembre</span>, acortar presencia MX en Q4.',
+      sc_eyebrow: 'ESCENARIOS · COMPARACIÓN',
+      sc_headline: 'Tres tratamientos. <em>Un ganador claro.</em>',
+      sc_lede: 'Modelado lado a lado. Cada número proviene de una herramienta determinista. Cada tasa cita su fuente.',
+      sc_a: 'Residente MX',
+      sc_b: 'Portugal NHR',
+      sc_c: 'Split · 90/90',
+      sc_sub_a: 'Status actual',
+      sc_sub_b: 'Propuesto',
+      sc_sub_c: 'Alternativa',
+      sc_gross: 'Ingreso bruto', sc_eff: 'Tasa efectiva', sc_take: 'Take-home', sc_soc: 'Contrib. sociales', sc_net: 'Patrimonio · año 1',
+      sc_winner: '✓ Recomendado · ahorro de $48.2k',
+      res_eyebrow: 'RESIDENCIA · 365 DÍAS',
+      res_headline: 'La línea <em>183</em> no es sugerencia.',
+      res_lede: 'Cada segmento es un día físico. La línea dorada es el umbral de 183 días. Cruzarla en PT activa residencia fiscal.',
+      res_title: 'Ventana 2026 — Caso FD-0119',
+      res_yr: 'AÑO EN CURSO',
+      memo_eyebrow: 'MEMO · UN CLIC',
+      memo_headline: 'Un memo <em>audit-grade</em>. <em>Listo para firmar.</em>',
+      memo_lede: 'Toda conversación se convierte en un memo marcado con bitácora completa: cada turno, cada herramienta, cada cita, cada token. El asesor firma; el agente respalda.',
+      memo_brand: 'Fidelis',
+      memo_brand_em: 'Memo',
+      memo_sub: 'PREP. POR ASESOR · REV. AGENTE',
+      memo_h1: 'Resumen ejecutivo',
+      memo_p1: 'El cliente debe formalizar NHR en Portugal antes de superar 183 días. Escenario recomendado: Split 90/90 con entrada formal a NHR en Q3 2026.',
+      memo_h2: 'Impacto fiscal · año 1',
+      memo_foot: 'AUDITADO · 23 CITAS · 8 HERRAMIENTAS · 14 MIN',
+      memo_tokens_lbl: 'Tokens · turno',
+      memo_tokens: '<em>3,842</em>',
+      memo_cost_lbl: 'Costo · sesión',
+      memo_cost: '<em>$0.47</em>',
+      memo_audit_lbl: 'Bitácora',
+      memo_audit: '<em>✓</em> firmable',
+      cta: 'Probar Fidelis'
+    } : {
+      client_eyebrow: 'CASE · FD-0119 · SAMPLE',
+      client_headline: 'Your client is split between <em>Mexico</em> and <em>Portugal</em>.',
+      client_lede: 'The advisor\'s view — one client, one session. Fidelis opens with what matters: the risks you can\'t miss.',
+      client_name_html: 'Founder <em>Profile</em>',
+      client_tagline: 'Dual-residency review · 2026',
+      pill_role: 'FOUNDER · CEO',
+      pill_mx: 'MX · Tax resident',
+      pill_pt: 'PT · NHR applied',
+      pill_warn: '64 days from 183-PT trigger',
+      says_1: '<span class="emph">247 days in MX</span> YTD, <span class="emph">118 in PT</span>. You\'re <span class="emph">64 days</span> from the 183-PT test. If the client plans Portugal in September, the trigger fires in October.',
+      says_2: 'I ran <span class="tool-chip">spt_test()</span> and <span class="tool-chip">pt_nhr_eligibility()</span>. If the client holds the current pattern, NHR treatment applies for 10 years from approval. The call: <span class="emph">formalize NHR before September</span>, shorten MX presence in Q4.',
+      sc_eyebrow: 'SCENARIOS · SIDE BY SIDE',
+      sc_headline: 'Three treatments. <em>One clear winner.</em>',
+      sc_lede: 'Modeled side-by-side. Every number comes from a deterministic tool. Every rate cites its source.',
+      sc_a: 'MX resident',
+      sc_b: 'Portugal NHR',
+      sc_c: 'Split · 90/90',
+      sc_sub_a: 'Status quo',
+      sc_sub_b: 'Proposed',
+      sc_sub_c: 'Alternative',
+      sc_gross: 'Gross income', sc_eff: 'Effective rate', sc_take: 'Take-home', sc_soc: 'Social contrib.', sc_net: 'Net wealth · yr 1',
+      sc_winner: '✓ Recommended · $48.2k saved',
+      res_eyebrow: 'RESIDENCY · 365 DAYS',
+      res_headline: 'The <em>183</em> line is not a suggestion.',
+      res_lede: 'Each segment is a physical day. The gold line is the 183-day threshold. Crossing it in PT triggers tax residency.',
+      res_title: '2026 window — Case FD-0119',
+      res_yr: 'CURRENT YEAR',
+      memo_eyebrow: 'MEMO · ONE CLICK',
+      memo_headline: 'An <em>audit-grade</em> memo. <em>Ready to sign.</em>',
+      memo_lede: 'Any conversation becomes a branded memo with full audit log — every turn, every tool call, every citation, every token. The advisor signs; the agent backs it up.',
+      memo_brand: 'Fidelis',
+      memo_brand_em: 'Memo',
+      memo_sub: 'PREP. BY ADVISOR · REV. AGENT',
+      memo_h1: 'Executive summary',
+      memo_p1: 'Client should formalize NHR in Portugal before crossing 183 days. Recommended scenario: Split 90/90 with formal NHR entry in Q3 2026.',
+      memo_h2: 'Tax impact · year 1',
+      memo_foot: 'AUDITED · 23 CITATIONS · 8 TOOLS · 14 MIN',
+      memo_tokens_lbl: 'Tokens · turn',
+      memo_tokens: '<em>3,842</em>',
+      memo_cost_lbl: 'Session cost',
+      memo_cost: '<em>$0.47</em>',
+      memo_audit_lbl: 'Audit log',
+      memo_audit: '<em>✓</em> signable',
+      cta: 'Try Fidelis'
+    };
+
+    return `
+      <section class="ch-panel active" data-panel="client">
+        <div class="ch-eyebrow-xl">${t.client_eyebrow}</div>
+        <h2 class="ch-headline">${t.client_headline}</h2>
+        <p class="ch-lede">${t.client_lede}</p>
+        <div class="client-card">
+          <div class="client-avatar">FD</div>
+          <div class="client-meta">
+            <div class="client-name">${t.client_name_html}</div>
+            <div class="client-tagline">${t.client_tagline}</div>
+            <div class="client-row">
+              <span class="client-pill">${t.pill_role}</span>
+              <span class="client-pill ok">${t.pill_mx}</span>
+              <span class="client-pill ok">${t.pill_pt}</span>
+              <span class="client-pill warn">${t.pill_warn}</span>
+            </div>
+          </div>
+        </div>
+        <div class="agent-says">
+          <p>${t.says_1}</p>
+          <p>${t.says_2}</p>
+          <div class="citations">
+            <a class="citation"><span class="cite-n">[1]</span> IRS · Pub. 519</a>
+            <a class="citation"><span class="cite-n">[2]</span> SAT · LISR art. 9</a>
+            <a class="citation"><span class="cite-n">[3]</span> PT · DL 442-A/88 · NHR</a>
+            <a class="citation"><span class="cite-n">[4]</span> OECD · Model art. 4</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="scenarios">
+        <div class="ch-eyebrow-xl">${t.sc_eyebrow}</div>
+        <h2 class="ch-headline">${t.sc_headline}</h2>
+        <p class="ch-lede">${t.sc_lede}</p>
+        <div class="scenario-grid">
+          <div class="scenario-col">
+            <div class="sc-flag">🇲🇽</div>
+            <div class="sc-title">${t.sc_a}</div>
+            <div class="sc-sub">${t.sc_sub_a}</div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_gross}</span><span class="sc-val">$420,000</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_eff}</span><span class="sc-val">32.4%</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_take}</span><span class="sc-val">$283,920</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_soc}</span><span class="sc-val">$12,400</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_net}</span><span class="sc-val">$271,520</span></div>
+          </div>
+          <div class="scenario-col winner">
+            <div class="sc-flag">🇵🇹</div>
+            <div class="sc-title">${t.sc_b}</div>
+            <div class="sc-sub">${t.sc_sub_b}</div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_gross}</span><span class="sc-val">$420,000</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_eff}</span><span class="sc-val">20.0%</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_take}</span><span class="sc-val">$336,000</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_soc}</span><span class="sc-val">$16,200</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_net}</span><span class="sc-val">$319,800</span></div>
+            <div class="sc-winner-tag">${t.sc_winner}</div>
+          </div>
+          <div class="scenario-col">
+            <div class="sc-flag">🌐</div>
+            <div class="sc-title">${t.sc_c}</div>
+            <div class="sc-sub">${t.sc_sub_c}</div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_gross}</span><span class="sc-val">$420,000</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_eff}</span><span class="sc-val">26.1%</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_take}</span><span class="sc-val">$310,380</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_soc}</span><span class="sc-val">$14,300</span></div>
+            <div class="sc-row"><span class="sc-lbl">${t.sc_net}</span><span class="sc-val">$296,080</span></div>
+          </div>
+        </div>
+        <div class="agent-says">
+          <p>Tool chain: <span class="tool-chip">mx_isr_brackets()</span> <span class="tool-chip">pt_nhr_rate()</span> <span class="tool-chip">totalization()</span> <span class="tool-chip">spt_test()</span>.</p>
+          <p>${isEs ? 'Recomendación asume NHR aprobado Q3. Sensibilidad: ±4.1% por cambio en asignación días.' : 'Recommendation assumes NHR approval Q3. Sensitivity: ±4.1% per day-allocation shift.'}</p>
+          <div class="citations">
+            <a class="citation"><span class="cite-n">[1]</span> SAT · ISR art. 152</a>
+            <a class="citation"><span class="cite-n">[2]</span> PT · NHR rate · CIRS</a>
+            <a class="citation"><span class="cite-n">[3]</span> MX-PT · DTC 1999</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="residency">
+        <div class="ch-eyebrow-xl">${t.res_eyebrow}</div>
+        <h2 class="ch-headline">${t.res_headline}</h2>
+        <p class="ch-lede">${t.res_lede}</p>
+        <div class="residency-wrap">
+          <div class="residency-title">
+            <h4>${t.res_title}</h4>
+            <span class="yr">${t.res_yr}</span>
+          </div>
+          <div class="residency-strip" id="resStrip">
+            <div class="residency-seg mx" style="width: 18%"></div>
+            <div class="residency-seg pt" style="width: 8%"></div>
+            <div class="residency-seg mx" style="width: 14%"></div>
+            <div class="residency-seg us" style="width: 4%"></div>
+            <div class="residency-seg mx" style="width: 22%"></div>
+            <div class="residency-seg pt" style="width: 14%"></div>
+            <div class="residency-seg mx" style="width: 8%"></div>
+            <div class="residency-seg pt" style="width: 12%"></div>
+            <div class="residency-line183"></div>
+          </div>
+          <div class="residency-months">
+            <span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span>
+            <span>J</span><span>A</span><span>S</span><span>O</span><span>N</span><span>D</span>
+          </div>
+          <div class="residency-legend">
+            <div class="leg-item mx"><span class="sw"></span>MX <span class="cnt">247</span></div>
+            <div class="leg-item pt"><span class="sw"></span>PT <span class="cnt">118</span></div>
+            <div class="leg-item us"><span class="sw"></span>US <span class="cnt">14</span></div>
+          </div>
+        </div>
+        <div class="agent-says">
+          <p>${isEs ? 'Línea 183 cruzada en PT el día <span class="emph">296</span>. Si NHR se aprueba antes, la exposición se limita a 20% flat. Si no, tasa progresiva hasta 48%.' : 'PT 183 line crosses on day <span class="emph">296</span>. If NHR is approved first, exposure caps at 20% flat. If not, progressive rate up to 48%.'}</p>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="memo">
+        <div class="ch-eyebrow-xl">${t.memo_eyebrow}</div>
+        <h2 class="ch-headline">${t.memo_headline}</h2>
+        <p class="ch-lede">${t.memo_lede}</p>
+        <div class="memo-grid">
+          <div class="memo-preview">
+            <div class="memo-brand">${t.memo_brand} <em>${t.memo_brand_em}</em></div>
+            <div class="memo-sub">${t.memo_sub}</div>
+            <div class="memo-h">${t.memo_h1}</div>
+            <div class="memo-p">${t.memo_p1}</div>
+            <div class="memo-h">${t.memo_h2}</div>
+            <div class="memo-num"><span>${t.sc_take} · MX</span><strong>$283,920</strong></div>
+            <div class="memo-num"><span>${t.sc_take} · PT NHR</span><strong>$336,000</strong></div>
+            <div class="memo-num"><span>Δ</span><strong style="color: var(--accent);">+ $52,080</strong></div>
+            <div class="memo-foot">${t.memo_foot}</div>
+          </div>
+          <div class="memo-side">
+            <div class="memo-stat">
+              <div class="memo-stat-lbl">${t.memo_tokens_lbl}</div>
+              <div class="memo-stat-val">${t.memo_tokens}</div>
+            </div>
+            <div class="memo-stat">
+              <div class="memo-stat-lbl">${t.memo_cost_lbl}</div>
+              <div class="memo-stat-val">${t.memo_cost}</div>
+            </div>
+            <div class="memo-stat">
+              <div class="memo-stat-lbl">${t.memo_audit_lbl}</div>
+              <div class="memo-stat-val">${t.memo_audit}</div>
+            </div>
+            <a class="ch-cta" href="#" target="_blank" rel="noopener">
+              <span>${t.cta}</span>
+              <span class="arr">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function partnerPanels(isEs) {
+    const t = isEs ? {
+      prop_eyebrow: 'PROPIEDADES · RED DEL PORTAFOLIO',
+      prop_headline: 'Dos propiedades <em>vivas</em>. El portafolio, <em>por venir.</em>',
+      prop_lede: 'Selecciona la propiedad. El portal conoce tarifas, disponibilidad, y la gramática de cada casa.',
+      prop1_name: 'Papaya Playa', prop1_sub: 'TULUM · QUINTANA ROO', prop1_meta: '22 habitaciones · DESDE $480/N',
+      prop2_name: 'Casa Marea Alta', prop2_sub: 'SAGRES · ALGARVE (Q4)', prop2_meta: '14 habitaciones · DESDE €520/N',
+      prop3_name: 'Draft · Santorini',  prop3_sub: 'OÍA · GRECIA', prop3_meta: 'por venir',
+      prop4_name: 'Draft · Marrakech',  prop4_sub: 'MEDINA · MARRUECOS', prop4_meta: 'por venir',
+      prop5_name: 'Draft · Ubud',       prop5_sub: 'BALI · INDONESIA', prop5_meta: 'por venir',
+      prop6_name: '+ 5 más', prop6_sub: 'RED DEL PORTAFOLIO', prop6_meta: 'alcance completo',
+      q_eyebrow: 'COTIZACIÓN · EN TIEMPO REAL',
+      q_headline: 'Cotiza en <em>minutos</em>. Envía <em>con estilo</em>.',
+      q_lede: 'Cuatro campos. Una liga. El cliente abre la propuesta y ve exactamente la voz de Marea — con tu comisión, tu nombre, tu relación.',
+      q_dates: 'Fechas', q_guests: 'Huéspedes', q_room: 'Habitación', q_addons: 'Añadidos',
+      q_room_opts: ['Suite jardín', 'Suite cenote', 'Casa completa'],
+      q_addon_opts: ['Ritual de bienvenida', 'Chef privado', 'Sesión temazcal', 'Ninguno'],
+      q_nights: '5 noches', q_rate: 'Tarifa/noche', q_subtotal: 'Subtotal',
+      q_service: 'Servicio · 12%', q_taxes: 'Impuestos', q_total: 'Total · cliente',
+      q_commission: 'Tu comisión · 14%',
+      q_send: 'Enviar al cliente',
+      cp_eyebrow: 'VISTA DEL CLIENTE',
+      cp_headline: 'Lo que tu cliente recibe. <em>Tu comisión, invisible.</em>',
+      cp_lede: 'Una sola liga. Marea saluda al cliente por nombre, responde en su idioma, conoce las preferencias. Tu relación queda intacta.',
+      cp_card_title: 'Bienvenido a <em>Papaya Playa</em>, Daniel.',
+      cp_card_body: 'Sofia te envió esta propuesta. La preparé con su ayuda — 5 noches en Suite cenote del 14 al 19 de septiembre, con ritual de bienvenida y cena privada la primera noche. ¿Hablamos del detalle?',
+      cp_meta: 'MAREA · RESPONDIENDO EN ES · 2:14 AM',
+      com_eyebrow: 'COMISIONES · TRAZABILIDAD TOTAL',
+      com_headline: 'Cada peso. Cada noche. <em>Contado.</em>',
+      com_lede: 'Comisión en tiempo real. Confirmada al check-in, pagada al check-out. Sin conciliación, sin disputas.',
+      com_pending_lbl: 'Pendiente', com_pending: '<em>$2,184</em>',
+      com_cleared_lbl: 'Cobrada · mes', com_cleared: '<em>$18,730</em>',
+      com_ytd_lbl: 'YTD · 2026', com_ytd: '<em>$104,240</em>',
+      com_pending_sub: '3 reservas en estadía',
+      com_cleared_sub: '12 reservas liquidadas',
+      com_ytd_sub: '47 reservas · 286 noches',
+      cta: 'Onboard tu agencia'
+    } : {
+      prop_eyebrow: 'PROPERTIES · PORTFOLIO NETWORK',
+      prop_headline: 'Two properties <em>live</em>. The portfolio, <em>ahead.</em>',
+      prop_lede: 'Pick the property. The portal knows its rates, availability, and the grammar of every house.',
+      prop1_name: 'Papaya Playa', prop1_sub: 'TULUM · QUINTANA ROO', prop1_meta: '22 rooms · FROM $480/N',
+      prop2_name: 'Casa Marea Alta', prop2_sub: 'SAGRES · ALGARVE (Q4)', prop2_meta: '14 rooms · FROM €520/N',
+      prop3_name: 'Draft · Santorini', prop3_sub: 'OÍA · GREECE', prop3_meta: 'ahead',
+      prop4_name: 'Draft · Marrakech', prop4_sub: 'MEDINA · MOROCCO', prop4_meta: 'ahead',
+      prop5_name: 'Draft · Ubud',      prop5_sub: 'BALI · INDONESIA', prop5_meta: 'ahead',
+      prop6_name: '+ 5 more', prop6_sub: 'PORTFOLIO NETWORK', prop6_meta: 'full reach',
+      q_eyebrow: 'QUOTE · LIVE',
+      q_headline: 'Quote in <em>minutes</em>. Send <em>in your voice</em>.',
+      q_lede: 'Four fields. One link. Your client opens the proposal and gets exactly Marea\'s voice — with your commission, your name, your relationship.',
+      q_dates: 'Dates', q_guests: 'Guests', q_room: 'Room', q_addons: 'Add-ons',
+      q_room_opts: ['Garden suite', 'Cenote suite', 'Whole house'],
+      q_addon_opts: ['Welcome ritual', 'Private chef', 'Temazcal session', 'None'],
+      q_nights: '5 nights', q_rate: 'Rate/night', q_subtotal: 'Subtotal',
+      q_service: 'Service · 12%', q_taxes: 'Taxes', q_total: 'Total · client',
+      q_commission: 'Your commission · 14%',
+      q_send: 'Send to client',
+      cp_eyebrow: 'CLIENT PREVIEW',
+      cp_headline: 'What your client receives. <em>Your commission, invisible.</em>',
+      cp_lede: 'One link. Marea greets the client by name, answers in their language, remembers preferences. Your relationship stays intact.',
+      cp_card_title: 'Welcome to <em>Papaya Playa</em>, Daniel.',
+      cp_card_body: 'Sofia sent you this proposal. I prepared it with her — 5 nights in the Cenote suite from Sept 14 to 19, with welcome ritual and private dinner the first night. Shall we walk through it?',
+      cp_meta: 'MAREA · ANSWERING IN EN · 2:14 AM',
+      com_eyebrow: 'COMMISSION · FULL TRACE',
+      com_headline: 'Every dollar. Every night. <em>Counted.</em>',
+      com_lede: 'Commission tracks live. Confirmed at check-in, paid at check-out. No reconciliation, no disputes.',
+      com_pending_lbl: 'Pending', com_pending: '<em>$2,184</em>',
+      com_cleared_lbl: 'Cleared · month', com_cleared: '<em>$18,730</em>',
+      com_ytd_lbl: 'YTD · 2026', com_ytd: '<em>$104,240</em>',
+      com_pending_sub: '3 bookings in-stay',
+      com_cleared_sub: '12 bookings settled',
+      com_ytd_sub: '47 bookings · 286 nights',
+      cta: 'Onboard your agency'
+    };
+
+    return `
+      <section class="ch-panel active" data-panel="properties">
+        <div class="ch-eyebrow-xl">${t.prop_eyebrow}</div>
+        <h2 class="ch-headline">${t.prop_headline}</h2>
+        <p class="ch-lede">${t.prop_lede}</p>
+        <div class="property-grid">
+          <div class="property-card selected"><div class="prop-name">${t.prop1_name}</div><div class="prop-sub">${t.prop1_sub}</div><div class="prop-meta">${t.prop1_meta}</div></div>
+          <div class="property-card"><div class="prop-name">${t.prop2_name}</div><div class="prop-sub">${t.prop2_sub}</div><div class="prop-meta">${t.prop2_meta}</div></div>
+          <div class="property-card draft"><div class="prop-name">${t.prop3_name}</div><div class="prop-sub">${t.prop3_sub}</div><div class="prop-meta">${t.prop3_meta}</div></div>
+          <div class="property-card draft"><div class="prop-name">${t.prop4_name}</div><div class="prop-sub">${t.prop4_sub}</div><div class="prop-meta">${t.prop4_meta}</div></div>
+          <div class="property-card draft"><div class="prop-name">${t.prop5_name}</div><div class="prop-sub">${t.prop5_sub}</div><div class="prop-meta">${t.prop5_meta}</div></div>
+          <div class="property-card draft"><div class="prop-name">${t.prop6_name}</div><div class="prop-sub">${t.prop6_sub}</div><div class="prop-meta">${t.prop6_meta}</div></div>
+        </div>
+        <div class="agent-says">
+          <p>${isEs ? 'Seleccionaste <span class="emph">Papaya Playa</span>. Tarifas al día, disponibilidad sincronizada, tratamiento de agente preferente activo.' : 'You picked <span class="emph">Papaya Playa</span>. Rates current, availability synced, preferred-agent treatment active.'}</p>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="quote">
+        <div class="ch-eyebrow-xl">${t.q_eyebrow}</div>
+        <h2 class="ch-headline">${t.q_headline}</h2>
+        <p class="ch-lede">${t.q_lede}</p>
+        <div class="quote-builder">
+          <div class="quote-form">
+            <div class="quote-field">
+              <label>${t.q_dates}</label>
+              <input type="text" value="Sep 14 → Sep 19, 2026" readonly />
+            </div>
+            <div class="quote-field">
+              <label>${t.q_guests}</label>
+              <input type="text" value="2 adults" readonly />
+            </div>
+            <div class="quote-field">
+              <label>${t.q_room}</label>
+              <select>
+                ${t.q_room_opts.map((o,i) => `<option ${i===1?'selected':''}>${o}</option>`).join('')}
+              </select>
+            </div>
+            <div class="quote-field">
+              <label>${t.q_addons}</label>
+              <select>
+                ${t.q_addon_opts.map((o,i) => `<option ${i===0?'selected':''}>${o}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="quote-summary">
+            <div class="quote-sum-row"><span class="lbl">${t.q_nights}</span><span class="val">5 × $620</span></div>
+            <div class="quote-sum-row"><span class="lbl">${t.q_rate}</span><span class="val">$620</span></div>
+            <div class="quote-sum-row"><span class="lbl">${t.q_subtotal}</span><span class="val">$3,100</span></div>
+            <div class="quote-sum-row"><span class="lbl">${t.q_service}</span><span class="val">$372</span></div>
+            <div class="quote-sum-row"><span class="lbl">${t.q_taxes}</span><span class="val">$295</span></div>
+            <div class="quote-sum-row big"><span class="lbl">${t.q_total}</span><span class="val">$3,767</span></div>
+            <div class="quote-sum-row commission"><span class="lbl">${t.q_commission}</span><span class="val">$434</span></div>
+          </div>
+        </div>
+        <div class="agent-says" style="margin-top: 24px;">
+          <p>${isEs ? 'Cotización generada. Liga de cliente lista en <span class="emph">marea.link/q/SR-0119</span>. Caducidad: 7 días.' : 'Quote generated. Client link ready at <span class="emph">marea.link/q/SR-0119</span>. Expires in 7 days.'}</p>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="client">
+        <div class="ch-eyebrow-xl">${t.cp_eyebrow}</div>
+        <h2 class="ch-headline">${t.cp_headline}</h2>
+        <p class="ch-lede">${t.cp_lede}</p>
+        <div class="client-card" style="grid-template-columns: 72px 1fr;">
+          <div class="client-avatar" style="width: 56px; height: 56px; font-size: 20px;">M</div>
+          <div class="client-meta">
+            <div class="client-name" style="font-size: 22px;">${t.cp_card_title}</div>
+            <p style="font-family: Inter; font-size: 13px; color: var(--text-mute); line-height: 1.6; margin: 4px 0 0;">${t.cp_card_body}</p>
+            <div class="client-tagline" style="margin-top: 10px;">${t.cp_meta}</div>
+          </div>
+        </div>
+        <div class="agent-says">
+          <p>${isEs ? 'Marea responde directo al cliente en su idioma. Cuando tengan duda, tú ves el hilo — no tienes que estar despierto.' : 'Marea replies directly to the client in their language. When they have a question, you see the thread — you don\'t have to stay up.'}</p>
+        </div>
+      </section>
+
+      <section class="ch-panel" data-panel="commission">
+        <div class="ch-eyebrow-xl">${t.com_eyebrow}</div>
+        <h2 class="ch-headline">${t.com_headline}</h2>
+        <p class="ch-lede">${t.com_lede}</p>
+        <div class="commission-ledger">
+          <div class="led-card">
+            <div class="led-lbl">${t.com_pending_lbl}</div>
+            <div class="led-val">${t.com_pending}</div>
+            <div class="led-sub">${t.com_pending_sub}</div>
+          </div>
+          <div class="led-card">
+            <div class="led-lbl">${t.com_cleared_lbl}</div>
+            <div class="led-val">${t.com_cleared}</div>
+            <div class="led-sub">${t.com_cleared_sub}</div>
+          </div>
+          <div class="led-card">
+            <div class="led-lbl">${t.com_ytd_lbl}</div>
+            <div class="led-val">${t.com_ytd}</div>
+            <div class="led-sub">${t.com_ytd_sub}</div>
+          </div>
+        </div>
+        <a class="ch-cta" href="#"><span>${t.cta}</span><span class="arr">→</span></a>
+      </section>
+    `;
   }
 
   const INTENT_PROMPTS = {
     en: {
       guest: [
-        { scenario: 'story', text: "Tell me Emilio's story." },
+        { scenario: 'story', text: "Tell me the origin story." },
         { scenario: 'portugal', text: "I'm planning Portugal in September with my girlfriend." },
         { scenario: 'scale', text: "What can Marea do for me?" }
       ],
       agent: [
         { scenario: 'scale', text: "Walk me through the Partner Portal." },
         { scenario: 'portugal', text: "Can I quote Algarve for a client?" },
-        { scenario: 'story', text: "Who is Emilio Heredia?" }
+        { scenario: 'story', text: "Who built this ecosystem?" }
       ],
       tax: [
         { scenario: 'scale', text: "How does Fidelis fit into this ecosystem?" },
         { scenario: 'portugal', text: "Portugal tax considerations for a founder?" },
-        { scenario: 'story', text: "What's Emilio's residency profile?" }
+        { scenario: 'story', text: "Show me the sample residency case." }
       ],
       curious: [
-        { scenario: 'story', text: "Tell me Emilio's story." },
+        { scenario: 'story', text: "Tell me the origin story." },
         { scenario: 'scale', text: "What is Lyra, actually?" },
         { scenario: 'portugal', text: "Why Portugal in the vision?" }
       ]
     },
     es: {
       guest: [
-        { scenario: 'story', text: "Cuéntame la historia de Emilio." },
+        { scenario: 'story', text: "Cuéntame la historia origen." },
         { scenario: 'portugal', text: "Planeo Portugal en septiembre con mi novia." },
         { scenario: 'scale', text: "¿Qué puede hacer Marea por mí?" }
       ],
       agent: [
         { scenario: 'scale', text: "Guíame por el Portal de Socios." },
         { scenario: 'portugal', text: "¿Puedo cotizar Algarve para un cliente?" },
-        { scenario: 'story', text: "¿Quién es Emilio Heredia?" }
+        { scenario: 'story', text: "¿Quién construyó este ecosistema?" }
       ],
       tax: [
         { scenario: 'scale', text: "¿Cómo encaja Fidelis en este ecosistema?" },
         { scenario: 'portugal', text: "¿Consideraciones fiscales en Portugal?" },
-        { scenario: 'story', text: "¿Cuál es el perfil de residencia de Emilio?" }
+        { scenario: 'story', text: "Muéstrame el caso de residencia de muestra." }
       ],
       curious: [
-        { scenario: 'story', text: "Cuéntame la historia de Emilio." },
+        { scenario: 'story', text: "Cuéntame la historia origen." },
         { scenario: 'scale', text: "¿Qué es Lyra, en realidad?" },
         { scenario: 'portugal', text: "¿Por qué Portugal en la visión?" }
       ]
     },
     de: {
       guest: [
-        { scenario: 'story', text: "Erzähl mir Emilios Geschichte." },
+        { scenario: 'story', text: "Erzähl mir die Ursprungsgeschichte." },
         { scenario: 'portugal', text: "Ich plane im September Portugal mit meiner Freundin." },
         { scenario: 'scale', text: "Was kann Marea für mich tun?" }
       ],
       agent: [
-        { scenario: 'scale', text: "Führ mich durch das Partner Portal." },
+        { scenario: 'scale', text: "Führ mich durch das Partner-Portal." },
         { scenario: 'portugal', text: "Kann ich Algarve für einen Kunden anbieten?" },
-        { scenario: 'story', text: "Wer ist Emilio Heredia?" }
+        { scenario: 'story', text: "Wer hat dieses Ökosystem gebaut?" }
       ],
       tax: [
         { scenario: 'scale', text: "Wie passt Fidelis in dieses Ökosystem?" },
         { scenario: 'portugal', text: "Steuern in Portugal für einen Gründer?" },
-        { scenario: 'story', text: "Wie sieht Emilios Aufenthaltsprofil aus?" }
+        { scenario: 'story', text: "Zeig mir den Muster-Aufenthaltsfall." }
       ],
       curious: [
-        { scenario: 'story', text: "Erzähl mir Emilios Geschichte." },
+        { scenario: 'story', text: "Erzähl mir die Ursprungsgeschichte." },
         { scenario: 'scale', text: "Was ist Lyra eigentlich?" },
         { scenario: 'portugal', text: "Warum Portugal in der Vision?" }
       ]
@@ -3217,22 +4571,14 @@
   }
   window.__flSkipAll = flSkipAll;
 
-  (function initLocaleFromLyra() {
-    const params = new URLSearchParams(location.search);
-    const qs = params.get('lang');
-    let stored = null;
-    try { stored = localStorage.getItem('lyra.locale'); } catch (e) {}
-    const pick = (qs && I18N[qs]) ? qs : (stored && I18N[stored] ? stored : null);
-    if (pick) setLang(pick);
-  })();
-
+  // Initial text-animation pass (EN baked into HTML — no setLang yet)
   applyTextAnimations();
   initMapInteractions();
 
   /* ============================================================
      DEMO MODE — query-string shortcuts for in-person demos
      ?demo=1          → jump straight to Marea (skip scroll intro)
-     ?demo=story      → jump + auto-run "Emilio's story" scenario
+     ?demo=story      → jump + auto-run "origin story" scenario
      ?demo=portugal   → jump + auto-run "Portugal" scenario
      ?demo=scale      → jump + auto-run "what can Marea do" scenario
      ?lang=es         → boot in Spanish
