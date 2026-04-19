@@ -1,0 +1,407 @@
+---
+/**
+ * /tide/concierge — Tide · Concierge sub-agent product page.
+ *
+ * Concierge = the hotel's voice across email, SMS, WhatsApp.
+ * The funnel underneath Marea — if the guest writes in, Concierge
+ * answers in the property's voice in the guest's language.
+ *
+ * Voice: cinematic · coastal · warm (inherits Tide).
+ * Accent: #b8926a (Tide gold), #d4a574 for text.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const tide = getHolding("tide")!;
+const agent = tide.agents.find((a) => a.slug === "concierge")!;
+const related = tide.agents.filter((a) => a.slug !== "concierge" && a.status === "live").slice(0, 5);
+---
+
+<AtlasLayout
+  title="Concierge — Tide · LYRA"
+  description="The hotel's voice across email, SMS, WhatsApp. Trilingual, 24/7, in the property's tone. Marea is the terminal; Concierge is the voice."
+  active="tide"
+>
+  <!-- ────────────── HERO ────────────── -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1100px 600px at 18% 24%, rgba(184, 146, 106, 0.12), transparent 60%), radial-gradient(760px 480px at 82% 72%, rgba(74, 110, 184, 0.06), transparent 62%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/tide" class="hover:text-white transition">Tide</a>
+        <span>/</span>
+        <span class="text-ink-300">Concierge</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Agent · 01.concierge</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">PAGE · CHAPTER</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Concierge
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        The voice that never sleeps.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Marea is the hotel's terminal. Concierge is the hotel's voice —
+        the one that answers the inbound WhatsApp at 2:14 a.m., the
+        email at 6, and the walk-in at noon without dropping a thread.
+        Trilingual, in your property's tone, across every channel
+        your guests actually use.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/join" class="btn-primary">Request access →</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Coverage</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">24 / 7</div>
+        </div>
+        <div>
+          <div class="label-xs">Languages</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">EN · ES · PT</div>
+        </div>
+        <div>
+          <div class="label-xs">Channels</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">Email · SMS · WhatsApp · Web</div>
+        </div>
+        <div>
+          <div class="label-xs">Target operator</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">P1 · Design Hotelier</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── WHY A SUB-AGENT GETS ITS OWN PAGE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Why Concierge is its own product</div>
+          <h2 class="section-title">Sell Concierge, you sell Marea.</h2>
+        </div>
+        <div class="md:col-span-3">
+          <p class="text-base leading-relaxed text-ink-200">
+            Marea is the visible flagship — the terminal for a design-forward
+            hotel group. Concierge is the surface the guest actually touches.
+            If the guest's 11 p.m. "is the beach bar still open?" goes
+            unanswered, Marea's numbers don't matter.
+          </p>
+          <p class="mt-6 text-base leading-relaxed text-ink-300">
+            Concierge is sold standalone for single-property owners who
+            can't yet run the full stack, and bundled into Shore Pack for
+            groups running Marea in full. Same engine. Same memory.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── BEFORE / AFTER ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What Concierge replaces</div>
+      <h2 class="page-title">Four inboxes, three staff, one thread missed.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        Most independent hotels run guest comms out of a personal phone,
+        a shared inbox, a WhatsApp group, and a printed VIP binder. The
+        thread that drops is the thread that costs the repeat stay.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before · how guests get a reply</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Property email + owner personal phone + front desk WhatsApp</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Shift change at 11 p.m. · 2 a.m. message answered at 7 a.m.</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>VIP preferences on a printed binder the night manager never sees</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Spanish guest, English reply, stiff and off</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Repeat guest treated like a stranger on check-in</li>
+          </ul>
+        </div>
+        <div class="surface p-8" style="border-color: color-mix(in oklab, #b8926a 30%, rgba(255,255,255,0.06));">
+          <div class="label-xs text-white">After · Concierge</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style="color:#d4a574;">●</span>One unified queue · email, SMS, WhatsApp, web chat</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#d4a574;">●</span>Always on · responds in the guest's language in seconds</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#d4a574;">●</span>Guestbook lookup · prior stays, dietary, allergies, arrival notes</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#d4a574;">●</span>Property voice tuned once · reads as the house, not a bot</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#d4a574;">●</span>Escalates to front desk when it needs a human · with context</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── HOW IT WORKS ────────────── -->
+  <section id="how" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">How it works</div>
+      <h2 class="page-title">Listen · Recognize · Respond · Escalate.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="surface p-6">
+          <div class="label-xs text-white">01 · Listen</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Every channel — email, SMS, WhatsApp Business, web chat, OTA
+            messages — routed into one queue. Language detected,
+            intent tagged, urgency flagged.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">02 · Recognize</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Guestbook pull. Prior stays, room preferences, dietary,
+            anniversaries, allergies, whether last visit ended with a
+            gripe that needs repairing.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">03 · Respond</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            In the property's voice — tuned once on check-in notes and
+            past replies — in the guest's language. Never "please be
+            advised." Never "as per my previous message."
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">04 · Escalate</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Requests that need a human — allergies, complaints, payment
+            disputes — go to front desk with the full thread and
+            Guestbook context. No re-asking.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── TERMINAL ────────────── -->
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Terminal</div>
+          <h2 class="section-title">Saturday afternoon, property H-0031.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            14-room coastal hotel. Two front-desk staff. Concierge holds
+            the room while they check in a family of six.
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div class="surface corner-ticks p-8"
+               style="border-color: color-mix(in oklab, #b8926a 30%, rgba(255,255,255,0.06));">
+            <div class="flex items-center justify-between">
+              <span class="label-xs text-white">CONCIERGE · PROPERTY H-0031 · SAT 14:12 LOCAL</span>
+              <span class="tag tag-accent">● live</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+$ lyra concierge queue
+
+┌─ Inbound · last 30 min ──────────────────────
+│ 14:12 · WhatsApp · ES · returning guest
+│ 14:08 · Email    · EN · OTA booking question
+│ 14:04 · SMS      · PT · dinner reservation
+│ 13:58 · Web      · EN · rate inquiry
+│ 13:54 · WhatsApp · EN · VIP · anniversary
+└──────────────────────────────────────────────
+
+$ lyra concierge open --last
+
+  From: +34 6•• ••• 472  (Gabriela M.)
+  Channel: WhatsApp · Language: ES
+  Guestbook: 3 prior stays (2024 × 2, 2025 × 1)
+  Notes: vegan · prefers sea-view · anniversary Oct 12
+
+  ▸ "Hola! Llegamos mañana a las 11. ¿Hay
+     chance de early check-in y reservar mesa
+     para la cena?"
+
+$ lyra concierge draft
+
+  → Reply drafted · ES · property voice
+  ▸ "Bienvenida de vuelta, Gabriela. Tenemos
+     tu habitación 204 (sea-view) lista a las
+     11. Reservé mesa para 2 en Costera a las
+     20:00 — menú vegano ya anotado. Hasta
+     mañana."
+
+  <span style="color:#d4a574;">●</span> Front desk flagged · confirm 204 cleanup by 10:30
+  <span style="color:#d4a574;">●</span> Costera · reservation routed · Resy
+  <span style="color:#d4a574;">●</span> Guestbook · "anniversary upgrade considered" logged
+
+$ lyra concierge send --approve
+
+  → Sent  ·  14:12:38  ·  ack 3s
+  → Thread linked to reservation R-88412
+
+  <span class="text-ink-500">// static preview. live concierge lands with the first property.</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── USE CASE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Use case</div>
+          <h2 class="section-title">A 14-room hotel, two front-desk staff.</h2>
+          <p class="mt-4 text-sm text-ink-400">Anonymized. P1 profile. Concierge as standalone product.</p>
+        </div>
+        <div class="md:col-span-3 space-y-6">
+          <div class="surface p-6">
+            <div class="label-xs">00 · The setup</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Independent coastal hotel, 14 rooms, two front-desk staff
+              on rotating shifts. 60% of inbound in Spanish and Portuguese.
+              Repeat guests handled by owner's personal phone because
+              that's where the relationship lives.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">01 · Week one</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Concierge ingests a year of past replies. Voice tuned in
+              a 40-minute call. Goes live on WhatsApp Business and the
+              property inbox. 73% of inbound handled end-to-end · the
+              rest routed to front desk with context.
+            </p>
+          </div>
+          <div class="surface p-6" style="border-color: color-mix(in oklab, #b8926a 26%, rgba(255,255,255,0.06));">
+            <div class="label-xs text-white">02 · Month six</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Owner off the personal phone. Repeat-guest recognition up.
+              Direct bookings up 11 points (guests message ahead — and
+              Concierge books them direct). Front desk spends the day
+              with walk-ins, not the inbox.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── PRICING ────────────── -->
+  <section id="pricing" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Concierge</div>
+      <h2 class="page-title">Solo property, Shore Pack, or portfolio.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        Single-property owners buy Concierge standalone at PAGE. Groups
+        running Marea take Shore Pack — it's the tier where Concierge
+        stops being a line item and becomes the voice of the property.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="surface p-8">
+          <div class="flex items-start justify-between">
+            <div class="label-xs">PAGE · Concierge solo</div>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$149 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Single property · one voice · unlimited guest threads
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8 md:-translate-y-2"
+             style="border-color: color-mix(in oklab, #b8926a 36%, rgba(255,255,255,0.06));">
+          <div class="flex items-start justify-between">
+            <div class="label-xs">CHAPTER · Shore Pack</div>
+            <span class="tag tag-accent">Recommended</span>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$1,499 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Marea + Concierge + Guestbook + Scout · one property, full stack
+          </p>
+          <a href="/join" class="btn-primary mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8">
+          <div class="flex items-start justify-between">
+            <div class="label-xs">VOLUME · Portfolio</div>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$4,990 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            3–20 properties · shared voice · +2% GRR uplift
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── INTEGRATIONS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Integrations</div>
+      <h2 class="section-title">Reads the message. Writes the reply.</h2>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {[
+          "WhatsApp Business", "Twilio SMS", "Gmail", "Outlook", "Intercom",
+          "Cloudbeds", "Mews", "Opera PMS", "OpenTable", "Resy",
+          "Guestbook (native)", "Marea (native)"
+        ].map((n) => (
+          <div class="surface px-4 py-3 text-center">
+            <div class="font-mono text-[11px] tracking-wider text-ink-300">{n}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── RELATED AGENTS IN TIDE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">More inside Tide</div>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {related.map((a) => (
+          <AgentTile agent={a} holdingSlug="tide" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CTA ────────────── -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Design partner cohort</div>
+          <h2 class="page-title">Concierge opens with three properties.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            We tune the voice on 12 months of your past replies, go live
+            on one channel, and add the rest as you approve them. First
+            three properties keep CHAPTER pricing indefinitely.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <a href="/join" class="btn-primary">Apply →</a>
+          <a href="/tide/marea" class="btn-ghost">See Marea</a>
+          <a href="/tide" class="btn-link">Back to Tide →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

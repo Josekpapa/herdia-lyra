@@ -1,9 +1,234 @@
 ---
 /**
- * Herdia × Lyra entry: Marea (travel / hospitality) lives at /marea.html.
- * Fidelis editorial + tools: /fidelis, /agent, /tracker, etc.
+ * LYRA root — the Atlas landing.
+ *
+ * This is the new front door. The Marea cinematic demo still lives at
+ * /marea.html (surfaced as the Tide flagship). Fidelis workspace lives at
+ * /fidelis. Everything routes through this page.
  */
-export const prerender = true;
-const q = Astro.url.search;
-return Astro.redirect(`/marea.html${q}`, 307);
+import AtlasLayout from "../layouts/AtlasLayout.astro";
+import { HOLDINGS, BUNDLES, PERSONAS, CORE, totalLiveAgents, totalDraftAgents } from "../data/atlas";
+
+const live = totalLiveAgents();
+const draft = totalDraftAgents();
 ---
+
+<AtlasLayout
+  title="LYRA — a private network for the systems that run a founder's life."
+  description="LYRA: 8 holdings, 53 agents, one network. Hospitality · advisory · wealth · longevity · construction · legal · notary · education."
+  active="home"
+>
+  <!-- ────────────── HERO ────────────── -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div class="bg-grid absolute inset-0 opacity-60"></div>
+    <div class="hero-glow absolute inset-0 pointer-events-none"></div>
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-36">
+      <div class="kicker">LYRA · the operating layer</div>
+
+      <h1 class="mt-6 font-display text-[clamp(3rem,9vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Your <em class="italic-display">systems</em>,<br/>
+        on one <em class="italic-display">network</em>.
+      </h1>
+
+      <p class="mt-8 max-w-2xl text-lg leading-relaxed text-ink-200 lede">
+        LYRA is a private network of 8 holdings and {live} specialized agents that
+        operate a founder's entire surface — hospitality, wealth, law, notary,
+        construction, advisory, education, longevity — under one identity, one
+        memory, one invoice.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/atlas" class="btn-primary">Open the Atlas →</a>
+        <a href="/founders-day" class="btn-ghost">Founder's Day</a>
+        <a href="/agency" class="btn-link">Hire LYRA →</a>
+      </div>
+
+      <!-- Network stat strip -->
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Holdings</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">{HOLDINGS.length}</div>
+        </div>
+        <div>
+          <div class="label-xs">Live agents</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">{live}</div>
+        </div>
+        <div>
+          <div class="label-xs">Drafting</div>
+          <div class="mt-1 data-num text-3xl font-light text-ink-300">{draft}</div>
+        </div>
+        <div>
+          <div class="label-xs">Tiers</div>
+          <div class="mt-1 text-sm text-ink-200 font-mono">INDEX · PAGE · CHAPTER · VOLUME · ATLAS</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── HOLDINGS GRID ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="flex items-end justify-between">
+        <div>
+          <div class="kicker mb-2">The network</div>
+          <h2 class="page-title">Eight holdings, one <em>passport</em>.</h2>
+        </div>
+        <a href="/atlas" class="btn-link hidden sm:inline-flex">Full catalog →</a>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {HOLDINGS.map((h) => (
+          <a href={`/${h.slug}`} class="surface group p-6 transition hover:border-white/20 hover:bg-white/[0.02]">
+            <div class="flex items-center justify-between">
+              <span class="label-xs">{h.code}</span>
+              <span class="font-mono text-[11px] text-ink-500 group-hover:text-white transition">→</span>
+            </div>
+            <h3 class="mt-4 font-display text-3xl font-light tracking-tight text-white">{h.name}</h3>
+            <p class="mt-1 text-[13px] text-ink-400">{h.tagline}</p>
+            <div class="mt-6 hairline"></div>
+            <p class="mt-4 text-sm leading-relaxed text-ink-200 line-clamp-3">{h.thesis}</p>
+            <div class="mt-5 flex items-center gap-2">
+              <span class="tag tag-accent">● {h.agents.filter(a => a.status === "live").length} live</span>
+              {h.flagship && <span class="tag">{h.flagship.name}</span>}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CIRCLE-IN-CIRCLE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="grid grid-cols-1 gap-16 md:grid-cols-2 md:items-center">
+        <div>
+          <div class="kicker mb-4">Circle inside a circle</div>
+          <h2 class="page-title">An <em>agency</em> and a <em>marketplace</em>.</h2>
+          <p class="mt-6 text-base leading-relaxed text-ink-200 lede">
+            LYRA builds bespoke operating systems as an agency. Every engagement
+            becomes a listing in the Atlas marketplace. Agency revenue seeds the
+            catalog. Marketplace revenue compounds forever.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="/agency" class="btn-primary">Hire LYRA</a>
+            <a href="/atlas" class="btn-ghost">Browse Atlas</a>
+          </div>
+        </div>
+
+        <div class="surface-warm relative p-10 aspect-square grid place-items-center">
+          <!-- Concentric rings -->
+          <div class="absolute inset-6 rounded-full border border-white/10"></div>
+          <div class="absolute inset-20 rounded-full border border-white/12"></div>
+          <div class="absolute inset-32 rounded-full border border-white/16"></div>
+          <div class="relative text-center">
+            <div class="font-mono text-[10px] tracking-[0.3em] uppercase text-ink-400">outer</div>
+            <div class="mt-1 font-display text-2xl font-light text-white">LYRA · Agency</div>
+            <div class="mt-8 font-mono text-[10px] tracking-[0.3em] uppercase text-ink-400">inner</div>
+            <div class="mt-1 font-display text-2xl font-light text-white">LYRA · Atlas</div>
+            <div class="mt-8 font-mono text-[10px] tracking-[0.3em] uppercase text-ink-500">one flywheel</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CORE PLUMBING ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-2">Core plumbing</div>
+      <h2 class="page-title">Every agent runs on the <em>same five rails</em>.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">Invisible · non-negotiable · how LYRA stays LYRA.</p>
+
+      <div class="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {CORE.map((c) => (
+          <a href={`/${c.slug}`} class="surface group p-5 transition hover:border-white/20">
+            <div class="label-xs">Core</div>
+            <div class="mt-2 font-display text-xl font-light text-white">{c.name}</div>
+            <p class="mt-2 text-[13px] leading-relaxed text-ink-300">{c.blurb}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── PERSONAS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-2">We build for 7 people</div>
+      <h2 class="page-title">The <em>north-star</em> roster.</h2>
+
+      <div class="mt-12 overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="text-left text-ink-500">
+              <th class="label-xs py-3 pr-6">Code</th>
+              <th class="label-xs py-3 pr-6">Persona</th>
+              <th class="label-xs py-3 pr-6">Holding</th>
+              <th class="label-xs py-3 pr-6">Entry</th>
+              <th class="label-xs py-3 pr-6">3-yr LTV</th>
+            </tr>
+          </thead>
+          <tbody>
+            {PERSONAS.map((p) => (
+              <tr class="hairline-row">
+                <td class="py-4 pr-6 font-mono text-[11px] text-ink-400">{p.code}</td>
+                <td class="py-4 pr-6 text-ink-100">{p.name}</td>
+                <td class="py-4 pr-6 text-ink-300 font-mono text-[11px]">{p.holding}</td>
+                <td class="py-4 pr-6 text-ink-300">{p.entry}</td>
+                <td class="py-4 pr-6 text-ink-200 data-num">{p.ltv3y}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── BUNDLES TEASER ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="flex items-end justify-between">
+        <div>
+          <div class="kicker mb-2">Bundles</div>
+          <h2 class="page-title">Cross-holding <em>packages</em>.</h2>
+        </div>
+        <a href="/pricing" class="btn-link hidden sm:inline-flex">See pricing →</a>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {BUNDLES.slice(0, 6).map((b) => (
+          <div class="surface p-5">
+            <div class="flex items-center justify-between">
+              <div class="label-xs">{b.tier}</div>
+              <div class="font-mono text-[11px] text-ink-300">{b.price}</div>
+            </div>
+            <div class="mt-3 font-display text-xl font-light text-white">{b.name}</div>
+            <p class="mt-2 text-[13px] text-ink-400">
+              {b.includes.join(" · ")}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CTA ────────────── -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="surface-warm p-12 sm:p-20 text-center">
+        <div class="kicker mb-4">Access</div>
+        <h2 class="font-display text-[clamp(2rem,5vw,4rem)] font-light tracking-tight text-white">
+          The network is <em class="italic-display">invite-only</em>.
+        </h2>
+        <p class="mt-4 max-w-xl mx-auto text-base text-ink-200 leading-relaxed">
+          We're taking 21 design partners across 7 personas. Free CHAPTER tier
+          for 90 days. Monthly working sessions. You shape the product.
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center gap-3">
+          <a href="/join" class="btn-primary">Request access</a>
+          <a href="/founders-day" class="btn-ghost">24 hours on LYRA</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

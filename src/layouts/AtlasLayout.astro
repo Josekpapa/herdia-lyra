@@ -1,0 +1,185 @@
+---
+/**
+ * LYRA // ATLAS shell — the network-facing layout.
+ *
+ * Sits alongside the Fidelis Layout (which stays for /fidelis workspace).
+ * Every Atlas + holding page uses this. Branding: LYRA parent, sharp hairlines,
+ * Bloomberg-terminal register. No Fidelis nav — that lives on /fidelis.
+ */
+import "../styles/global.css";
+import LyraLanguageSwitcher from "../components/ui/LyraLanguageSwitcher.astro";
+import { HOLDINGS } from "../data/atlas";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Slug of the holding or top-level section to highlight in the nav ("atlas" | "tide" | ...). */
+  active?: string;
+}
+
+const {
+  title = "LYRA — the operating layer for a founder's systems.",
+  description = "LYRA is a private network of specialized agents across hospitality, advisory, wealth, longevity, construction, legal, notary, and education.",
+  active = "",
+} = Astro.props;
+
+// Primary nav — a condensed top row.
+const primaryNav = [
+  { href: "/atlas",   label: "Atlas",   code: "00", key: "atlas" },
+  { href: "/pricing", label: "Pricing", code: "96", key: "pricing" },
+  { href: "/agency",  label: "Agency",  code: "97", key: "agency" },
+  { href: "/join",    label: "Join",    code: "99", key: "join" },
+];
+
+const isActive = (key: string) => active === key;
+---
+
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://rsms.me/" />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+    />
+  </head>
+  <body class="min-h-full antialiased" data-page="app">
+    <!-- ──────────────────────────── HEADER ──────────────────────────── -->
+    <header class="relative z-20">
+      <div class="mx-auto flex max-w-[84rem] items-stretch justify-between gap-8 px-6">
+        <!-- Brand: LYRA wordmark + tagline -->
+        <a href="/" class="group flex items-center gap-3 py-5" aria-label="LYRA — home">
+          <span class="relative grid h-8 w-8 place-items-center">
+            <span class="absolute inset-0 rounded-[2px] border border-white/14 transition group-hover:border-white/32"></span>
+            <span class="font-mono text-[11px] tracking-[0.22em] text-white/85 group-hover:text-white">L</span>
+          </span>
+          <span class="flex flex-col leading-tight">
+            <span class="font-mono text-[10px] tracking-[0.34em] uppercase text-white/85">LYRA</span>
+            <span class="font-mono text-[9px] tracking-[0.22em] uppercase text-ink-400/80">
+              a private network
+            </span>
+          </span>
+        </a>
+
+        <!-- Holdings rail (horizontal) -->
+        <nav class="hidden items-stretch gap-5 lg:flex" aria-label="Holdings">
+          {HOLDINGS.map((h) => (
+            <a
+              href={`/${h.slug}`}
+              class:list={["nav-link text-[10.5px]", isActive(h.slug) && "is-active"]}
+              title={h.tagline}
+            >
+              <span class="mr-2 text-ink-500/70">{h.code}</span>
+              <span>{h.name}</span>
+            </a>
+          ))}
+        </nav>
+
+        <!-- Right side: primary nav + language -->
+        <div class="flex items-center gap-3 py-3 sm:gap-5">
+          <nav class="hidden items-stretch gap-4 md:flex" aria-label="Primary">
+            {primaryNav.map((item) => (
+              <a href={item.href} class:list={["nav-link", isActive(item.key) && "is-active"]}>
+                <span class="mr-2 text-ink-500/70">{item.code}</span>
+                <span>{item.label}</span>
+              </a>
+            ))}
+          </nav>
+          <LyraLanguageSwitcher />
+          <a href="/join" class="btn-primary hidden sm:inline-flex">Request access</a>
+        </div>
+      </div>
+      <div class="hairline-x"></div>
+    </header>
+
+    <!-- Ticker strip -->
+    <div class="lyra-unified-strip" aria-hidden="false">
+      <p class="lyra-unified-strip-inner">
+        LYRA · 8 holdings · 53 live agents · one passport · the operating layer for a founder's systems.
+      </p>
+    </div>
+
+    <!-- Mobile holdings rail -->
+    <div class="lg:hidden">
+      <div class="mx-auto flex max-w-[84rem] gap-4 overflow-x-auto px-6 py-3">
+        {HOLDINGS.map((h) => (
+          <a
+            href={`/${h.slug}`}
+            class:list={[
+              "whitespace-nowrap font-mono text-[10px] tracking-[0.22em] uppercase transition",
+              isActive(h.slug) ? "text-white" : "text-ink-400 hover:text-white"
+            ]}
+          >
+            <span class="text-ink-500/70 mr-1.5">{h.code}</span>{h.name}
+          </a>
+        ))}
+      </div>
+      <div class="hairline-x opacity-60"></div>
+    </div>
+
+    <main class="relative z-10">
+      <slot />
+    </main>
+
+    <!-- ──────────────────────────── FOOTER ──────────────────────────── -->
+    <footer class="relative z-10 mt-24">
+      <div class="hairline-x opacity-60"></div>
+      <div class="mx-auto max-w-[84rem] px-6 py-14">
+        <div class="grid grid-cols-1 gap-10 md:grid-cols-4">
+          <div class="md:col-span-1">
+            <div class="kicker mb-3">LYRA</div>
+            <p class="text-sm leading-relaxed text-ink-300 max-w-xs">
+              A private network for the systems that run a founder's life.
+              Agency builds the shelf. Atlas sells it forever.
+            </p>
+          </div>
+          <div>
+            <div class="label-xs mb-3">Holdings</div>
+            <ul class="space-y-1.5">
+              {HOLDINGS.map((h) => (
+                <li><a href={`/${h.slug}`} class="text-sm text-ink-300 hover:text-white transition">{h.name} · <span class="text-ink-500">{h.tagline}</span></a></li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <div class="label-xs mb-3">Network</div>
+            <ul class="space-y-1.5">
+              <li><a href="/atlas" class="text-sm text-ink-300 hover:text-white transition">Atlas catalog</a></li>
+              <li><a href="/pricing" class="text-sm text-ink-300 hover:text-white transition">Pricing</a></li>
+              <li><a href="/agency" class="text-sm text-ink-300 hover:text-white transition">Agency</a></li>
+              <li><a href="/founders-day" class="text-sm text-ink-300 hover:text-white transition">Founder's Day</a></li>
+              <li><a href="/field-notes" class="text-sm text-ink-300 hover:text-white transition">Field Notes</a></li>
+              <li><a href="/passport" class="text-sm text-ink-300 hover:text-white transition">Passport</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="label-xs mb-3">Access</div>
+            <ul class="space-y-1.5">
+              <li><a href="/join" class="text-sm text-ink-300 hover:text-white transition">Request access</a></li>
+              <li><a href="/agency" class="text-sm text-ink-300 hover:text-white transition">Hire LYRA</a></li>
+              <li><a href="/login" class="text-sm text-ink-300 hover:text-white transition">Sign in</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-500">
+            © {new Date().getFullYear()} LYRA · all entities are part of the LYRA operating group.
+          </span>
+          <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-500/70">
+            Built on Astro · one terminal
+          </span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

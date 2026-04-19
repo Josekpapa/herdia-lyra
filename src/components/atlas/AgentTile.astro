@@ -1,0 +1,46 @@
+---
+/**
+ * AgentTile — a single agent cell in the catalog / holding grid.
+ * Small, repeatable, deploys the .surface + .tag vocabulary.
+ */
+import type { Agent } from "../../data/atlas";
+
+interface Props {
+  agent: Agent;
+  holdingSlug: string;
+}
+
+const { agent, holdingSlug } = Astro.props;
+const href = `/${holdingSlug}/${agent.slug}`;
+const isLive = agent.status === "live";
+---
+
+<a
+  href={href}
+  class:list={[
+    "surface group relative block p-4 transition",
+    "hover:border-white/18 hover:bg-white/[0.015]",
+    !isLive && "opacity-70",
+  ]}
+>
+  <div class="flex items-start justify-between gap-3">
+    <div class="min-w-0 flex-1">
+      <div class="flex items-center gap-2">
+        <span class={isLive ? "tag tag-accent" : "tag"}>
+          {isLive ? "● live" : "○ draft"}
+        </span>
+        <span class="label-xs">{agent.tier}</span>
+      </div>
+      <h3 class="mt-2.5 font-display text-lg font-light leading-tight text-white">
+        {agent.name}
+      </h3>
+      <p class="mt-1.5 text-[13px] leading-relaxed text-ink-300">
+        {agent.blurb}
+      </p>
+    </div>
+    <span
+      class="font-mono text-[11px] text-ink-500 transition group-hover:text-white"
+      aria-hidden="true"
+    >→</span>
+  </div>
+</a>

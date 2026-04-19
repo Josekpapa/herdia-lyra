@@ -1,0 +1,252 @@
+---
+/**
+ * /tide/marea — MAREA flagship product page.
+ *
+ * The cinematic demo lives at /marea.html. This page is the sell: what Marea
+ * is, what it replaces, who it's for, how it's priced, how to request access.
+ * Opens the cinematic as the primary CTA.
+ *
+ * Voice: cinematic · coastal · warm. Accent: #b8926a (marea-gold).
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const tide = getHolding("tide")!;
+const liveAgents = tide.agents.filter((a) => a.status === "live");
+const draftAgents = tide.agents.filter((a) => a.status === "draft");
+---
+
+<AtlasLayout
+  title="Marea — the terminal for design-forward hotel groups · LYRA"
+  description="Marea replaces 40 WhatsApp groups and a stack of spreadsheets with one hospitality operating layer. The Tide flagship."
+  active="tide"
+>
+  <!-- ────────────── HERO — cinematic register ────────────── -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div class="bg-grid absolute inset-0 opacity-60"></div>
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(900px 520px at 30% 30%, rgba(184, 146, 106, 0.14), transparent 60%), radial-gradient(800px 500px at 80% 70%, rgba(74, 110, 184, 0.12), transparent 60%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/tide" class="hover:text-white transition">Tide</a>
+        <span>/</span>
+        <span class="text-ink-300">Marea</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Flagship · 01.00</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">CHAPTER · VOLUME</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Marea
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        The terminal for design-forward hotel groups.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Most boutique hotel groups run on forty WhatsApp groups, three
+        spreadsheets, and a revenue manager who's never met the night audit.
+        Marea is the operating layer that replaces all of it — guest, revenue,
+        ops, housekeeping, recovery — in one terminal, one voice, one memory.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/marea.html" class="btn-primary">Open the cinematic →</a>
+        <a href="/join" class="btn-ghost">Request access</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Live agents</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">{liveAgents.length}</div>
+        </div>
+        <div>
+          <div class="label-xs">Languages</div>
+          <div class="mt-1 font-mono text-sm text-ink-200">EN · ES · DE</div>
+        </div>
+        <div>
+          <div class="label-xs">Lift on GRR</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">+2%</div>
+        </div>
+        <div>
+          <div class="label-xs">Design partner cohort</div>
+          <div class="mt-1 text-sm text-ink-200">3 boutique groups · 10 properties</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── WHAT IT REPLACES ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What Marea replaces</div>
+      <h2 class="page-title">Forty group chats. One <em>log</em>.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <!-- BEFORE -->
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before · the stack most groups run</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>WhatsApp: housekeeping, front desk, F&B, engineering, GM, owners</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Google Sheets: rates, pickup, pacing, revenue daily</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Email: guest recovery, vendor invoices, OTA extranets</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>PMS: reservations only · no memory of the guest</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>The owner's head: everything else</li>
+          </ul>
+        </div>
+        <!-- AFTER -->
+        <div class="surface p-8" style="border-color: color-mix(in oklab, #b8926a 24%, rgba(255,255,255,0.06));">
+          <div class="label-xs" style="color: #c9a882;">After · Marea</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style="color:#b8926a;">●</span>Concierge: guest across email, SMS, WhatsApp — in your voice</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#b8926a;">●</span>Revenue: rate, pace, pickup — one terminal, one call</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#b8926a;">●</span>Ops + Housekeeping: tickets, status, the nightly sweep</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#b8926a;">●</span>Guestbook: every guest, every visit, forever</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#b8926a;">●</span>Scout: new channels, new inventory, quietly</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── SUB-AGENTS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Inside Marea</div>
+      <h2 class="page-title">Nine agents. One hotel.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">Every agent shares the same guest, the same rate, the same log.</p>
+
+      <div class="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {tide.agents.map((a) => (
+          <AgentTile agent={a} holdingSlug="tide" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── USE CASE — Design Hotels operator ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Flagship use case</div>
+          <h2 class="section-title">A four-property operator, 18 months in.</h2>
+          <p class="mt-4 text-sm text-ink-400">Anonymized. Real data. Marea's canonical pilot profile.</p>
+        </div>
+        <div class="md:col-span-3 space-y-6">
+          <div class="surface p-6">
+            <div class="label-xs">00 · The setup</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Four coastal properties. Two managed, two owner-operated.
+              42 staff. $14.2M revenue. Owners spend 60% of their week on
+              WhatsApp and rate spreadsheets.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">01 · Month one</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Concierge goes live across all four properties, trilingual from
+              day one. Guestbook ingests two years of historic stays from
+              the PMS. Night audit ritual automated.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">02 · Month six</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Revenue lifts pickup +2.1% across properties. Ops tickets drop
+              43% vs. WhatsApp baseline. Guest recovery time: 8 hours → 18
+              minutes.
+            </p>
+          </div>
+          <div class="surface-warm p-6">
+            <div class="label-xs">03 · Month eighteen</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Marea becomes the system of record. The owners stop writing
+              in WhatsApp. The spreadsheet dies. A fifth property onboards
+              in 12 days.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── PRICING ────────────── -->
+  <section class="border-b border-white/5" id="pricing">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Marea</div>
+      <h2 class="page-title">Three ways to start.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">{tide.model}</p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        {tide.pricing.map((p, i) => (
+          <div class={`surface p-7 ${i === 1 ? "md:-translate-y-2" : ""}`} style={i === 1 ? "border-color: color-mix(in oklab, #b8926a 28%, rgba(255,255,255,0.06));" : undefined}>
+            <div class="flex items-center justify-between">
+              <span class="label-xs">{p.tier}</span>
+              {i === 1 && <span class="tag" style="color:#c9a882;border-color:color-mix(in oklab, #b8926a 28%, transparent);">Recommended</span>}
+            </div>
+            <div class="mt-5 font-display text-3xl font-light text-white">{p.price}</div>
+            <p class="mt-2 text-sm text-ink-300">{p.for}</p>
+            <a href="/join" class={`mt-8 inline-block ${i === 1 ? "btn-primary" : "btn-ghost"}`}>Request access</a>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-8 max-w-2xl text-xs text-ink-500">
+        VOLUME tier includes a +2% revenue-share uplift on GRR — we earn only when you earn.
+        Pricing excludes implementation · one-time onboarding starts at $12k for a first property.
+      </p>
+    </div>
+  </section>
+
+  <!-- ────────────── INTEGRATIONS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Plugs into</div>
+      <h2 class="section-title">Your stack, not ours.</h2>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+        {["Mews", "Cloudbeds", "Opera", "WhatsApp Business", "Stripe", "Twilio", "Siteminder", "Google Calendar", "Gmail", "Slack", "Canary", "Lightspeed"].map((n) => (
+          <div class="surface p-4 text-center">
+            <span class="font-mono text-[11px] tracking-[0.1em] text-ink-200">{n}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CTA ────────────── -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="surface-warm p-12 sm:p-20 text-center">
+        <div class="kicker mb-4">Access</div>
+        <h2 class="font-display text-[clamp(2rem,5vw,4rem)] font-light tracking-tight text-white">
+          Three properties. <em class="italic-display">One network.</em>
+        </h2>
+        <p class="mt-4 max-w-xl mx-auto text-base text-ink-200 leading-relaxed">
+          Marea seats three design-forward operators as charter partners in
+          Year 1. Free CHAPTER for 90 days. Monthly working sessions with
+          LYRA engineering.
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center gap-3">
+          <a href="/marea.html" class="btn-primary">Open the cinematic</a>
+          <a href="/join" class="btn-ghost">Request access</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

@@ -1,0 +1,406 @@
+---
+/**
+ * /fidelis/vault — Fidelis · Vault sub-agent product page.
+ *
+ * Vault = every document, chain-of-custody. The archive underneath
+ * Ledger. Tax records, cap tables, executed contracts, estate docs —
+ * ingested, classified, hashed, retained, searchable.
+ *
+ * Voice: clinical · careful · confident (inherits Fidelis).
+ * Accent: #4a6eb8 (Fidelis blue), #6b8cce for text.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const fidelis = getHolding("fidelis")!;
+const agent = fidelis.agents.find((a) => a.slug === "vault")!;
+const related = fidelis.agents.filter((a) => a.slug !== "vault" && a.status === "live").slice(0, 5);
+---
+
+<AtlasLayout
+  title="Vault — Fidelis · LYRA"
+  description="Every document, chain-of-custody. Tax records, cap tables, executed contracts, estate docs — ingested, classified, hashed, retained. The archive underneath Ledger."
+  active="fidelis"
+>
+  <!-- ────────────── HERO ────────────── -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1100px 600px at 20% 20%, rgba(74, 110, 184, 0.14), transparent 60%), radial-gradient(760px 480px at 82% 72%, rgba(200, 196, 188, 0.06), transparent 62%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/fidelis" class="hover:text-white transition">Fidelis</a>
+        <span>/</span>
+        <span class="text-ink-300">Vault</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Agent · 03.vault</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">CHAPTER · VOLUME</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Vault
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        Every document, permanently.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Tax returns, cap tables, executed NDAs, deeds, operating
+        agreements, trust documents. Most founder households keep them
+        across six tools or a file cabinet nobody has opened in four
+        years. Vault is the one place they belong — with a
+        cryptographic chain on every read, write, and retrieval.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/join" class="btn-primary">Request access →</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Chain</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">SHA-256</div>
+        </div>
+        <div>
+          <div class="label-xs">Default retention</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">7 yr</div>
+        </div>
+        <div>
+          <div class="label-xs">Doc types</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">50+ · tax, entity, estate, contract</div>
+        </div>
+        <div>
+          <div class="label-xs">Target operator</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">P2 · Multi-Entity Founder</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── WHY A SUB-AGENT GETS ITS OWN PAGE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Why Vault is its own product</div>
+          <h2 class="section-title">Ledger is the books. Vault is what they reference.</h2>
+        </div>
+        <div class="md:col-span-3">
+          <p class="text-base leading-relaxed text-ink-200">
+            Ledger answers questions about the numbers. Vault answers
+            questions about the documents that make the numbers legal.
+            They are separate products because the people who need one
+            do not always need the other — a GP wants Vault without the
+            monthly close; a freelancer wants Ledger without seven years
+            of retention.
+          </p>
+          <p class="mt-6 text-base leading-relaxed text-ink-300">
+            Together they are Fidelis. Apart they are two of the
+            highest-intent intake points in the Atlas.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── BEFORE / AFTER ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What Vault replaces</div>
+      <h2 class="page-title">Six tools, one filing cabinet, zero chain.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        The document you need in a diligence thread on Tuesday was
+        last seen in an email attachment from 2022. Vault is the
+        end of that sentence.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before · where the documents live</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Google Drive folders named "Docs 2022 (new)"</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Dropbox with "Entity-B_K1_FINAL_v3.pdf"</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Email attachments the lawyer sent three firms ago</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Physical safe with the one copy of the original deed</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>No chain · no retention policy · no way to prove which version is current</li>
+          </ul>
+        </div>
+        <div class="surface p-8" style="border-color: color-mix(in oklab, #4a6eb8 30%, rgba(255,255,255,0.06));">
+          <div class="label-xs text-white">After · Vault</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style="color:#6b8cce;">●</span>Single ingest · drag, email, scan, or API</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#6b8cce;">●</span>Classified on arrival · entity, year, type, exhibit</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#6b8cce;">●</span>SHA-256 hash at write · chain-of-custody on every touch</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#6b8cce;">●</span>Retention enforced per jurisdiction · auto-archive to cold</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#6b8cce;">●</span>One question, one answer · "every doc referencing Entity-B, 2023"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── HOW IT WORKS ────────────── -->
+  <section id="how" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">How it works</div>
+      <h2 class="page-title">Ingest · Classify · Chain · Retain.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="surface p-6">
+          <div class="label-xs text-white">01 · Ingest</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Drag, drop, email-forward, scan, or push from Drive /
+            Dropbox / Box. Encrypted on ingest. Duplicates collapsed.
+            Originals preserved bit-for-bit.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">02 · Classify</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Document type, entity, year, exhibit, counterparty —
+            extracted and verified. Flags missing metadata. Links
+            related docs (K-1 to its return, amendment to its parent).
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">03 · Chain</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            SHA-256 hash at write. Every read, share, export logged.
+            Notary-grade audit trail · exportable for counsel, audit,
+            or divorce court. Attestable via Seal if needed.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">04 · Retain</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Per-jurisdiction retention schedule applied. 7-year IRS,
+            lifetime estate, state-specific for entity docs. Cold
+            archive after active window · recall in seconds.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── TERMINAL ────────────── -->
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Terminal</div>
+          <h2 class="section-title">Tuesday morning, a diligence request.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            Counsel needs every document referencing Entity-B from 2023.
+            Vault answers in three seconds with chain proof.
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div class="surface corner-ticks p-8"
+               style="border-color: color-mix(in oklab, #4a6eb8 30%, rgba(255,255,255,0.06));">
+            <div class="flex items-center justify-between">
+              <span class="label-xs text-white">VAULT · FIDELIS DESK F-0008 · TUE 10:04</span>
+              <span class="tag tag-accent">● live</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+$ lyra vault status
+
+┌─ Household F-0008 ──────────────────────────
+│ Entities ..... 4  (A, B, C, trust)
+│ Documents .... 2,417  · chain verified
+│ Active ....... 1,982  · Cold ...... 435
+│ Retention .... 7yr IRS · state overlays on B
+└──────────────────────────────────────────────
+
+$ lyra vault query "references Entity-B, 2023"
+
+  Searching 2,417 docs · 847 ms
+
+  ▸ 34 documents matched
+
+  ┌─ Top 6 by relevance ──────────────────────
+  │ 1. Form 1065 · Entity-B · 2023 · filed 03/15/24
+  │ 2. K-1 · Entity-B → Holder-01 · issued 03/22/24
+  │ 3. Operating Agreement · Amendment 4 · 09/12/23
+  │ 4. Q3 2023 management report · signed PDF
+  │ 5. Commercial lease · 1204 Main · 06/01/23
+  │ 6. ACH auth · Bank-X · 06/01/23
+  └──────────────────────────────────────────
+
+$ lyra vault export --matter M-2046
+
+  → Package · 34 docs · 142 MB
+  → Chain proof · SHA-256 manifest attached
+  → <span style="color:#6b8cce;">●</span> attestation via Seal · stamp S-19851
+  → Recipient · counsel@firm.law · read-only, 14 days
+
+$ lyra vault log
+
+  10:04:12  QUERY  entity:B year:2023
+  10:04:13  READ   34 docs  · ip: internal
+  10:04:19  EXPORT pkg-M2046 · hash logged
+
+  <span class="text-ink-500">// static preview. live vault lands with the first household.</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── USE CASE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Use case</div>
+          <h2 class="section-title">Four entities, three states, one archive.</h2>
+          <p class="mt-4 text-sm text-ink-400">Anonymized. P2 profile. Vault bundled with Fidelis Desk.</p>
+        </div>
+        <div class="md:col-span-3 space-y-6">
+          <div class="surface p-6">
+            <div class="label-xs">00 · The setup</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Second-generation founder, four entities (operating co,
+              holding co, real-estate LLC, family trust) across three
+              states. CPA hands over a PDF binder once a year. Lawyer
+              sends executed docs by email. Nobody has an index.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">01 · Month one</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Vault ingests 2,400 documents across Drive, Dropbox,
+              Gmail, and the CPA's secure portal. Classifies 94% on
+              the first pass. Flags 17 documents with stale
+              signatures or missing amendments · routed to Counsel.
+            </p>
+          </div>
+          <div class="surface p-6" style="border-color: color-mix(in oklab, #4a6eb8 26%, rgba(255,255,255,0.06));">
+            <div class="label-xs text-white">02 · Month six</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Diligence request from a lender on Entity-B lands
+              Tuesday 9:54 a.m. Package exported, chain-attested, and
+              emailed to counsel by 10:06. Legacy process: 4 days,
+              12 emails, two missing exhibits.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── PRICING ────────────── -->
+  <section id="pricing" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Vault</div>
+      <h2 class="page-title">Personal archive, founder desk, or family office.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        Single-entity founders keep Vault thin at PAGE. Multi-entity
+        households take Fidelis Desk at CHAPTER — the tier where
+        Ledger, Vault, Filing, and Counsel run together.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="surface p-8">
+          <div class="flex items-start justify-between">
+            <div class="label-xs">PAGE · Vault light</div>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$99 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Single entity · up to 250 docs · standard retention
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8 md:-translate-y-2"
+             style="border-color: color-mix(in oklab, #4a6eb8 36%, rgba(255,255,255,0.06));">
+          <div class="flex items-start justify-between">
+            <div class="label-xs">CHAPTER · Fidelis Desk</div>
+            <span class="tag tag-accent">Recommended</span>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$1,499 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Ledger + Vault + Filing + Counsel · single entity, full desk
+          </p>
+          <a href="/join" class="btn-primary mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8">
+          <div class="flex items-start justify-between">
+            <div class="label-xs">VOLUME · Multi-entity</div>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$4,990 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            3+ entities · vault priority · state-specific retention
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── INTEGRATIONS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Integrations</div>
+      <h2 class="section-title">Reads where they live. Writes where they belong.</h2>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {[
+          "Google Drive", "Dropbox", "Box", "Notion (import)", "Email ingest",
+          "DocuSign", "Gusto", "QuickBooks", "Xero", "Carta",
+          "Attest (native)", "Ledger (native)"
+        ].map((n) => (
+          <div class="surface px-4 py-3 text-center">
+            <div class="font-mono text-[11px] tracking-wider text-ink-300">{n}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── RELATED AGENTS IN FIDELIS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">More inside Fidelis</div>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {related.map((a) => (
+          <AgentTile agent={a} holdingSlug="fidelis" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CTA ────────────── -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Design partner cohort</div>
+          <h2 class="page-title">Vault opens with five founder households.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            We migrate up to 2,500 existing documents in the first week
+            at no charge. Retention schedules configured to your
+            jurisdictions. Chain-of-custody runs from day one.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <a href="/join" class="btn-primary">Apply →</a>
+          <a href="/fidelis" class="btn-ghost">See Fidelis</a>
+          <a href="/seal/attest" class="btn-link">Pair with Attest →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

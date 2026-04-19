@@ -1,0 +1,80 @@
+---
+/**
+ * /founders-day — the canonical 24-hour narrative.
+ * Paloma (P2) operates 6 entities across 6 verticals in 16 hours. The pitch
+ * script, the storyboard, the onboarding walkthrough — all from one page.
+ */
+import AtlasLayout from "../layouts/AtlasLayout.astro";
+
+const hours = [
+  { t: "06:40", who: "ATLAS",   title: "Open the day",          body: "Three things surface: a Fidelis filing due Friday, a Crest distribution pending, a Kairos lab flag on cortisol." },
+  { t: "06:55", who: "KAIROS",  title: "Protocol adjusts",      body: "Paloma taps Kairos. Tuesday lab booked. Cost auto-logged to Fidelis medical bucket." },
+  { t: "08:20", who: "MAREA",   title: "Hotel + guest",         body: "In the car, she voice-dictates Marea Concierge a suite upgrade for her brother's anniversary. It reads the portfolio, picks the right hotel, files a guest note." },
+  { t: "10:05", who: "CREST",   title: "Wire → trust",          body: "Crest pings: a wire from a portfolio co closed. Distribute to trust or hold? She picks trust. Fidelis books the entry. Attest stamps the resolution in 90 seconds." },
+  { t: "12:30", who: "DOCKET",  title: "NDA in four minutes",   body: "Lex pings: an NDA from a new LP. Docket redlines using her clause library. Paloma signs. Attest stamps. Fidelis files." },
+  { t: "14:45", who: "RAFT",    title: "Draw approved",         body: "Raft pings: Tulum renovation needs a draw approval. She reviews blueprint + punch list on a phone. Funds move through Crest. Lien filed via Attest." },
+  { t: "17:10", who: "MUSE",    title: "Daughter's cohort",     body: "Muse sends a cohort update. Paloma forwards a note through the thread to her daughter's mentor." },
+  { t: "19:30", who: "ATLAS",   title: "The day, in one card",  body: "11 decisions · 4 filings · 2 signatures · 1 medical booking · 3 financial events. All logged. All cross-linked. Zero spreadsheets." },
+  { t: "22:15", who: "ATLAS",   title: "Tomorrow's card",       body: "Fidelis filing · lab visit · Docket call at 11. Goodnight." },
+];
+---
+
+<AtlasLayout
+  title="Founder's Day — 24 hours on LYRA"
+  description="One founder. Six holdings. One network. Sixteen hours, no spreadsheets."
+  active="home"
+>
+  <!-- Hero -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="kicker mb-3">Founder's Day · canonical</div>
+      <h1 class="page-title">One founder. Six <em>holdings</em>. One day.</h1>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
+        Paloma is a P2 — multi-entity founder, $22M net worth, three LLCs, a
+        trust, a hotel portfolio, a renovation in motion. This is one day in
+        her life, on LYRA. No spreadsheets touched. No email to her CPA.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="/join" class="btn-primary">Live your own day →</a>
+        <a href="/atlas" class="btn-ghost">See the catalog</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-4xl px-6 py-16">
+      <div class="kicker mb-6">The log</div>
+      <ol class="space-y-0">
+        {hours.map((h) => (
+          <li class="relative border-l border-white/10 pl-8 pb-10 last:pb-0">
+            <span class="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-white/80"></span>
+            <div class="flex items-baseline gap-4">
+              <span class="font-mono text-[12px] tracking-[0.2em] text-ink-400">{h.t}</span>
+              <span class="label-xs">{h.who}</span>
+            </div>
+            <h3 class="mt-2 font-display text-2xl font-light text-white">{h.title}</h3>
+            <p class="mt-2 max-w-xl text-sm leading-relaxed text-ink-200">{h.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Take-away -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="surface-warm p-12 text-center">
+        <div class="kicker mb-4">What you just saw</div>
+        <p class="mx-auto max-w-2xl font-display text-2xl font-light italic text-white leading-snug">
+          One person operated six entities across six verticals in sixteen hours
+          without once leaving the network.
+        </p>
+        <div class="mt-10 flex justify-center gap-3">
+          <a href="/join" class="btn-primary">Request access</a>
+          <a href="/pricing" class="btn-link">See pricing →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

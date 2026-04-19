@@ -1,0 +1,58 @@
+---
+/**
+ * /field-notes — the content engine. Bloomberg-style teardowns, anonymized.
+ * Stub for now; posts get filled in over time.
+ */
+import AtlasLayout from "../layouts/AtlasLayout.astro";
+
+const notes = [
+  { code: "FN·001", title: "How a $20M hotel group runs on LYRA", holding: "TIDE", date: "coming soon", teaser: "A four-property operator, one year in. Channels, rate, housekeeping, guest recovery — the log." },
+  { code: "FN·002", title: "A multi-entity founder's tax stack, visualized", holding: "FIDELIS", date: "coming soon", teaser: "Three LLCs, a trust, one operating system. The deadlines that move and the ones that don't." },
+  { code: "FN·003", title: "A family office in a browser tab",  holding: "HELIOS", date: "coming soon", teaser: "What Crest replaces — line by line — when a $12M family skips the traditional family office." },
+  { code: "FN·004", title: "Closing a $4.2M renovation on Raft", holding: "MORTAR", date: "coming soon", teaser: "60 vendors, 18 months, zero WhatsApp groups. The punch list tells the story." },
+  { code: "FN·005", title: "The matter is the product",          holding: "LEX", date: "coming soon", teaser: "One boutique firm swapped billable hours for per-matter pricing. What that did to margins." },
+  { code: "FN·006", title: "Attest, at the speed of a stamp",    holding: "SEAL", date: "coming soon", teaser: "A notary firm's six-month transition from queue-based to button-based work." },
+  { code: "FN·007", title: "Kairos, after two quarters",          holding: "ALDER", date: "coming soon", teaser: "The protocols that stuck, the ones that didn't, and why." },
+];
+---
+
+<AtlasLayout
+  title="Field Notes — how operators run on LYRA"
+  description="Bloomberg-style teardowns of real operators on the LYRA network."
+  active="home"
+>
+  <!-- Hero -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="kicker mb-3">Field Notes · content</div>
+      <h1 class="page-title">How operators <em>actually run</em> on LYRA.</h1>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
+        Anonymized teardowns of real holding operators. Real data. Real time
+        saved. Distributed to a private list of named operators — not a public
+        blog.
+      </p>
+    </div>
+  </section>
+
+  <!-- Notes grid -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {notes.map((n) => (
+          <article class="surface p-6">
+            <div class="flex items-center justify-between">
+              <span class="label-xs">{n.code}</span>
+              <span class="tag">{n.holding}</span>
+            </div>
+            <h2 class="mt-4 font-display text-xl font-light text-white leading-tight">{n.title}</h2>
+            <p class="mt-3 text-[13px] leading-relaxed text-ink-300">{n.teaser}</p>
+            <div class="mt-5 flex items-center justify-between">
+              <span class="font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">{n.date}</span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-400">read →</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

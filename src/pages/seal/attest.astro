@@ -1,0 +1,409 @@
+---
+/**
+ * /seal/attest — Seal · Attest flagship product page.
+ *
+ * Attest = stamp, chain, vault — in 90 seconds.
+ * Captive pipeline first (Lex + Mortar), then SMB cross-border.
+ *
+ * Voice: official · brief · trustworthy. Accent: #b8926a (gold) on near-black.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const seal = getHolding("seal")!;
+---
+
+<AtlasLayout
+  title="Attest — Seal · LYRA"
+  description="Stamp, chain, vault — in 90 seconds. Seal's notary terminal for Lex, Mortar, and cross-border SMB."
+  active="seal"
+>
+  <!-- ────────────── HERO — official register ────────────── -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1000px 580px at 22% 20%, rgba(184, 146, 106, 0.13), transparent 60%), radial-gradient(700px 440px at 84% 72%, rgba(214, 219, 232, 0.06), transparent 62%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/seal" class="hover:text-white transition">Seal</a>
+        <span>/</span>
+        <span class="text-ink-300">Attest</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Flagship · 08.00</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">PAGE · CHAPTER · VOLUME</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Attest
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        Stamp, chain, vault — in 90 seconds.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Notary should not take a morning. Attest is the button — ID verified,
+        witness summoned if required, stamp applied, chain-of-custody
+        recorded, original to Vault. Captive to Docket and Raft first, open
+        to cross-border SMB next.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/join" class="btn-primary">Request access →</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Avg stamp time</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">94 sec</div>
+        </div>
+        <div>
+          <div class="label-xs">Jurisdictions</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">50 + apostille</div>
+        </div>
+        <div>
+          <div class="label-xs">Chain</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">SHA-256 · timestamped · immutable</div>
+        </div>
+        <div>
+          <div class="label-xs">Captive feed</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">Docket · Raft</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── BEFORE / AFTER ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What Attest replaces</div>
+      <h2 class="page-title">The 45-minute errand, in 90 seconds.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        Notary is a tax on closing. Attest makes it a button inside the
+        instrument that needs stamping, with chain-of-custody the receiving
+        party actually trusts.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <!-- BEFORE -->
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before · how notary happens</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>UPS Store queue · or $45 mobile notary at the office</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>20-minute witness hunt · two random coworkers</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Apostille: $200 + a week for one country</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Chain-of-custody: "I scanned it, trust me"</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Storage: a manila envelope in a drawer</li>
+          </ul>
+        </div>
+        <!-- AFTER -->
+        <div class="surface p-8" style="border-color: color-mix(in oklab, #b8926a 26%, rgba(255,255,255,0.06));">
+          <div class="label-xs" style="color: #c9a882;">After · Attest</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style="color:#b8926a;">●</span>Stamp: the button · remote online notarization where allowed</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#b8926a;">●</span>KYC: three factors · ID + selfie + knowledge check</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#b8926a;">●</span>Witness: auto-matched from the pool when required</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#b8926a;">●</span>Chain: SHA-256 hash + notary seal + timestamp + registry</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#b8926a;">●</span>Vault: the original, searchable, decades-cold on demand</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── SUB-AGENTS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Inside Attest</div>
+      <h2 class="page-title">Nine agents. One stamp.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        Every agent shares the same registry, the same chain, the same
+        jurisdiction map.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {seal.agents.map((a) => (
+          <AgentTile agent={a} holdingSlug="seal" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── HOW IT WORKS ────────────── -->
+  <section id="how" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">How it works</div>
+      <h2 class="page-title">Upload · KYC · Witness · Stamp · Chain · Vault.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#c9a882;">01 · Upload</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Directly from Docket or Raft, or by drop. Attest reads the
+            document type, detects the jurisdiction, checks what's required.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#c9a882;">02 · KYC</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Three factors: government ID, selfie with liveness, knowledge-based
+            check from public record. The standard most states accept for RON.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#c9a882;">03 · Witness</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Auto-matched from the pool when required. Joined by video, timed,
+            recorded, sealed into the chain entry.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#c9a882;">04 · Stamp</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Commissioned notary applies the seal. Apostille agent handles
+            downstream cross-border in jurisdictions where we're authorized.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#c9a882;">05 · Chain</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            SHA-256 hash of the sealed instrument, timestamped, signed by the
+            notary's key, written to the registry. Verifiable by anyone.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#c9a882;">06 · Vault</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            The original lands in Fidelis Vault — chain-of-custody preserved,
+            retrievable for decades, searchable by registry ID.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── TERMINAL PREVIEW ────────────── -->
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Terminal</div>
+          <h2 class="section-title">An NDA, stamped in 94 seconds.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            Direct from Docket matter M-2046. Remote online notarization. No
+            drive, no queue, no manila envelope.
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div class="surface corner-ticks p-8"
+               style="border-color: color-mix(in oklab, #b8926a 26%, rgba(255,255,255,0.06));">
+            <div class="flex items-center justify-between">
+              <span class="label-xs" style="color:#c9a882;">ATTEST · STAMP S-19847 · MUTUAL NDA</span>
+              <span class="tag tag-accent">● live</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+$ lyra attest stamp --from-matter M-2046
+
+┌─ KYC ────────────────────────────────────────
+│ ID verified ........ driver's license · CA
+│ Liveness ............ pass  ·  09:47:04Z
+│ Knowledge check ..... pass  ·  4/4 correct
+└──────────────────────────────────────────────
+
+┌─ Seal ───────────────────────────────────────
+│ Witness required ... no (CA · remote, &lt;$10k)
+│ Notary commission .. NCP-88421 · CA
+│ Stamp applied ....... 09:47:12Z
+└──────────────────────────────────────────────
+
+┌─ Chain ──────────────────────────────────────
+│ Hash .... sha256:a1f4c7e2…8b3d
+│ Signed .. ECDSA-P256  ·  notary key
+│ Registry REG-CA-2026-887412
+└──────────────────────────────────────────────
+
+$ lyra attest vault
+
+  &rarr; Fidelis Vault · matter M-2046
+  &rarr; chain-of-custody: 1 entry · 09:47:14Z
+  &rarr; retrievable by registry ID or matter
+
+  <span class="text-ink-500">// static preview. live terminal lands with the first firm.</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── USE CASE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Flagship use case</div>
+          <h2 class="section-title">A boutique firm's captive volume.</h2>
+          <p class="mt-4 text-sm text-ink-400">Anonymized. Real numbers. Attest's canonical first customer.</p>
+        </div>
+        <div class="md:col-span-3 space-y-6">
+          <div class="surface p-6">
+            <div class="label-xs">00 · The setup</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Boutique firm, 32 attorneys, runs on Docket. ~180 matters per
+              month · ~60 need notarization · ~15 need apostille. Currently
+              uses UPS, mobile notaries, and a law-firm paralegal who
+              coordinates it all.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">01 · Month one</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Every Docket matter with a signable instrument routes to Attest.
+              Stamp time 45 min → 94 sec. Paralegal moved to higher-value
+              intake work. Firm bills notarization as a flat pass-through.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">02 · Month six</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Apostille agent handles Spain, Mexico, Portugal in-house (used
+              to be a 7-day outsource). Firm markets "same-day cross-border"
+              as a service line. Volume doubles to 120/mo.
+            </p>
+          </div>
+          <div class="surface p-6" style="border-color: color-mix(in oklab, #b8926a 26%, rgba(255,255,255,0.06));">
+            <div class="label-xs" style="color:#c9a882;">03 · Month twelve</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Attest's captive pipeline is Docket + Raft. Firm pays Seal at
+              CHAPTER tier ($499/mo) plus per-stamp passthroughs. Net new
+              revenue line for the firm. Net zero operational overhead.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── PRICING ────────────── -->
+  <section id="pricing" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Attest</div>
+      <h2 class="page-title">Three ways to stamp.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        {seal.model}
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        {seal.pricing.map((p, i) => (
+          <div
+            class={`surface p-8 ${i === 1 ? "md:-translate-y-2" : ""}`}
+            style={i === 1 ? "border-color: color-mix(in oklab, #b8926a 34%, rgba(255,255,255,0.06));" : ""}
+          >
+            <div class="flex items-start justify-between">
+              <div class="label-xs">{p.tier}</div>
+              {i === 1 && <span class="tag tag-accent">Recommended</span>}
+            </div>
+            <div class="mt-6 font-display text-4xl font-light text-white data-num">{p.price}</div>
+            <p class="mt-3 text-[13px] leading-relaxed text-ink-300">{p.for}</p>
+            <a href="/join" class={i === 1 ? "btn-primary mt-8 inline-block" : "btn-ghost mt-8 inline-block"}>
+              Request access
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-8 max-w-2xl text-xs leading-relaxed text-ink-500">
+        CHAPTER includes unlimited stamps at a firm-pool commission. VOLUME
+        adds multi-jurisdiction routing and apostille. Per-stamp rate falls
+        as volume rises.
+      </p>
+    </div>
+  </section>
+
+  <!-- ────────────── INTEGRATIONS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Integrations</div>
+      <h2 class="section-title">Stamps what's already in flight.</h2>
+      <p class="mt-2 max-w-xl text-sm text-ink-400">
+        Captive to the network first. Docket matters and Raft lien waivers
+        route natively. External tools connect where they matter.
+      </p>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {[
+          "Docket (native)", "Raft (native)", "Fidelis Vault (native)", "Persona", "Stripe Identity",
+          "DocuSign", "Dropbox Sign", "County recorders", "State commissions",
+          "Hague apostille", "iManage", "Clio"
+        ].map((n) => (
+          <div class="surface px-4 py-3 text-center">
+            <div class="font-mono text-[11px] tracking-wider text-ink-300">{n}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CROSS-HOLDING CALLS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Where Attest closes the loop</div>
+      <div class="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#c9a882;">← Lex</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            Every signed instrument in Docket that needs a notary flows here.
+            Chain-of-custody writes back to the matter record.
+          </p>
+        </div>
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#c9a882;">← Mortar</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            Raft's lien waivers, releases, close-out packets. Every draw
+            runs through Attest before it hits the lender.
+          </p>
+        </div>
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#c9a882;">→ Fidelis</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            Vault is the home for every stamped original. Attest is what
+            makes Vault's chain-of-custody claim true.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CTA ────────────── -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Design partner cohort</div>
+          <h2 class="page-title">Attest opens with two firms.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            One boutique firm on Docket. One developer on Raft. We cover
+            commission costs for the first 90 days.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <a href="/join" class="btn-primary">Apply as a firm →</a>
+          <a href="/seal" class="btn-ghost">Back to Seal</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

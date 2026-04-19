@@ -1,0 +1,105 @@
+---
+/**
+ * /agency — the outer circle. Bespoke builds for operators.
+ * Every agency engagement becomes a listed product in the Atlas.
+ */
+import AtlasLayout from "../layouts/AtlasLayout.astro";
+---
+
+<AtlasLayout
+  title="LYRA Agency — hire us to build your private shelf"
+  description="The outer circle. Bespoke operating systems. Every build becomes an Atlas listing."
+  active="agency"
+>
+  <!-- Hero -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="kicker mb-3">Agency · 97</div>
+      <h1 class="page-title">Hire LYRA to build your <em>private shelf</em>.</h1>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
+        The outer circle. Bespoke agents, wired into LYRA's core plumbing —
+        Passport, Memory, Grammar, Gateway, Billing. Your shelf stays yours.
+        Public listings, if you want them, feed the Atlas.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="/join" class="btn-primary">Start an engagement</a>
+        <a href="/atlas" class="btn-ghost">See what we ship</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-2">How it works</div>
+      <h2 class="page-title">Four steps. One shelf.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-4">
+        {[
+          { code: "01", title: "Chart", copy: "We map your operating surface — every system, every ritual, every handoff." },
+          { code: "02", title: "Build", copy: "We ship agents on LYRA core. Your voice. Your data. Your people trained." },
+          { code: "03", title: "Operate", copy: "You run with it. We retain, iterate, add skills. Monthly cadence." },
+          { code: "04", title: "List", copy: "What we build becomes a listing — yours, or shared into the Atlas." },
+        ].map((s) => (
+          <div class="surface p-6">
+            <div class="label-xs">{s.code}</div>
+            <div class="mt-3 font-display text-2xl font-light text-white">{s.title}</div>
+            <p class="mt-2 text-sm text-ink-300 leading-relaxed">{s.copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Engagement tiers -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-2">Engagement tiers</div>
+      <h2 class="section-title">How we price the build</h2>
+
+      <div class="mt-10 grid grid-cols-1 gap-3 md:grid-cols-3">
+        <div class="surface p-6">
+          <div class="label-xs">Pilot</div>
+          <div class="mt-3 data-num text-2xl text-white">$50k – $120k</div>
+          <p class="mt-3 text-sm text-ink-300 leading-relaxed">One surface. 8–12 weeks. Working product + 2 agents live on LYRA core.</p>
+        </div>
+        <div class="surface-warm p-6">
+          <div class="label-xs">Flagship</div>
+          <div class="mt-3 data-num text-2xl text-white">$180k – $380k</div>
+          <p class="mt-3 text-sm text-ink-300 leading-relaxed">Full holding. 16–24 weeks. Flagship + 6 agents + training + retainer.</p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs">Network</div>
+          <div class="mt-3 data-num text-2xl text-white">$500k+</div>
+          <p class="mt-3 text-sm text-ink-300 leading-relaxed">Multi-holding operator. Bespoke Atlas sleeve. Custom bundles + revshare.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The flywheel -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-2">The flywheel</div>
+      <h2 class="page-title">Agency builds. Atlas <em>compounds</em>.</h2>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
+        Every custom agent we ship for you becomes a candidate listing in the
+        Atlas marketplace. You decide: private (yours only), partner (revshare),
+        or public (the whole network). The more we build, the more the shelf
+        earns.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-20 text-center">
+      <h2 class="font-display text-4xl font-light tracking-tight text-white">
+        Tell us what runs your world.
+      </h2>
+      <div class="mt-8 flex justify-center gap-3">
+        <a href="/join" class="btn-primary">Request an engagement</a>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

@@ -1,0 +1,391 @@
+---
+/**
+ * /helios/crest — Helios · Crest flagship product page.
+ *
+ * Crest = the portfolio, the trust, the distribution — one view.
+ * For founders with $5M–$50M who don't have a family office yet.
+ *
+ * Voice: patient · quiet · generational. Accent: #d4a574 (amber) on deep navy.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const helios = getHolding("helios")!;
+---
+
+<AtlasLayout
+  title="Crest — Helios · LYRA"
+  description="The portfolio, the trust, the distribution — one view. A family office in a browser tab."
+  active="helios"
+>
+  <!-- ────────────── HERO — patient register ────────────── -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1100px 600px at 22% 18%, rgba(212, 165, 116, 0.12), transparent 60%), radial-gradient(800px 520px at 85% 70%, rgba(74, 110, 184, 0.07), transparent 62%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/helios" class="hover:text-white transition">Helios</a>
+        <span>/</span>
+        <span class="text-ink-300">Crest</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Flagship · 04.00</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">CHAPTER · VOLUME · ATLAS</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Crest
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        The portfolio, the trust, the distribution — one view.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Most family offices are four people in a room reading four different
+        spreadsheets. Crest is the view they wish they had — every account,
+        every entity, every heir, in one read. Patient, quiet, generational.
+        A family office in a browser tab, without the seven-figure team.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/join" class="btn-primary">Request access →</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">AUM ceiling</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">$50M+</div>
+        </div>
+        <div>
+          <div class="label-xs">Account types</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">23</div>
+        </div>
+        <div>
+          <div class="label-xs">Fee range</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">5–25 bps</div>
+        </div>
+        <div>
+          <div class="label-xs">Household target</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">P2 · no family office yet</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── BEFORE / AFTER ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What Crest replaces</div>
+      <h2 class="page-title">Four spreadsheets, one view.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        The family-office stack costs a million a year in headcount. Crest
+        is the view they were building anyway, for the households that can't
+        justify the team yet.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <!-- BEFORE -->
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before · the stack most households run</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Addepar at $40k+/yr · or the quarterly PDF from the RIA</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>A CFO Excel with 14 tabs, one per entity</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>The attorney's memory for the trust mechanics</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>A Google Doc called <em>Estate.2024.FINAL.v7</em></li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>The group text where heirs ask about distributions</li>
+          </ul>
+        </div>
+        <!-- AFTER -->
+        <div class="surface p-8" style="border-color: color-mix(in oklab, #d4a574 24%, rgba(255,255,255,0.06));">
+          <div class="label-xs" style="color: #d4a574;">After · Crest</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style="color:#d4a574;">●</span>Portfolio: custodians, banks, properties — one terminal</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#d4a574;">●</span>Ledger-W: wealth-side books, audit-clean, monthly</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#d4a574;">●</span>Trust: distributions, minutes, the grantor's voice</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#d4a574;">●</span>Estate: every asset, every heir, always current</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#d4a574;">●</span>Family Office: the admin layer — meetings, mail, memos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── SUB-AGENTS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Inside Crest</div>
+      <h2 class="page-title">Nine agents. One household.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        Every agent shares the same portfolio, the same trust, the same heir list.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {helios.agents.map((a) => (
+          <AgentTile agent={a} holdingSlug="helios" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── HOW IT WORKS ────────────── -->
+  <section id="how" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">How it works</div>
+      <h2 class="page-title">Connect · Organize · Distribute · Report.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#d4a574;">01 · Connect</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Custodians, banks, private holdings, properties, crypto. Read-only
+            by default. Additions are the operator's decision, not the RIA's.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#d4a574;">02 · Organize</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            By entity, by beneficiary, by purpose. Crest inherits the trust
+            structure from Counsel (Fidelis) and the tax status from Ledger-W.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#d4a574;">03 · Distribute</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Trust agent auto-preps minutes. Distribution runs through the
+            language the grantor wrote, not a new voice. Every move is
+            signable, auditable, reversible within the window.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#d4a574;">04 · Report</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Weekly to the principal. Quarterly to the beneficiaries. Annual
+            to the IRS. Same source. No reconciliations between versions
+            because there is only one.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── TERMINAL PREVIEW ────────────── -->
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Terminal</div>
+          <h2 class="section-title">A Monday principal briefing.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            What the principal reads over coffee. No logins. No PDFs. No
+            reconciliation between the RIA's number and yours.
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div class="surface corner-ticks p-8"
+               style="border-color: color-mix(in oklab, #d4a574 22%, rgba(255,255,255,0.06));">
+            <div class="flex items-center justify-between">
+              <span class="label-xs" style="color:#d4a574;">CREST · HOUSEHOLD H-0012 · MON 07:15</span>
+              <span class="tag tag-accent">● live</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+$ lyra crest brief
+
+┌─ Household ──────────────────────────────────
+│ AUM ........ $27.4M ( +1.2% wk · -0.4% qtr )
+│ Accounts ... 8  ·  Entities ... 4  ·  Heirs ... 3
+│ Liquidity .. $1.9M operating · 90-day clear
+└──────────────────────────────────────────────
+
+$ lyra crest flags
+
+  Needs you
+  <span style="color:#d4a574;">▲</span> Trust-A distribution eligible  ·  $140k window
+  <span style="color:#d4a574;">▲</span> Estate doc stale: 112 days  ·  minor's trust amendment
+  ·  Yield cash drag: $312k idle > 30d · sweep suggested
+
+$ lyra crest next
+
+  May 15 ...... 1041 filing (Trust-A)  ·  Filing prepped
+  May 22 ...... Quarterly beneficiary note  ·  drafting
+  Jun 01 ...... Annual estate review       ·  on calendar
+
+  <span class="text-ink-500">// static preview. live terminal lands with the first household.</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── USE CASE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Flagship use case</div>
+          <h2 class="section-title">A three-entity founder, newly liquid.</h2>
+          <p class="mt-4 text-sm text-ink-400">Anonymized. Real structure. Crest's canonical household.</p>
+        </div>
+        <div class="md:col-span-3 space-y-6">
+          <div class="surface p-6">
+            <div class="label-xs">00 · The setup</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Founder, 41, post-exit. $18M liquid · $6M in two operating entities ·
+              $4M in real estate through an LLC. Spouse, two minors. One irrevocable
+              trust. Currently paying an RIA 90 bps and a CPA $36k.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">01 · Month one</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Connect Schwab, Mercury, Plaid, two property accounts. Crest maps
+              the entity tree from Fidelis. Trust-A loads the irrevocable
+              grantor language verbatim.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">02 · Month six</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              RIA moved to 25 bps for execution only. Crest handles reporting +
+              trust minutes. Estate doc refreshed. First distribution in four
+              clicks with auto-prep minutes.
+            </p>
+          </div>
+          <div class="surface p-6" style="border-color: color-mix(in oklab, #d4a574 22%, rgba(255,255,255,0.06));">
+            <div class="label-xs" style="color:#d4a574;">03 · Month eighteen</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Total wealth-side cost: $46k/yr vs. $198k legacy stack.
+              Crest is where the principal and the attorney and the spouse all
+              look — from the same URL, with different scopes. Succession
+              draft on file. Helios is the household's system of record.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── PRICING ────────────── -->
+  <section id="pricing" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Crest</div>
+      <h2 class="page-title">Three ways to hold.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        {helios.model}
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        {helios.pricing.map((p, i) => (
+          <div
+            class={`surface p-8 ${i === 1 ? "md:-translate-y-2" : ""}`}
+            style={i === 1 ? "border-color: color-mix(in oklab, #d4a574 32%, rgba(255,255,255,0.06));" : ""}
+          >
+            <div class="flex items-start justify-between">
+              <div class="label-xs">{p.tier}</div>
+              {i === 1 && <span class="tag tag-accent">Recommended</span>}
+            </div>
+            <div class="mt-6 font-display text-4xl font-light text-white data-num">{p.price}</div>
+            <p class="mt-3 text-[13px] leading-relaxed text-ink-300">{p.for}</p>
+            <a href="/join" class={i === 1 ? "btn-primary mt-8 inline-block" : "btn-ghost mt-8 inline-block"}>
+              Request access
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-8 max-w-2xl text-xs leading-relaxed text-ink-500">
+        VOLUME tier adds 5–25 bps on AUM under observation — priced against
+        the displaced RIA fee, not on top of it. ATLAS tier supports
+        white-labeled family-office programs.
+      </p>
+    </div>
+  </section>
+
+  <!-- ────────────── INTEGRATIONS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Integrations</div>
+      <h2 class="section-title">Reads from where the money is.</h2>
+      <p class="mt-2 max-w-xl text-sm text-ink-400">
+        Custodians, banks, payroll, property ops. All read-only until an owner
+        explicitly grants write.
+      </p>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {[
+          "Plaid", "Schwab", "Fidelity Inst.", "Mercury", "Addepar (import)",
+          "Ledger-W (native)", "Fidelis Counsel", "Tide (property NOI)",
+          "Alder (household)", "Stripe", "DocuSign", "Carta"
+        ].map((n) => (
+          <div class="surface px-4 py-3 text-center">
+            <div class="font-mono text-[11px] tracking-wider text-ink-300">{n}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CROSS-HOLDING CALLS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Where Crest listens</div>
+      <div class="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#d4a574;">← Fidelis</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            Entity books flow up into the household view. Ledger-W mirrors
+            Ledger's close on the wealth side.
+          </p>
+        </div>
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#d4a574;">← Tide · Mortar</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            Property NOI, under-construction values, and the Raft draws all
+            post into Portfolio as asset lines.
+          </p>
+        </div>
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#d4a574;">← Alder</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            Kairos is a household line item. Longevity is a portfolio
+            decision.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CTA ────────────── -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Design partner cohort</div>
+          <h2 class="page-title">Crest opens with six households.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            $5M–$50M net-worth founders, post-exit or pre-exit, without an
+            existing family office. Apply to be one of the first six.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <a href="/join" class="btn-primary">Apply as a household →</a>
+          <a href="/helios" class="btn-ghost">Back to Helios</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

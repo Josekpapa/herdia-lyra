@@ -1,0 +1,128 @@
+---
+/**
+ * /pricing — the tier grammar. INDEX / PAGE / CHAPTER / VOLUME / ATLAS.
+ * Plus every holding's own pricing table + all bundles.
+ */
+import AtlasLayout from "../layouts/AtlasLayout.astro";
+import { HOLDINGS, BUNDLES, TIER_GRAMMAR } from "../data/atlas";
+---
+
+<AtlasLayout
+  title="Pricing — LYRA"
+  description="INDEX, PAGE, CHAPTER, VOLUME, ATLAS. The tier grammar for the LYRA network."
+  active="pricing"
+>
+  <!-- Hero -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · 96</div>
+      <h1 class="page-title">The <em>tier grammar</em>.</h1>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
+        Five tiers. Same names everywhere. Each holding prices its agents and
+        bundles inside this grammar, so a CHAPTER in Tide reads the same as a
+        CHAPTER in Lex.
+      </p>
+    </div>
+  </section>
+
+  <!-- Tier grammar table -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Tier grammar</div>
+      <div class="surface overflow-hidden">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/5">
+              <th class="label-xs py-4 px-5 text-left">Tier</th>
+              <th class="label-xs py-4 px-5 text-left">Monthly</th>
+              <th class="label-xs py-4 px-5 text-left">Annual</th>
+              <th class="label-xs py-4 px-5 text-left">For</th>
+            </tr>
+          </thead>
+          <tbody>
+            {TIER_GRAMMAR.map((t) => (
+              <tr class="hairline-row">
+                <td class="py-5 px-5 font-mono text-[11px] tracking-[0.22em] text-white">{t.tier}</td>
+                <td class="py-5 px-5 data-num text-ink-100">{t.monthly}</td>
+                <td class="py-5 px-5 data-num text-ink-100">{t.annual}</td>
+                <td class="py-5 px-5 text-ink-300">{t.for}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Per-holding pricing -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Pricing by holding</div>
+      <h2 class="section-title">Every holding, inside the grammar</h2>
+
+      <div class="mt-10 space-y-6">
+        {HOLDINGS.map((h) => (
+          <div class="surface p-6">
+            <div class="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <div class="flex items-center gap-3">
+                  <span class="label-xs">{h.code}</span>
+                  <h3 class="font-display text-2xl font-light tracking-tight text-white">{h.name}</h3>
+                  {h.flagship && <span class="text-sm text-ink-400">· {h.flagship.name}</span>}
+                </div>
+                <p class="mt-1 text-sm text-ink-400">{h.model}</p>
+              </div>
+              <a href={`/${h.slug}`} class="btn-link">Open {h.name} →</a>
+            </div>
+            <div class="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+              {h.pricing.map((p) => (
+                <div class="border border-white/5 p-4">
+                  <div class="flex items-baseline justify-between">
+                    <span class="label-xs">{p.tier}</span>
+                    <span class="data-num text-ink-100">{p.price}</span>
+                  </div>
+                  <p class="mt-2 text-[13px] text-ink-300">{p.for}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Bundles -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Bundles</div>
+      <h2 class="section-title">Cross-holding packages</h2>
+      <p class="mt-3 text-sm text-ink-400">Ten bundles. All priced inside the tier grammar.</p>
+
+      <div class="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {BUNDLES.map((b) => (
+          <div class="surface p-5">
+            <div class="flex items-center justify-between">
+              <span class="label-xs">{b.tier}</span>
+              <span class="data-num text-ink-100">{b.price}</span>
+            </div>
+            <div class="mt-3 font-display text-xl font-light text-white">{b.name}</div>
+            <p class="mt-2 text-[13px] text-ink-400">{b.includes.join(" · ")}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-20 text-center">
+      <h2 class="font-display text-4xl font-light tracking-tight text-white">
+        Ready to enter the <em class="italic-display">network</em>?
+      </h2>
+      <div class="mt-8 flex justify-center gap-3">
+        <a href="/join" class="btn-primary">Request access</a>
+        <a href="/agency" class="btn-ghost">Hire LYRA</a>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

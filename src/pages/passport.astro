@@ -1,0 +1,47 @@
+---
+/**
+ * /passport — the SSO identity layer.
+ * Stub for now; wires to auth later. Exists so we can link to "one identity"
+ * from every holding page and the footer.
+ */
+import AtlasLayout from "../layouts/AtlasLayout.astro";
+import { CORE } from "../data/atlas";
+---
+
+<AtlasLayout
+  title="Passport — LYRA identity"
+  description="One identity. All 53 agents. One invoice. The core plumbing of the LYRA network."
+  active="home"
+>
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="kicker mb-3">Core · Passport</div>
+      <h1 class="page-title">One <em>identity</em>. Every agent.</h1>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
+        Passport is LYRA's single sign-on. Sign in once, carry one identity
+        across all eight holdings. Memory follows you. Grammar follows you.
+        Billing consolidates. The network treats you as one person because you
+        are.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="/login" class="btn-primary">Sign in</a>
+        <a href="/join" class="btn-ghost">Request access</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Five rails</div>
+      <h2 class="page-title">Core plumbing.</h2>
+      <div class="mt-10 grid grid-cols-1 gap-3 md:grid-cols-5">
+        {CORE.map((c) => (
+          <div class="surface p-5">
+            <div class="label-xs">{c.name}</div>
+            <p class="mt-3 text-[13px] leading-relaxed text-ink-300">{c.blurb}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

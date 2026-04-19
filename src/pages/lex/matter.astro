@@ -1,0 +1,404 @@
+---
+/**
+ * /lex/matter — Lex · Matter sub-agent product page.
+ *
+ * Matter = open, scope, price, ship. The engine underneath Docket.
+ * For solo attorneys, boutique firms, fractional GCs.
+ *
+ * Voice: precise (inherits Lex). Accent: #c8c4bc (stone).
+ * First sub-agent deep-dive — proves the pattern extends past flagships.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const lex = getHolding("lex")!;
+const agent = lex.agents.find((a) => a.slug === "matter")!;
+const related = lex.agents.filter((a) => a.slug !== "matter" && a.status === "live").slice(0, 5);
+---
+
+<AtlasLayout
+  title="Matter — Lex · LYRA"
+  description="Open, scope, price, ship. The engine under Docket. Turn a phone call into priced, scoped, shippable work — before the second coffee."
+  active="lex"
+>
+  <!-- ────────────── HERO — precise register ────────────── -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1100px 600px at 20% 20%, rgba(200, 196, 188, 0.10), transparent 60%), radial-gradient(760px 480px at 82% 72%, rgba(74, 110, 184, 0.07), transparent 62%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/lex" class="hover:text-white transition">Lex</a>
+        <span>/</span>
+        <span class="text-ink-300">Matter</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Agent · 07.matter</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">PAGE · CHAPTER</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Matter
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        Open · scope · price · ship.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Docket is the flagship. Matter is the engine underneath — the thing
+        that turns a phone call into a priced, scoped, shippable piece of
+        work before the second coffee. Conflict-checked, template-matched,
+        quoted, and opened to Docket in four minutes.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/join" class="btn-primary">Request access →</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Intake → scoped</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">~4 min</div>
+        </div>
+        <div>
+          <div class="label-xs">Fee types</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">flat · capped · hour</div>
+        </div>
+        <div>
+          <div class="label-xs">Templates</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">your firm's, not ours</div>
+        </div>
+        <div>
+          <div class="label-xs">Target operator</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">P3 firm · P7 fractional</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── WHY A SUB-AGENT GETS ITS OWN PAGE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Why Matter is its own product</div>
+          <h2 class="section-title">Sell Matter, you sell Docket.</h2>
+        </div>
+        <div class="md:col-span-3">
+          <p class="text-base leading-relaxed text-ink-200">
+            Docket is the visible flagship — the matter as a shippable product.
+            Matter is the funnel underneath — every dollar of Lex revenue
+            starts with an intake turning into a priced scope. If Matter is
+            broken, Docket has nothing to open.
+          </p>
+          <p class="mt-6 text-base leading-relaxed text-ink-300">
+            It's also the first sub-agent we ship as its own page. The pattern
+            extends: every live agent in the Atlas eventually earns this
+            depth when it matters enough to sell on its own.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── BEFORE / AFTER ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What Matter replaces</div>
+      <h2 class="page-title">Twelve minutes, not two days.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        The intake is where firms leak margin. Matter collapses the
+        phone-call-to-engagement-letter chain into one pass.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <!-- BEFORE -->
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before · how intake happens</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Intake call scribbled into a notepad</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Conflict check: the partner's memory plus a Word doc</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Fee quote guessed on the back of an envelope</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Engagement letter drafted from last month's</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>First billable hour spent on the thing the client wasn't paying for</li>
+          </ul>
+        </div>
+        <!-- AFTER -->
+        <div class="surface p-8" style="border-color: color-mix(in oklab, #c8c4bc 28%, rgba(255,255,255,0.06));">
+          <div class="label-xs text-white">After · Matter</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono text-white">●</span>Intake form routed to the right practice group</li>
+            <li class="flex gap-3"><span class="font-mono text-white">●</span>Conflict check across 10 years of matters · instant</li>
+            <li class="flex gap-3"><span class="font-mono text-white">●</span>Scope template pulled from your firm's library</li>
+            <li class="flex gap-3"><span class="font-mono text-white">●</span>Fee suggested — flat, capped, or hourly with estimate</li>
+            <li class="flex gap-3"><span class="font-mono text-white">●</span>Opens to Docket as M-XXXX · the clock starts where work starts</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── HOW IT WORKS ────────────── -->
+  <section id="how" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">How it works</div>
+      <h2 class="page-title">Intake · Conflict · Scope · Quote.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="surface p-6">
+          <div class="label-xs text-white">01 · Intake</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Client details, counterparty, matter type, urgency. Captured
+            once, once. Routed to the partner or practice group by
+            keyword or referral tag.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">02 · Conflict</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Searches the firm's full matter history in real time. Flags
+            direct conflicts, related-party concerns, and prior adverse
+            representations. Written, archivable, ethics-grade.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">03 · Scope</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Template pulled from Clause (your firm's library). Scope drafted
+            in the firm's voice. Deliverables, milestones, deadlines laid
+            out before the first hour is billed.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">04 · Quote</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Flat / capped / hourly recommendation based on scope, partner
+            rate, prior similar matters. Engagement letter generated.
+            Matter opens to Docket on accept.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── TERMINAL PREVIEW ────────────── -->
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Terminal</div>
+          <h2 class="section-title">A matter opens in 3 minutes 42 seconds.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            Inbound from a founder client asking about a mutual NDA with
+            Vega Ventures. What happens between hello and engagement.
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div class="surface corner-ticks p-8"
+               style="border-color: color-mix(in oklab, #c8c4bc 28%, rgba(255,255,255,0.06));">
+            <div class="flex items-center justify-between">
+              <span class="label-xs text-white">MATTER · NEW INTAKE · OPENING</span>
+              <span class="tag tag-accent">● live</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+$ lyra matter intake
+
+┌─ Intake ─────────────────────────────────────
+│ Client ........ Founder, Series A SaaS
+│ Counterparty .. Vega Ventures
+│ Type .......... Mutual NDA
+│ Urgency ....... this week
+└──────────────────────────────────────────────
+
+$ lyra matter conflict
+
+  Searching 10-year matter history…
+  ✓ Client: clean
+  ✓ Counterparty: 0 direct · 2 unrelated (2021, 2023)
+  ✓ Related parties: none flagged
+  → Conflict memo drafted  ·  archivable
+
+$ lyra matter scope
+
+  Template matched: NDA / mutual / short-form
+  Clause library: firm-standard (v4.2)
+  Deliverables: 1 (executed NDA)
+  Deadline: Thu 17:00 ET
+  → Scope draft ready
+
+$ lyra matter quote
+
+  Suggested fee: <span style="color:#ffffff;">flat $1,800</span>
+  Basis: 12 similar matters ·  avg 3.1 hrs ·  partner $600/hr
+  Alternative: capped at $2,400 (3-4 hrs) · or $600/hr
+
+$ lyra matter open --accept
+
+  → Engagement letter generated
+  → Matter M-2046 opens in Docket
+  → Clock starts at first Brief draft
+
+  <span class="text-ink-500">// static preview. live terminal lands with the first firm.</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── USE CASE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Use case</div>
+          <h2 class="section-title">A fractional GC, twelve clients.</h2>
+          <p class="mt-4 text-sm text-ink-400">Anonymized. P7 profile. Matter as standalone product.</p>
+        </div>
+        <div class="md:col-span-3 space-y-6">
+          <div class="surface p-6">
+            <div class="label-xs">00 · The setup</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Independent counsel, 12 founder clients on retainer. ~40 new
+              matters a year, 80% of which should be flat-fee but get
+              billed hourly out of habit. Conflict check: a spreadsheet and
+              hope.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">01 · Month one</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Matter ingests the spreadsheet. Every intake now takes 4
+              minutes. 30% of matters convert to flat-fee on the first
+              quote. Conflict check becomes automatic · archivable.
+            </p>
+          </div>
+          <div class="surface p-6" style="border-color: color-mix(in oklab, #c8c4bc 26%, rgba(255,255,255,0.06));">
+            <div class="label-xs text-white">02 · Month six</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              60% flat-fee adoption. Revenue up 24% on same matter count
+              (flat fees price against value, not the fraction-of-an-hour).
+              Matters open to Docket on accept · the GC never leaves the
+              terminal between client call and first Brief.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── PRICING ────────────── -->
+  <section id="pricing" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Matter</div>
+      <h2 class="page-title">Standalone or bundled with Docket.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        Solo attorneys and fractional GCs buy Matter at PAGE. Boutique
+        firms get it bundled with Docket at CHAPTER — it's the reason
+        the CHAPTER tier works.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="surface p-8">
+          <div class="flex items-start justify-between">
+            <div class="label-xs">PAGE · Matter solo</div>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$249 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Solo attorney · fractional GC · unlimited matters opened
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8 md:-translate-y-2"
+             style="border-color: color-mix(in oklab, #c8c4bc 34%, rgba(255,255,255,0.06));">
+          <div class="flex items-start justify-between">
+            <div class="label-xs">CHAPTER · with Docket</div>
+            <span class="tag tag-accent">Recommended</span>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$1,999 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Boutique firm · Matter + Docket + Brief + Clause + Calendar-L + Billing
+          </p>
+          <a href="/join" class="btn-primary mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8">
+          <div class="flex items-start justify-between">
+            <div class="label-xs">VOLUME · firm + GC program</div>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$9,990 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Firm hosting a fractional-GC program · multi-attorney routing
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── INTEGRATIONS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Integrations</div>
+      <h2 class="section-title">Reads the intake. Writes the engagement.</h2>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {[
+          "Clio Intake (import)", "Calendly", "Typeform", "Stripe", "LawPay",
+          "Docket (native)", "Clause (native)", "DocuSign", "HubSpot", "Outlook",
+          "Google Workspace", "Zapier"
+        ].map((n) => (
+          <div class="surface px-4 py-3 text-center">
+            <div class="font-mono text-[11px] tracking-wider text-ink-300">{n}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── RELATED AGENTS IN LEX ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">More inside Lex</div>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {related.map((a) => (
+          <AgentTile agent={a} holdingSlug="lex" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CTA ────────────── -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Design partner cohort</div>
+          <h2 class="page-title">Matter opens with one firm and five fractionals.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            If you bill by the matter already, or want to start, we'll
+            migrate your prior intake history and tune the scope library
+            to your firm's voice.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <a href="/join" class="btn-primary">Apply →</a>
+          <a href="/lex/docket" class="btn-ghost">See Docket</a>
+          <a href="/lex" class="btn-link">Back to Lex →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

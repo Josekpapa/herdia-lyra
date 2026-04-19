@@ -1,0 +1,99 @@
+---
+/**
+ * /join — design-partner application + access request.
+ * 21 seats total. 3 per persona. Free CHAPTER for 90 days.
+ */
+import AtlasLayout from "../layouts/AtlasLayout.astro";
+import { PERSONAS } from "../data/atlas";
+---
+
+<AtlasLayout
+  title="Join LYRA — design partner program"
+  description="21 founders, 7 personas, one network. Free CHAPTER for 90 days."
+  active="join"
+>
+  <!-- Hero -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="kicker mb-3">Join · 99</div>
+      <h1 class="page-title">Be one of <em>21</em>.</h1>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
+        LYRA is invite-only. We're seating 21 design partners across 7 personas —
+        three per persona. Free CHAPTER tier for 90 days. Monthly working
+        sessions. Your name and feedback shape the product.
+      </p>
+
+      <div class="mt-10 flex flex-wrap gap-3">
+        <span class="tag tag-accent">● 21 seats</span>
+        <span class="tag">7 personas</span>
+        <span class="tag">free 90 days · CHAPTER tier</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Personas -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-2">Who we're seating</div>
+      <h2 class="section-title">The 7 personas</h2>
+      <p class="mt-3 text-sm text-ink-400">Three seats per persona. Pick the one that sounds like you.</p>
+
+      <div class="mt-8 grid grid-cols-1 gap-3 md:grid-cols-2">
+        {PERSONAS.map((p) => (
+          <div class="surface p-5">
+            <div class="flex items-center justify-between">
+              <span class="label-xs">{p.code}</span>
+              <span class="font-mono text-[11px] text-ink-400">{p.holding}</span>
+            </div>
+            <div class="mt-3 font-display text-xl font-light text-white">{p.name}</div>
+            <p class="mt-2 text-[13px] text-ink-300">
+              Entry: <span class="text-ink-100">{p.entry}</span> · 3-yr LTV <span class="text-ink-100">{p.ltv3y}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Form (frontend-only stub — wire to API later) -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-2xl px-6 py-20">
+      <div class="kicker mb-2">Application</div>
+      <h2 class="section-title">Tell us about you</h2>
+      <p class="mt-3 text-sm text-ink-400">Under a minute. We read every one.</p>
+
+      <form class="mt-10 space-y-8" method="post" action="/api/join" aria-label="Design partner application">
+        <div>
+          <label class="label-xs">Your name</label>
+          <input class="field mt-2" name="name" type="text" placeholder="Paloma Salazar" required />
+        </div>
+        <div>
+          <label class="label-xs">Email</label>
+          <input class="field mt-2" name="email" type="email" placeholder="you@company.com" required />
+        </div>
+        <div>
+          <label class="label-xs">Company</label>
+          <input class="field mt-2" name="company" type="text" placeholder="Shore Hotels Group" />
+        </div>
+        <div>
+          <label class="label-xs">Which persona sounds like you?</label>
+          <select class="field-framed mt-2" name="persona" required>
+            <option value="">Choose one —</option>
+            {PERSONAS.map((p) => (
+              <option value={p.code}>{p.code} · {p.name}</option>
+            ))}
+            <option value="other">Other / not sure</option>
+          </select>
+        </div>
+        <div>
+          <label class="label-xs">What runs your world today?</label>
+          <textarea class="field-framed mt-2 min-h-[120px]" name="surface" placeholder="Spreadsheets, WhatsApp, a CPA, a patchwork of tools — tell us what your stack actually is."></textarea>
+        </div>
+        <div class="flex items-center gap-3">
+          <button type="submit" class="btn-primary">Request access</button>
+          <a href="/atlas" class="btn-link">or browse the Atlas →</a>
+        </div>
+      </form>
+    </div>
+  </section>
+</AtlasLayout>

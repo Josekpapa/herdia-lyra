@@ -23,8 +23,11 @@ pnpm-debug.log*
 # vercel
 .vercel/
 
-# local runtime data (audit log, caches)
-data/
+# claude local preferences (keep launch.json tracked, ignore per-machine perms)
+.claude/settings.local.json
+
+# local runtime data (audit log, caches) — only root-level, not src/data
+/data/
 .cache/
 
 # macOS-specific files

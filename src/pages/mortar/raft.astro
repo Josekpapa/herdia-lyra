@@ -1,0 +1,394 @@
+---
+/**
+ * /mortar/raft — Mortar · Raft flagship product page.
+ *
+ * Raft = the ledger for the build, permit to close-out.
+ * For builder-developers with $2M–$50M active projects.
+ *
+ * Voice: direct · tactical · on-site. Accent: #8a6a26 (bronze) on slate.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const mortar = getHolding("mortar")!;
+---
+
+<AtlasLayout
+  title="Raft — Mortar · LYRA"
+  description="The ledger for the build — permit to close-out. Mortar's construction terminal."
+  active="mortar"
+>
+  <!-- ────────────── HERO — tactical register ────────────── -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1100px 600px at 20% 20%, rgba(138, 106, 38, 0.14), transparent 60%), radial-gradient(760px 480px at 82% 72%, rgba(214, 219, 232, 0.05), transparent 62%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/mortar" class="hover:text-white transition">Mortar</a>
+        <span>/</span>
+        <span class="text-ink-300">Raft</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Flagship · 06.00</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">CHAPTER · VOLUME · ATLAS</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Raft
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        The ledger for the build — permit to close-out.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Every build has forty WhatsApp groups and a superintendent who hasn't
+        slept. Raft replaces all of it with one ledger — permits, crews,
+        photos, draws, liens, change orders, and the handoff packet. One
+        thread, many subs, nothing lost.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/join" class="btn-primary">Request access →</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">WhatsApp groups replaced</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">~37</div>
+        </div>
+        <div>
+          <div class="label-xs">Draw cycle</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">5d → 2d</div>
+        </div>
+        <div>
+          <div class="label-xs">Permit jurisdictions</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">US-all</div>
+        </div>
+        <div>
+          <div class="label-xs">Target operator</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">P4 · $2M–$50M builds</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── BEFORE / AFTER ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What Raft replaces</div>
+      <h2 class="page-title">Forty threads, one ledger.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        Not every build needs Procore. Every build needs the ledger the
+        superintendent is already keeping in their head.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <!-- BEFORE -->
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before · the stack every build runs on</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>40+ WhatsApp groups · framing, MEP, finish, owner, city, lender</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Dropbox folder of photos named <em>IMG_4023.jpg</em></li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>AIA draw in Excel, reconciled at the end of the month</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Permit status: "let me call the expediter"</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Change orders: the scribbled one you signed in the truck</li>
+          </ul>
+        </div>
+        <!-- AFTER -->
+        <div class="surface p-8" style="border-color: color-mix(in oklab, #8a6a26 28%, rgba(255,255,255,0.06));">
+          <div class="label-xs" style="color: #c3942d;">After · Raft</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style="color:#c3942d;">●</span>Site: daily log — photos, notes, delays — tagged by trade</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#c3942d;">●</span>Permit: every filing, every agency, every renewal deadline</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#c3942d;">●</span>Crew: who's on site, why, when · time on task by sub</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#c3942d;">●</span>Ledger-C: draws, liens, change orders — AIA-compliant</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#c3942d;">●</span>Punch: close-out bracketed · handoff packet compiled</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── SUB-AGENTS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Inside Raft</div>
+      <h2 class="page-title">Nine agents. One project.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        Every agent shares the same permit, the same draw schedule, the same
+        crew roster.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {mortar.agents.map((a) => (
+          <AgentTile agent={a} holdingSlug="mortar" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── HOW IT WORKS ────────────── -->
+  <section id="how" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">How it works</div>
+      <h2 class="page-title">Open · Daily · Draw · Close.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#c3942d;">01 · Open</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Permit file, entitlements, scope, budget. Blueprint ingests the
+            drawings. Vendor agent seeds the subcontractor tree from your
+            prior builds.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#c3942d;">02 · Daily</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Site log: photos, notes, weather, crew roster, delays. Attached
+            to the right trade, visible to the right parties. One link you
+            can send the lender.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#c3942d;">03 · Draw</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Ledger-C compiles the AIA draw from the daily log and invoices.
+            Lien waivers stamped via Attest. Draw packet to the lender in
+            two days instead of five.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#c3942d;">04 · Close</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Punch bracketed. Warranty packet compiled. Close hands off to
+            owner · or to Tide if it's a hotel going live. The build
+            becomes a record, searchable forever.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── TERMINAL PREVIEW ────────────── -->
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Terminal</div>
+          <h2 class="section-title">Day 127 on a $8M build.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            The superintendent's screen at 6:40 AM, before the first truck.
+            Weather, permits, crews, draws. One read.
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div class="surface corner-ticks p-8"
+               style="border-color: color-mix(in oklab, #8a6a26 26%, rgba(255,255,255,0.06));">
+            <div class="flex items-center justify-between">
+              <span class="label-xs" style="color:#c3942d;">RAFT · PROJECT P-0042 · DAY 127</span>
+              <span class="tag tag-accent">● live</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+$ lyra raft brief
+
+┌─ Site ───────────────────────────────────────
+│ Crews on site .... 3  (framing · MEP · finish)
+│ Weather halt ..... Mon AM  ·  fog, clearing 10 AM
+│ Deliveries today . 2  (tile · water heater)
+│ RFI open ......... 2  ·  awaiting architect
+└──────────────────────────────────────────────
+
+$ lyra raft flags
+
+  Needs you
+  <span style="color:#c3942d;">▲</span> Permit renewal in 9 days  ·  mechanical rough
+  <span style="color:#c3942d;">▲</span> Draw #4 ready  ·  $280,400  ·  lien waivers x7
+  ·  Change order CO-12 signed by owner  ·  +$14,200
+
+$ lyra raft draws
+
+  Draw #1 ... $412,000 ... funded Feb 14
+  Draw #2 ... $388,500 ... funded Mar 07
+  Draw #3 ... $451,100 ... funded Mar 28
+  Draw #4 ... $280,400 ... <span style="color:#c3942d;">ready · send to lender</span>
+
+  <span class="text-ink-500">// static preview. live terminal lands with the first build.</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── USE CASE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Flagship use case</div>
+          <h2 class="section-title">A boutique-hotel renovation, 11 months in.</h2>
+          <p class="mt-4 text-sm text-ink-400">Anonymized. Real numbers. Raft's canonical pilot build.</p>
+        </div>
+        <div class="md:col-span-3 space-y-6">
+          <div class="surface p-6">
+            <div class="label-xs">00 · The setup</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Gut renovation · 34 keys · $8.2M total · GMP contract. Owner is
+              a Design Hotels operator (Tide × Mortar trigger). Lender
+              requires monthly AIA draws. 11 subcontractor trades.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">01 · Month one</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Blueprint ingests the CDs. Permit agent files the mechanical
+              rough. Site log replaces 24 WhatsApp groups in week one. First
+              draw filed in 2 days (vs. 5).
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">02 · Month six</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Crew time-on-task down 14% (idle delivery days eliminated).
+              Change orders captured at the point of decision, not in the
+              truck. Lender shortens review from 9 days to 3.
+            </p>
+          </div>
+          <div class="surface p-6" style="border-color: color-mix(in oklab, #8a6a26 24%, rgba(255,255,255,0.06));">
+            <div class="label-xs" style="color:#c3942d;">03 · Close-out</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Handoff packet compiled automatically. Punch closed in 18 days.
+              Warranty records searchable. The owner walks into Marea with
+              Raft's record already feeding the property's maintenance log.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── PRICING ────────────── -->
+  <section id="pricing" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Raft</div>
+      <h2 class="page-title">Three ways to build.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        {mortar.model}
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        {mortar.pricing.map((p, i) => (
+          <div
+            class={`surface p-8 ${i === 1 ? "md:-translate-y-2" : ""}`}
+            style={i === 1 ? "border-color: color-mix(in oklab, #8a6a26 36%, rgba(255,255,255,0.06));" : ""}
+          >
+            <div class="flex items-start justify-between">
+              <div class="label-xs">{p.tier}</div>
+              {i === 1 && <span class="tag tag-accent">Recommended</span>}
+            </div>
+            <div class="mt-6 font-display text-4xl font-light text-white data-num">{p.price}</div>
+            <p class="mt-3 text-[13px] leading-relaxed text-ink-300">{p.for}</p>
+            <a href="/join" class={i === 1 ? "btn-primary mt-8 inline-block" : "btn-ghost mt-8 inline-block"}>
+              Request access
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-8 max-w-2xl text-xs leading-relaxed text-ink-500">
+        VOLUME tier includes 0.75% of project value billed at close — we earn
+        when the build closes, not before. ATLAS tier is for developers with
+        3+ concurrent projects or a program of 10+ builds/yr.
+      </p>
+    </div>
+  </section>
+
+  <!-- ────────────── INTEGRATIONS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Integrations</div>
+      <h2 class="section-title">Reads the tools you already use.</h2>
+      <p class="mt-2 max-w-xl text-sm text-ink-400">
+        Procore import for existing projects. Native connections for banking,
+        signatures, permits, and the holding-side books.
+      </p>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {[
+          "Procore (import)", "Buildertrend (import)", "QuickBooks", "Ledger-C (native)",
+          "Stripe ACH (draws)", "Plaid", "DocuSign", "Attest (liens)",
+          "City permit APIs", "Dropbox", "Google Drive", "WhatsApp (archive)"
+        ].map((n) => (
+          <div class="surface px-4 py-3 text-center">
+            <div class="font-mono text-[11px] tracking-wider text-ink-300">{n}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CROSS-HOLDING CALLS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Where Raft lives</div>
+      <div class="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#c3942d;">← Tide</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            Marea triggers Raft when a property enters renovation. Handoff
+            back to Marea at close-out is automatic.
+          </p>
+        </div>
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#c3942d;">→ Lex · Seal</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            Contracts draft in Matter. Every lien waiver and close-out doc
+            stamps through Attest. Chain-of-custody forever.
+          </p>
+        </div>
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#c3942d;">→ Fidelis · Helios</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            Draws post into the entity's books via Ledger. The finished
+            asset shows up on Crest's portfolio the day it closes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CTA ────────────── -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Design partner cohort</div>
+          <h2 class="page-title">Raft opens on six projects.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            Ground-up, renovation, or adaptive reuse · $2M–$50M · on-site
+            within 90 days. Revshare builds get priority.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <a href="/join" class="btn-primary">Apply as a build →</a>
+          <a href="/mortar" class="btn-ghost">Back to Mortar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

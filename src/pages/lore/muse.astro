@@ -1,0 +1,402 @@
+---
+/**
+ * /lore/muse — Lore · Muse flagship product page.
+ *
+ * Muse = the terminal for founder academies, residencies, boutique schools.
+ * Every tutor, mentor, and course leaves a permanent record.
+ *
+ * Voice: scholarly · patient · generous. Accent: #e8c99a (warm beige).
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const lore = getHolding("lore")!;
+---
+
+<AtlasLayout
+  title="Muse — Lore · LYRA"
+  description="The terminal for founder academies, residencies, boutique schools. Every tutor, mentor, and course leaves a permanent record."
+  active="lore"
+>
+  <!-- ────────────── HERO — scholarly register ────────────── -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1100px 600px at 22% 20%, rgba(232, 201, 154, 0.12), transparent 60%), radial-gradient(760px 480px at 82% 72%, rgba(74, 110, 184, 0.06), transparent 62%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/lore" class="hover:text-white transition">Lore</a>
+        <span>/</span>
+        <span class="text-ink-300">Muse</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Flagship · 02.00</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">PAGE · CHAPTER · VOLUME</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Muse
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        Every cohort, remembered.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        A good cohort is more than what gets said in the room — it's
+        everything the tutor remembered, every path adjusted to a learner,
+        every office hour kept. Muse is the instrument that keeps the
+        memory, scores it, and hands it to the next cohort.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/join" class="btn-primary">Request access →</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Languages</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">EN · ES · PT</div>
+        </div>
+        <div>
+          <div class="label-xs">Cohort size</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">6 – 200</div>
+        </div>
+        <div>
+          <div class="label-xs">Record depth</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">learner → cohort → alumni · forever</div>
+        </div>
+        <div>
+          <div class="label-xs">Target operator</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">P6 · Educator-Operator</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── BEFORE / AFTER ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What Muse replaces</div>
+      <h2 class="page-title">Five tools, one record.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        Cohorts run on whatever is cheapest that week. Muse is the program's
+        memory — the thing that tells you which path worked, which tutor
+        answered best, and which alumnus is open to mentor.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <!-- BEFORE -->
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before · the stack programs run on</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Notion for the syllabus · Slack for the cohort · Zoom for the class</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Google Classroom for assignments · Airtable for admissions</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>A tutor's DMs as the office-hours queue</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>An alumni spreadsheet someone updates twice a year</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>The program director's head for everything else</li>
+          </ul>
+        </div>
+        <!-- AFTER -->
+        <div class="surface p-8" style="border-color: color-mix(in oklab, #e8c99a 26%, rgba(255,255,255,0.06));">
+          <div class="label-xs" style="color: #e8c99a;">After · Muse</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style="color:#e8c99a;">●</span>Tutor: Q&A that knows your syllabus · in three languages</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#e8c99a;">●</span>Path: the learning path, generated per learner · adjusted weekly</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#e8c99a;">●</span>Lab · Cohort: workshops captured · the living dashboard</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#e8c99a;">●</span>Dossier: every learner's file · forever, searchable</li>
+            <li class="flex gap-3"><span class="font-mono" style="color:#e8c99a;">●</span>Alumni: the network as asset · not as afterthought</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── SUB-AGENTS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Inside Muse</div>
+      <h2 class="page-title">Nine agents. One program.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        Every agent shares the same learner, the same syllabus, the same
+        office hour.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {lore.agents.map((a) => (
+          <AgentTile agent={a} holdingSlug="lore" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── HOW IT WORKS ────────────── -->
+  <section id="how" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">How it works</div>
+      <h2 class="page-title">Admit · Teach · Cohort · Alumni.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#e8c99a;">01 · Admit</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Admissions pipeline: application, scoring rubric the program
+            director actually uses, decision with rationale. Intake cleanly
+            into Cohort on acceptance.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#e8c99a;">02 · Teach</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Tutor runs Q&A on syllabus. Path builds per-learner routes. Lab
+            captures workshops. Desk holds office hours async when the
+            tutor can't be live.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#e8c99a;">03 · Cohort</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            The living dashboard: who's at-risk, who's shipping, what the
+            room is asking about, which tutor is carrying load. Program
+            director reads one screen.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style="color:#e8c99a;">04 · Alumni</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Graduation doesn't close the file — it opens it. Alumni remain
+            queryable by the cohort, by the faculty, by future cohorts
+            looking for mentors.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── TERMINAL PREVIEW ────────────── -->
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Terminal</div>
+          <h2 class="section-title">Week 6 of 12.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            What the program director reads on a Tuesday. At-risk, shipping,
+            carrying load. One screen, no tabs.
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div class="surface corner-ticks p-8"
+               style="border-color: color-mix(in oklab, #e8c99a 26%, rgba(255,255,255,0.06));">
+            <div class="flex items-center justify-between">
+              <span class="label-xs" style="color:#e8c99a;">MUSE · COHORT C-2026-S · WEEK 6 / 12</span>
+              <span class="tag tag-accent">● live</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+$ lyra muse brief
+
+┌─ Cohort ─────────────────────────────────────
+│ Learners ...... 18  (active)  ·  2 at-risk
+│ Tutors ........ 3   ·  avg response 4.2 hr
+│ Workshops ..... 6 delivered  ·  2 scheduled
+│ Languages ..... EN × 11  ·  ES × 5  ·  PT × 2
+└──────────────────────────────────────────────
+
+$ lyra muse flags
+
+  Needs you
+  <span style="color:#e8c99a;">▲</span> 2 at-risk  ·  Learner-07 &amp; Learner-14  ·  Path drift
+  <span style="color:#e8c99a;">▲</span> Office-hours queue: 4 unanswered &gt; 24h
+  ·  Workshop-5 feedback: 4.6 / 5  ·  strongest so far
+
+$ lyra muse alumni --open-to-mentor
+
+  23 alumni flagged as open
+  3 offered this cohort specifically
+  ·  Alumni-112 · 2023 · 2 matches in C-2026-S
+
+$ lyra muse next
+
+  Thu 10:00 ... Workshop-7 (Financial modeling)
+  Fri 15:00 ... Desk — office hours · async
+  Sat 09:00 ... Cohort review w/ faculty
+
+  <span class="text-ink-500">// static preview. live terminal lands with the first cohort.</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── USE CASE ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Flagship use case</div>
+          <h2 class="section-title">A founder residency, three cohorts deep.</h2>
+          <p class="mt-4 text-sm text-ink-400">Anonymized. Real shape. Muse's canonical program.</p>
+        </div>
+        <div class="md:col-span-3 space-y-6">
+          <div class="surface p-6">
+            <div class="label-xs">00 · The setup</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Founder residency, 18 learners per cohort, 12 weeks, hybrid.
+              3 core faculty, 6 guest instructors. Previously on Notion +
+              Slack + Circle + Google Meet + Airtable. Alumni program in a
+              Google Sheet.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">01 · Cohort one</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Tutor goes live trilingually from week one. Path generator
+              builds custom routes for each learner's business stage.
+              Office hours move async via Desk — faculty recovers 8 hrs/wk.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">02 · Cohort three</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Admissions converts at 2.4× prior cohort (scoring rubric is
+              calibrated on two full cohorts). Alumni-sourced applicants:
+              38% of pipeline. NPS: 79 → 91.
+            </p>
+          </div>
+          <div class="surface p-6" style="border-color: color-mix(in oklab, #e8c99a 26%, rgba(255,255,255,0.06));">
+            <div class="label-xs" style="color:#e8c99a;">03 · The second flywheel</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Alumni-as-asset: 23 graduates open to mentor. 9 actively in
+              paid seats across other LYRA holdings. The residency becomes
+              the top-of-funnel for the rest of the network.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── PRICING ────────────── -->
+  <section id="pricing" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Muse</div>
+      <h2 class="page-title">Three ways to open.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        {lore.model}
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        {lore.pricing.map((p, i) => (
+          <div
+            class={`surface p-8 ${i === 1 ? "md:-translate-y-2" : ""}`}
+            style={i === 1 ? "border-color: color-mix(in oklab, #e8c99a 34%, rgba(255,255,255,0.06));" : ""}
+          >
+            <div class="flex items-start justify-between">
+              <div class="label-xs">{p.tier}</div>
+              {i === 1 && <span class="tag tag-accent">Recommended</span>}
+            </div>
+            <div class="mt-6 font-display text-4xl font-light text-white data-num">{p.price}</div>
+            <p class="mt-3 text-[13px] leading-relaxed text-ink-300">{p.for}</p>
+            <a href="/join" class={i === 1 ? "btn-primary mt-8 inline-block" : "btn-ghost mt-8 inline-block"}>
+              Request access
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-8 max-w-2xl text-xs leading-relaxed text-ink-500">
+        VOLUME tier unlocks Alumni + Chair — the program-level ops — plus
+        revenue-share on alumni-sourced placements. Admissions pipeline
+        included at every tier.
+      </p>
+    </div>
+  </section>
+
+  <!-- ────────────── INTEGRATIONS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Integrations</div>
+      <h2 class="section-title">Meets your program where it is.</h2>
+      <p class="mt-2 max-w-xl text-sm text-ink-400">
+        Zoom for live. Stripe for tuition. Circle for community (optional).
+        Native Atlas rails for admissions, dossier, and alumni.
+      </p>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {[
+          "Zoom", "Stripe", "Circle", "Google Workspace", "Zapier",
+          "Notion (import)", "Airtable (import)", "Canvas (optional)", "Typeform",
+          "Fidelis Ledger", "Passport (SSO)", "Memory (graph)"
+        ].map((n) => (
+          <div class="surface px-4 py-3 text-center">
+            <div class="font-mono text-[11px] tracking-wider text-ink-300">{n}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CROSS-HOLDING CALLS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Where Muse feeds the network</div>
+      <div class="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#e8c99a;">→ Everywhere</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            Alumni become operators across all eight holdings. Muse is
+            the network's top of funnel for future users and builders.
+          </p>
+        </div>
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#e8c99a;">↔ Fidelis</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            The institution itself runs on Fidelis — books, filings, vault.
+            Ledger handles tuition recognition and cohort cost accounting.
+          </p>
+        </div>
+        <div class="surface p-5">
+          <div class="label-xs" style="color:#e8c99a;">↔ Lex</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-200">
+            Student agreements, IP clauses on capstone work, enrollment
+            disputes — all paper routes through Docket.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CTA ────────────── -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Design partner cohort</div>
+          <h2 class="page-title">Muse opens with three programs.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            One design residency. One founder academy. One boutique school.
+            We co-run the first cohort and split alumni-sourced revenue
+            50/50 through the pilot.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <a href="/join" class="btn-primary">Apply as a program →</a>
+          <a href="/lore" class="btn-ghost">Back to Lore</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

@@ -1,0 +1,15 @@
+---
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import HoldingShell from "../../components/atlas/HoldingShell.astro";
+import { getHolding } from "../../data/atlas";
+
+const holding = getHolding("alder")!;
+---
+
+<AtlasLayout
+  title={`${holding.name} — ${holding.tagline}`}
+  description={holding.thesis}
+  active={holding.slug}
+>
+  <HoldingShell holding={holding} />
+</AtlasLayout>

@@ -1,0 +1,251 @@
+---
+/**
+ * /fidelis/ledger — Fidelis · Ledger agent product page.
+ *
+ * Ledger = books that read and write. For founders with 2+ entities.
+ * Core promise: monthly close in an afternoon, not a month.
+ *
+ * Voice: clinical · careful · confident. Accent: #4a6eb8 (marea-lyra blue).
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const fidelis = getHolding("fidelis")!;
+const agent = fidelis.agents.find((a) => a.slug === "ledger")!;
+const related = fidelis.agents.filter((a) => a.slug !== "ledger" && a.status === "live").slice(0, 5);
+---
+
+<AtlasLayout
+  title="Ledger — Fidelis · LYRA"
+  description="Books that read and write. Fidelis Ledger closes your month in an afternoon."
+  active="fidelis"
+>
+  <!-- ────────────── HERO — clinical register ────────────── -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1000px 560px at 20% 20%, rgba(74, 110, 184, 0.14), transparent 60%), radial-gradient(700px 460px at 85% 70%, rgba(200, 196, 188, 0.06), transparent 62%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/fidelis" class="hover:text-white transition">Fidelis</a>
+        <span>/</span>
+        <span class="text-ink-300">Ledger</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Agent · 03.ledger</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">CHAPTER · VOLUME</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Ledger
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        Books that read and write.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Most founders' books are a monthly surprise. Ledger is the agent that
+        keeps them honest every day — pulling transactions, classifying, tying
+        receipts to docs in Vault, and flagging the edge cases before your CPA
+        does. The monthly close stops being a month.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/join" class="btn-primary">Request access →</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Close time</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">&lt; 1 day</div>
+        </div>
+        <div>
+          <div class="label-xs">Entities per instance</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">unlimited</div>
+        </div>
+        <div>
+          <div class="label-xs">Audit surface</div>
+          <div class="mt-1 text-sm text-ink-200">every entry traced to source</div>
+        </div>
+        <div>
+          <div class="label-xs">Flows into</div>
+          <div class="mt-1 text-sm text-ink-200">Vault · Filing · Crest</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── HOW IT WORKS ────────────── -->
+  <section class="border-b border-white/5" id="how">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">How it works</div>
+      <h2 class="page-title">Four rituals. One <em>book</em>.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {[
+          { code: "01", title: "Ingest",    copy: "Pulls every transaction · Plaid, Stripe, Mercury, Brex, Ramp · continuous." },
+          { code: "02", title: "Classify",  copy: "Categorizes in your chart of accounts · learns your corrections in one pass." },
+          { code: "03", title: "Reconcile", copy: "Ties each entry to a receipt, invoice, or doc in Vault. Raises flags, never guesses." },
+          { code: "04", title: "Close",     copy: "Month-end packet for you and your CPA. Filing-aware. Signed, stamped, archived." },
+        ].map((s) => (
+          <div class="surface p-6">
+            <div class="label-xs" style="color: #86d9ff;">{s.code}</div>
+            <div class="mt-3 font-display text-2xl font-light text-white">{s.title}</div>
+            <p class="mt-2 text-sm text-ink-300 leading-relaxed">{s.copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── LIVE TERMINAL PREVIEW ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Terminal</div>
+          <h2 class="section-title">A Tuesday morning in Ledger.</h2>
+          <p class="mt-4 text-sm text-ink-300 leading-relaxed">
+            This is the read most founders get on a Tuesday at 7:30am — what
+            closed yesterday, what flagged, what needs a decision. No logins.
+            No exports. No surprises at month-end.
+          </p>
+        </div>
+
+        <div class="lg:col-span-3">
+          <div class="surface corner-ticks p-6">
+            <div class="flex items-center justify-between">
+              <span class="label-xs">LEDGER · TUE 07:32</span>
+              <span class="tag tag-accent">● live</span>
+            </div>
+            <div class="mt-6 space-y-2 font-mono text-[12px] leading-relaxed">
+              <div class="text-ink-500">$ lyra ledger overnight</div>
+              <div class="text-ink-300">┌── Overnight ─────────────────────────────────────</div>
+              <div class="text-ink-300">│  ingested <span class="text-white">142</span> transactions across <span class="text-white">6</span> entities</div>
+              <div class="text-ink-300">│  classified <span class="text-white">138</span> ·  <span style="color:#fbbf24;">4 pending decision</span></div>
+              <div class="text-ink-300">│  reconciled <span class="text-white">129</span> ·  receipts missing on <span style="color:#fb7185;">3</span></div>
+              <div class="text-ink-300">└──────────────────────────────────────────────────</div>
+              <div class="text-ink-500 mt-4">$ lyra ledger flags</div>
+              <div class="text-ink-300">┌── Needs you ─────────────────────────────────────</div>
+              <div class="text-ink-300">│  <span style="color:#fbbf24;">▲</span>  $12,400 wire · unclassified · "LIGUORI FAMILY"</div>
+              <div class="text-ink-300">│  <span style="color:#fbbf24;">▲</span>  $3,212 charge · new vendor · "AEROCAMP"</div>
+              <div class="text-ink-300">│  <span style="color:#fb7185;">×</span>  receipt missing · Brex · $842.18 · Apr 16</div>
+              <div class="text-ink-300">└──────────────────────────────────────────────────</div>
+              <div class="text-ink-500 mt-4">$ lyra ledger close preview</div>
+              <div class="text-ink-300">  month-to-date · <span class="text-white">ready in 6 min</span> once flags resolved</div>
+              <div class="text-ink-300">  CPA packet · <span class="text-white">drafting</span> · Vault sync on finalize</div>
+              <div class="mt-4 flex items-center gap-2 text-ink-400">
+                <span class="animate-caret">▌</span>
+                <span class="text-ink-500 text-[11px]">press any key to resolve flags</span>
+              </div>
+            </div>
+          </div>
+          <p class="mt-4 text-[11px] text-ink-500 font-mono">// static preview. live terminal lands with the first design partner.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── WHO IT'S FOR ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">For you if</div>
+      <h2 class="page-title">You have <em>more than one</em> entity.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        {[
+          { title: "You run 2+ LLCs",             copy: "Your books live in three QuickBooks files and you can't remember which one is current." },
+          { title: "A CPA who's a bottleneck",     copy: "Your close takes three weeks because your CPA is waiting on receipts that live in your email." },
+          { title: "Founder-group revenue",        copy: "Wires, distributions, K-1s, management fees — your edges are where errors live." },
+        ].map((f) => (
+          <div class="surface p-6">
+            <div class="label-xs" style="color: #86d9ff;">Profile</div>
+            <div class="mt-3 font-display text-xl font-light text-white">{f.title}</div>
+            <p class="mt-2 text-sm text-ink-300 leading-relaxed">{f.copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── PRICING ────────────── -->
+  <section class="border-b border-white/5" id="pricing">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Ledger</div>
+      <h2 class="page-title">Priced inside Fidelis.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">{fidelis.model}</p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        {fidelis.pricing.map((p, i) => (
+          <div class={`surface p-7 ${i === 1 ? "md:-translate-y-2" : ""}`} style={i === 1 ? "border-color: color-mix(in oklab, #4a6eb8 32%, rgba(255,255,255,0.06));" : undefined}>
+            <div class="flex items-center justify-between">
+              <span class="label-xs">{p.tier}</span>
+              {i === 1 && <span class="tag" style="color:#86d9ff;border-color:color-mix(in oklab, #4a6eb8 28%, transparent);">Recommended</span>}
+            </div>
+            <div class="mt-5 font-display text-3xl font-light text-white">{p.price}</div>
+            <p class="mt-2 text-sm text-ink-300">{p.for}</p>
+            <a href="/join" class={`mt-8 inline-block ${i === 1 ? "btn-primary" : "btn-ghost"}`}>Request access</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── INTEGRATIONS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Plugs into</div>
+      <h2 class="section-title">Every source your money flows through.</h2>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+        {["Plaid", "Stripe", "Mercury", "Brex", "Ramp", "QuickBooks", "Xero", "Carta", "Gusto", "Pilot", "DocuSign", "Bill.com"].map((n) => (
+          <div class="surface p-4 text-center">
+            <span class="font-mono text-[11px] tracking-[0.1em] text-ink-200">{n}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── RELATED AGENTS ────────────── -->
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Pairs with</div>
+      <h2 class="section-title">Ledger + the rest of Fidelis</h2>
+      <div class="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {related.map((a) => (
+          <AgentTile agent={a} holdingSlug="fidelis" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────────── CTA ────────────── -->
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="surface-warm p-12 sm:p-20 text-center">
+        <div class="kicker mb-4">Access</div>
+        <h2 class="font-display text-[clamp(2rem,5vw,4rem)] font-light tracking-tight text-white">
+          The close is an <em class="italic-display">afternoon</em>, not a month.
+        </h2>
+        <div class="mt-10 flex flex-wrap justify-center gap-3">
+          <a href="/join" class="btn-primary">Request access</a>
+          <a href="/fidelis" class="btn-ghost">Back to Fidelis</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>
