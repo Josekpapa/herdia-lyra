@@ -2,7 +2,7 @@
 
 **Source of truth in code:** `src/data/interfaceBatches.ts` — `INTERFACE_DEV_BATCHES`, `ACTIVE_INTERFACE_DEV_BATCH`, `INTERFACE_DEV_SEQUENCE_INDEX`, `getSequenceFocusKey()`.
 
-**Current product default:** `ACTIVE_INTERFACE_DEV_BATCH === 9` and `INTERFACE_DEV_SEQUENCE_INDEX === 0` — focus **`alder/atria`** (Batch 9 step 1). Batch 9: **`alder/atria`**, **`mortar/blueprint`**, **`mortar/permit`**. Batches **7–8** ship custom shells in `interface/batch7/` (Yield, Kairos Intake, Protocol) and `interface/batch8/` (Labs, Cadence, Concierge-M). **`PREVIEWS`** for batches **10–11** are in `interfaceBatches.ts` (Raft crew/site/ledger-c; punch + Lex matter/brief). The **`lore`** holding stays **excluded** from batching (`INTERFACE_DEV_EXCLUDED_HOLDING_SLUGS`). **`getDevStepsForBatch()`** drives Hub + panel step chips for any batch ≥ 3.
+**Current product default:** `ACTIVE_INTERFACE_DEV_BATCH === 11` and `INTERFACE_DEV_SEQUENCE_INDEX === 1` — focus **`lex/matter`** (Batch 11 step 2). Batch **10** shells in `interface/batch10/`; **Punch** in `interface/batch11/`. **`PREVIEWS`** for batch **11** agents (`mortar/punch`, `lex/matter`, `lex/brief`) are in `interfaceBatches.ts`. The **`lore`** holding stays **excluded** from batching (`INTERFACE_DEV_EXCLUDED_HOLDING_SLUGS`). **`getDevStepsForBatch()`** drives Hub + panel step chips for any batch ≥ 3.
 
 **GA interface panel:** any **general_availability** live SKU gets a product interface shell via `getInterfacePreviewForProduct()` — rich `PREVIEWS` when the agent is in the active dev batch, otherwise a **synthetic** preview from `serviceCatalog`. The batch rail (steps 1–3) only shows when the page’s agent is **in** the active batch.
 
@@ -64,14 +64,26 @@ Batch **1** is fixed (onboarding · ops floor · stamp queue). Later batches are
 |---|-------------|
 | **Theme** | Kairos foyer · blueprint stack · permit filings |
 | **Agents** | `alder/atria`, `mortar/blueprint`, `mortar/permit` |
-| **Preview / Remotion** | Rich `PREVIEWS`; dedicated backdrops; generic panel until optional custom shells |
+| **PRDs** | [F11 · Atria](./prds/F11-alder-atria-interface.md) · [F12 · Blueprint](./prds/F12-mortar-blueprint-interface.md) · [F13 · Permit](./prds/F13-mortar-permit-interface.md) |
+| **Preview / Remotion / shells** | Rich `PREVIEWS`; dedicated backdrops; custom **Atria**, **Blueprint**, **Permit** in `interface/batch9/` |
 
-### Batch 10–11 (previews in code)
+### Batch 10 (computed)
 
-| **Batch** | **Theme** | **Agents** |
-|-----------|-----------|------------|
-| **10** | Crew roster · site daily · construction ledger | `mortar/crew`, `mortar/site`, `mortar/ledger-c` |
-| **11** | Punch close-out · matter desk · brief studio | `mortar/punch`, `lex/matter`, `lex/brief` |
+| | **Batch 10** |
+|---|-------------|
+| **Theme** | Crew roster · site daily · construction ledger |
+| **Agents** | `mortar/crew`, `mortar/site`, `mortar/ledger-c` |
+| **PRDs** | [F14 · Crew](./prds/F14-mortar-crew-interface.md) · [F15 · Site](./prds/F15-mortar-site-interface.md) · Ledger-C (F16+ when executing that slot) |
+| **Preview / Remotion / shells** | Rich `PREVIEWS`; dedicated backdrops; custom **Crew** + **Site** in `interface/batch10/` (Ledger-C shell when executed) |
+
+### Batch 11 (computed)
+
+| | **Batch 11** |
+|---|-------------|
+| **Theme** | Punch close-out · matter desk · brief studio |
+| **Agents** | `mortar/punch`, `lex/matter`, `lex/brief` |
+| **PRDs** | [F17 · Punch](./prds/F17-mortar-punch-interface.md) · Matter / Brief (F18+ when executing those slots) |
+| **Preview / Remotion / shells** | Rich `PREVIEWS`; custom **Punch** in `interface/batch11/` (Matter / Brief when executed) |
 
 ## Waves (optional rollup)
 
@@ -79,7 +91,7 @@ Batch **1** is fixed (onboarding · ops floor · stamp queue). Later batches are
 
 ## Sigma workflow pointer
 
-Step-by-step loop: [SIGMA-SUB-AGENT-WORKFLOW.md](./SIGMA-SUB-AGENT-WORKFLOW.md).
+End-to-end (landing + interface + services + UX): [PRODUCT-SHIP-LOOP.md](./PRODUCT-SHIP-LOOP.md). Brownfield interface focus: [SIGMA-SUB-AGENT-WORKFLOW.md](./SIGMA-SUB-AGENT-WORKFLOW.md).
 
 ## Acceptance rollup (Batch 1)
 

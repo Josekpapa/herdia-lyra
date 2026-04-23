@@ -24,12 +24,14 @@ Keep this section accurate when you add GA keys (`OFFER_OVERRIDES` + `scripts/wr
 
 ### Developing sub-agents (sub-services) with Sigma
 
+**End-to-end playbook (landing + interface + services + UX):** `**docs/lyra/PRODUCT-SHIP-LOOP.md**`.
+
 Brownfield loop for **Matter landings** + **interface shells**:
 
-1. Read `**docs/lyra/SIGMA-SUB-AGENT-WORKFLOW.md`** and `**docs/lyra/INTERFACE-BATCHES.md**` — batch 1 vs 2 table, PRD links, acceptance rollup.
-2. **Current build focus** — `getSequenceFocusKey()` + `**getDevStepsForBatch()`** in `src/data/interfaceBatches.ts` (`**INTERFACE-BATCHES.md**` is canonical). `**INTERFACE_DEV_EXCLUDED_HOLDING_SLUGS**` excludes `**lore**` from batch chunking (education → separate contractor app). As of last doc pass: Batch **7**, index **0** → `**helios/yield`**; Batch 6 shells **Trust**, **Estate**, **Family Office** in `**src/components/atlas/interface/batch6/`**; earlier batches in `**interface/batch3/**` … `**interface/batch5/**`. **GA SKUs** outside the active batch still get an interface panel via `**getInterfacePreviewForProduct()`** (synthetic preview from catalog).
-3. **PRDs** — Batch 1: `**F1`–`F3`**; Batch 2: `**F4-tide-concierge-interface.md**`, `**F5-tide-revenue-interface.md**`, `**F6-tide-housekeeping-interface.md**` (see INTERFACE-BATCHES).
-4. In Cursor, use slash commands for deep gates when needed (e.g. `**step-8-technical-spec**` before real API work, `**step-verify**` before ship).
+1. Read `**docs/lyra/SIGMA-SUB-AGENT-WORKFLOW.md`** and `**docs/lyra/INTERFACE-BATCHES.md**` — batch table, PRD links, acceptance rollup.
+2. **Current build focus** — `getSequenceFocusKey()` + `**getDevStepsForBatch()`** in `src/data/interfaceBatches.ts` (`**INTERFACE-BATCHES.md**` mirrors code). `**INTERFACE_DEV_EXCLUDED_HOLDING_SLUGS**` excludes `**lore**` from batch chunking (education → separate contractor app). **As of last doc pass:** Batch **11**, index **1** → `**lex/matter**`; batch **10** in `**batch10/**`, **Punch** in `**batch11/**`. **Roadmap (draft)** agents: Matter landings + `/hub/drafts`; promote to `live` when ready. **GA SKUs** outside the active batch still get an interface panel via `**getInterfacePreviewForProduct()`** (synthetic preview from catalog).
+3. **PRDs** — Batch 1: `**F1`–`F3`**; later batches: see INTERFACE-BATCHES and `**docs/lyra/prds/**`.
+4. In Cursor, use slash commands for deep gates when needed (e.g. `**step-8-technical-spec**` before real API work, `**step-7-interface-states**` for UX, `**step-verify**` before ship).
 
 ## Sigma workflow in Cursor
 

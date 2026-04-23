@@ -5,9 +5,10 @@ Read **`AGENTS.md`** first for Sigma × LYRA workflow and precedence.
 ## Product state (code)
 
 - **Atlas:** `src/data/atlas.ts` — holdings, agents, bundles, Core rails.
-- **Interface dev focus:** `src/data/interfaceBatches.ts` — `getSequenceFocusKey()`, `getDevStepsForBatch()`, `ACTIVE_INTERFACE_DEV_BATCH`, `INTERFACE_DEV_SEQUENCE_INDEX`, **`INTERFACE_DEV_EXCLUDED_HOLDING_SLUGS`** (`lore` omitted — education ships as a separate app). **As of last update:** Batch **9**, index **0** → **`alder/atria`**. Batches **7–8** shells: `interface/batch7/` (Yield, Kairos Intake, Protocol), `interface/batch8/` (Labs, Cadence, Concierge-M). Next: index **`1`** (**`mortar/blueprint`**), **`2`** (**`mortar/permit`**), then **`0`** + batch **`10`** (**`mortar/crew`**, **`mortar/site`**, **`mortar/ledger-c`**). **GA panels:** `getInterfacePreviewForProduct()`; batch rail only when the page agent is in the active batch’s slug list.
+- **Interface dev focus:** `src/data/interfaceBatches.ts` — `getSequenceFocusKey()`, `getDevStepsForBatch()`, `ACTIVE_INTERFACE_DEV_BATCH`, `INTERFACE_DEV_SEQUENCE_INDEX`, **`INTERFACE_DEV_EXCLUDED_HOLDING_SLUGS`** (`lore` omitted — education ships as a separate app). **As of last update:** Batch **11**, index **1** → **`lex/matter`**. **Batch 10 shipped (F14–F16):** `interface/batch10/`. **Punch (F17) shipped:** `interface/batch11/PunchInterface.astro`, PRD `F17`, integration `mortar-punch.md`, `punchFlavor`, `OFFER_OVERRIDES["mortar/punch"]`. **Batch 11** remaining: **`lex/matter`**, **`lex/brief`** — next slot: index **`2`** **`lex/brief`**. Completing batch **11** is the last step in the current `INTERFACE_DEV_BATCHES` list (no batch **12** until more live agents extend the computed chunks). **Roadmap landings:** `/hub/drafts`. **GA panels:** `getInterfacePreviewForProduct()`; batch rail only when the page agent is in the active batch’s slug list.
 - **Commercial / GA:** `src/data/serviceCatalog.ts` (`OFFER_OVERRIDES`, `getGeneralAvailabilityKeys()`). Integration specs: `docs/lyra/integrations/`.
-- **Hub console:** `/hub` (overview), `/hub/ecosystem` (Atlas × catalog × interface-batch matrix + Sigma protocol strip), `/hub/services`, `/hub/batches` — shared sub-nav `HubConsoleNav`.
+- **Hub console:** `/hub` (overview), `/hub/ecosystem` (full matrix + Sigma strip), `/hub/drafts` (roadmap agents), `/hub/services`, `/hub/batches` — shared sub-nav `HubConsoleNav`.
+- **Sigma × ship loop (landing + interface + services + UX):** `docs/lyra/PRODUCT-SHIP-LOOP.md`.
 - **Hub APIs:** `/api/hub/health` (rails + CRM flag), `/api/hub/surface`, `/api/hub/service-catalog`, `/api/hub/queue-preview` (stub queue for generic interface shells).
 
 ## Leave for a human or authenticated Claude session (not sandbox agents)
@@ -26,6 +27,7 @@ Read **`AGENTS.md`** first for Sigma × LYRA workflow and precedence.
 
 - **`docs/lyra/README.md`** — map of Lyra docs.
 - **`docs/lyra/SIGMA-SUB-AGENT-WORKFLOW.md`** — brownfield interface loop.
+- **`docs/lyra/PRODUCT-SHIP-LOOP.md`** — Sigma gates × landing × interface × services × UX.
 - **`docs/lyra/ECOSYSTEM-SERVICES-MODEL.md`** — catalog, manifest, `LYRA_MP_*` table.
 
 ## Obsidian (optional mirror)

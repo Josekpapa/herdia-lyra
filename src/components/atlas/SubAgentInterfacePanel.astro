@@ -38,6 +38,10 @@ import ConciergeMInterface from "./interface/batch8/ConciergeMInterface.astro";
 import AtriaInterface from "./interface/batch9/AtriaInterface.astro";
 import BlueprintInterface from "./interface/batch9/BlueprintInterface.astro";
 import PermitInterface from "./interface/batch9/PermitInterface.astro";
+import CrewInterface from "./interface/batch10/CrewInterface.astro";
+import SiteInterface from "./interface/batch10/SiteInterface.astro";
+import LedgerCInterface from "./interface/batch10/LedgerCInterface.astro";
+import PunchInterface from "./interface/batch11/PunchInterface.astro";
 import type { LyraLocale } from "../../i18n/shell";
 
 interface Props {
@@ -322,6 +326,12 @@ const showBatchRail = inActiveInterfaceBatch && batchDevSteps.length > 0;
         <BlueprintInterface holding={holding} agent={agent} preview={preview} accent={accent} />
       )}
       {key === "mortar/permit" && <PermitInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "mortar/crew" && <CrewInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "mortar/site" && <SiteInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "mortar/ledger-c" && (
+        <LedgerCInterface holding={holding} agent={agent} preview={preview} accent={accent} />
+      )}
+      {key === "mortar/punch" && <PunchInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
 
       {
         key !== "fidelis/intake" &&
@@ -350,7 +360,11 @@ const showBatchRail = inActiveInterfaceBatch && batchDevSteps.length > 0;
           key !== "alder/concierge-m" &&
           key !== "alder/atria" &&
           key !== "mortar/blueprint" &&
-          key !== "mortar/permit" && (
+          key !== "mortar/permit" &&
+          key !== "mortar/crew" &&
+          key !== "mortar/site" &&
+          key !== "mortar/ledger-c" &&
+          key !== "mortar/punch" && (
             <div class="grid gap-0 md:grid-cols-5">
               <div class="border-b p-6 md:col-span-2 md:border-b-0 md:border-r border-white/5">
                 <div class="label-xs text-white">{preview.headline}</div>

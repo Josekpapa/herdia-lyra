@@ -1,6 +1,6 @@
 ---
 /**
- * Alder · Atria — guided foyer path + household rail (Batch 9).
+ * Mortar · Ledger-C — draw posture + CO & lien rail (Batch 10).
  */
 import type { Holding, Agent } from "../../../../data/atlas";
 import type { InterfacePreview } from "../../../../data/interfaceBatches";
@@ -13,8 +13,8 @@ interface Props {
 }
 
 const { holding, agent, preview, accent } = Astro.props;
-const guidedId = `atria-guided-${holding.slug}-${agent.slug}`;
-const railId = `atria-rail-${holding.slug}-${agent.slug}`;
+const drawId = `ledgerc-draw-${holding.slug}-${agent.slug}`;
+const cashId = `ledgerc-cash-${holding.slug}-${agent.slug}`;
 ---
 
 <div class="grid min-w-0 gap-0 lg:grid-cols-12">
@@ -22,9 +22,9 @@ const railId = `atria-rail-${holding.slug}-${agent.slug}`;
     class="min-w-0 border-b p-6 lg:col-span-5 lg:border-b-0 lg:border-r border-white/5"
     style={`background: linear-gradient(165deg, color-mix(in oklab, ${accent} 12%, transparent) 0%, transparent 55%);`}
     role="region"
-    aria-labelledby={guidedId}
+    aria-labelledby={drawId}
   >
-    <div id={guidedId} class="label-xs text-white" data-shell-i18n="iface.atria.guidedPath">Guided path</div>
+    <div id={drawId} class="label-xs text-white" data-shell-i18n="iface.ledgerC.drawStrip">Draw posture</div>
     <p class="mt-2 text-sm leading-relaxed text-ink-400">{preview.sub}</p>
     <div class="mt-8 space-y-4">
       {
@@ -37,9 +37,9 @@ const railId = `atria-rail-${holding.slug}-${agent.slug}`;
       }
     </div>
   </div>
-  <div class="min-w-0 p-6 lg:col-span-7" role="region" aria-labelledby={railId}>
-    <div id={railId} class="label-xs text-ink-500" data-shell-i18n="iface.atria.householdRail">Household rail</div>
-    <ul class="mt-4 divide-y divide-white/5 rounded-lg border border-white/5" aria-label="Atria foyer rail">
+  <div class="min-w-0 p-6 lg:col-span-7" role="region" aria-labelledby={cashId}>
+    <div id={cashId} class="label-xs text-ink-500" data-shell-i18n="iface.ledgerC.cashQueue">COs & liens</div>
+    <ul class="mt-4 divide-y divide-white/5 rounded-lg border border-white/5" aria-label="Construction ledger cash rail">
       {
         preview.rows.map((row) => (
           <li

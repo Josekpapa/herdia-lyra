@@ -233,6 +233,48 @@ export const OFFER_OVERRIDES: Partial<Record<string, OfferOverride>> = {
     deploymentHint: "vercel:production:iad1",
     integrationTargets: ["rest", "webhook_outbound", "event_stream", "oauth_sso"],
   },
+  /** Batch 9 step 1 — foyer funnel; explicit hooks for Hub + integration spec. */
+  "alder/atria": {
+    deploymentHint: "preview:kairos-foyer · interface-batch-9",
+    integrationTargets: ["rest", "webhook_outbound", "oauth_sso", "event_stream"],
+    partnerStackTags: ["longevity", "onboarding_funnel", "household_identity"],
+  },
+  /** Batch 9 step 2 — drawing set + RFI rail; explicit hooks for Hub + integration spec. */
+  "mortar/blueprint": {
+    deploymentHint: "preview:mortar-blueprint · interface-batch-9",
+    integrationTargets: ["rest", "webhook_inbound", "webhook_outbound", "oauth_sso", "event_stream"],
+    partnerStackTags: ["construction", "drawing_management", "rfi_coordination"],
+  },
+  /** Batch 9 step 3 — filings + agency queue; explicit hooks for Hub + integration spec. */
+  "mortar/permit": {
+    deploymentHint: "preview:mortar-permit · interface-batch-9",
+    integrationTargets: ["rest", "webhook_inbound", "webhook_outbound", "oauth_sso", "event_stream"],
+    partnerStackTags: ["construction", "permit_tracking", "regulatory_filings"],
+  },
+  /** Batch 10 step 1 — roster + trades/gates rail; explicit hooks for Hub + integration spec. */
+  "mortar/crew": {
+    deploymentHint: "preview:mortar-crew · interface-batch-10",
+    integrationTargets: ["rest", "webhook_inbound", "webhook_outbound", "oauth_sso", "event_stream"],
+    partnerStackTags: ["construction", "workforce_roster", "site_safety_gates"],
+  },
+  /** Batch 10 step 2 — daily pulse + day rail; explicit hooks for Hub + integration spec. */
+  "mortar/site": {
+    deploymentHint: "preview:mortar-site · interface-batch-10",
+    integrationTargets: ["rest", "webhook_inbound", "webhook_outbound", "oauth_sso", "event_stream"],
+    partnerStackTags: ["construction", "site_daily_log", "field_photos_delays"],
+  },
+  /** Batch 10 step 3 — draws + CO/lien rail; explicit hooks for Hub + integration spec. */
+  "mortar/ledger-c": {
+    deploymentHint: "preview:mortar-ledger-c · interface-batch-10",
+    integrationTargets: ["rest", "webhook_inbound", "webhook_outbound", "oauth_sso", "event_stream"],
+    partnerStackTags: ["construction", "construction_draws", "lien_waiver_compliance"],
+  },
+  /** Batch 11 step 1 — close-out + handoff rail; explicit hooks for Hub + integration spec. */
+  "mortar/punch": {
+    deploymentHint: "preview:mortar-punch · interface-batch-11",
+    integrationTargets: ["rest", "webhook_inbound", "webhook_outbound", "oauth_sso", "event_stream"],
+    partnerStackTags: ["construction", "closeout_punch", "warranty_handoff"],
+  },
 };
 
 /** Env var name for marketplace listing id, e.g. `fidelis/ledger` → `LYRA_MP_FIDELIS_LEDGER`. */

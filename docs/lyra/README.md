@@ -4,6 +4,7 @@
 
 | Doc | Purpose |
 |-----|---------|
+| [PRODUCT-SHIP-LOOP.md](./PRODUCT-SHIP-LOOP.md) | **End-to-end:** Sigma gates × landing × interface × services × UX checklist |
 | [INTERFACE-BATCHES.md](./INTERFACE-BATCHES.md) | Interface dev batches, PRD links, current sequence defaults |
 | [SIGMA-SUB-AGENT-WORKFLOW.md](./SIGMA-SUB-AGENT-WORKFLOW.md) | Sigma steps × sub-agent delivery |
 | [ECOSYSTEM-SERVICES-MODEL.md](./ECOSYSTEM-SERVICES-MODEL.md) | Service catalog, deploy manifest, **`LYRA_MP_*`** table |

@@ -2,6 +2,8 @@
 
 Use this when **shipping or leveling up** a sub-service landing (Matter pattern: `SubAgentProduct` + interface shell). **Atlas precedence:** `src/data/atlas.ts`, `interfaceBatches.ts`, and Obsidian LYRA notes win on product truth; Sigma supplies **gates, rubrics, and artifact shape**.
 
+**Full loop (landing + interface + services + UX):** see **[PRODUCT-SHIP-LOOP.md](./PRODUCT-SHIP-LOOP.md)** for the per-agent checklist and Sigma step mapping.
+
 ## Interface batches (Batch 1 vs 2+)
 
 Canonical table, PRD links, and acceptance rollup: **[INTERFACE-BATCHES.md](./INTERFACE-BATCHES.md)**. Batch membership is generated from **`interfaceBatches.ts`** + **`atlas.ts`** live order — do not rely on memory for Batch 2+ slugs.

@@ -20,7 +20,7 @@ export type InterfacePreview = {
 };
 
 /** Hub / UI work tracks this batch; bump when a batch’s three steps are complete. */
-export const ACTIVE_INTERFACE_DEV_BATCH = 9;
+export const ACTIVE_INTERFACE_DEV_BATCH = 11;
 
 const BATCH_1_SLUGS = ["fidelis/intake", "tide/ops", "seal/stamp"] as const;
 
@@ -641,7 +641,7 @@ export function waveContainingBatchId(batchId: number) {
  * Within `ACTIVE_INTERFACE_DEV_BATCH`, build **one** agent at a time: 0 → first slug, 1 → second, 2 → third.
  * When those three are done, set to `0` and bump `ACTIVE_INTERFACE_DEV_BATCH`.
  */
-export const INTERFACE_DEV_SEQUENCE_INDEX = 0;
+export const INTERFACE_DEV_SEQUENCE_INDEX = 1;
 
 /** Human step 1–3 for the active batch slot (index 0 → step 1). */
 export function getSequenceHumanStep(): 1 | 2 | 3 {

@@ -19,5 +19,12 @@ Short, buildable specs for **general-availability** SKUs. One file per **`holdin
 | `lore/lab` | [lore-lab.md](./lore-lab.md) |
 | `seal/stamp` | [seal-stamp.md](./seal-stamp.md) |
 | `seal/chain` | [seal-chain.md](./seal-chain.md) |
+| `alder/atria` | [alder-atria.md](./alder-atria.md) · preview / foyer |
+| `mortar/blueprint` | [mortar-blueprint.md](./mortar-blueprint.md) · preview / sets + RFI |
+| `mortar/permit` | [mortar-permit.md](./mortar-permit.md) · preview / filings + agencies |
+| `mortar/crew` | [mortar-crew.md](./mortar-crew.md) · preview / roster + gates |
+| `mortar/site` | [mortar-site.md](./mortar-site.md) · preview / daily + day rail |
+| `mortar/ledger-c` | [mortar-ledger-c.md](./mortar-ledger-c.md) · preview / draws + COs |
+| `mortar/punch` | [mortar-punch.md](./mortar-punch.md) · preview / close-out + handoff |
 
 When you promote another agent to GA, add **`OFFER_OVERRIDES`**, a row in this table, and a new spec file using the same section layout.
