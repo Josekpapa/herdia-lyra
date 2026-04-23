@@ -1,11 +1,12 @@
 ---
 /**
  * /hub — operator / partner console (HUB scope).
- * Land here for Agency-led work and future Hub-only tools — not consumer Atlas retail.
+ * Overview lists every Atlas × catalog SKU (single source: serviceCatalog).
  */
 import AtlasLayout from "../../layouts/AtlasLayout.astro";
-import { HOLDINGS, totalDraftAgents, totalLiveAgents } from "../../data/atlas";
+import { HOLDINGS } from "../../data/atlas";
 import {
+  getAgentServiceOffers,
   getGeneralAvailabilityKeys,
   serviceCatalogStats,
 } from "../../data/serviceCatalog";
@@ -27,15 +28,23 @@ const surfaceFocus =
 const productFocus =
   focusHolding && focusAgent ? `/${focusHolding}/${focusAgent}` : null;
 
-const liveAgents = totalLiveAgents();
-const draftAgents = totalDraftAgents();
 const stats = serviceCatalogStats();
 const gaKeys = getGeneralAvailabilityKeys();
+const allOffers = getAgentServiceOffers().sort((a, b) => a.key.localeCompare(b.key));
+
+const gtmRoadmap = allOffers.filter((o) => o.gtmPhase === "roadmap").length;
+const gtmPreview = allOffers.filter((o) => o.gtmPhase === "preview").length;
+const gtmGa = allOffers.filter((o) => o.gtmPhase === "general_availability").length;
+
+/** Operator-facing label: Atlas status without “draft” framing. */
+function atlasLabel(status: string) {
+  return status === "live" ? "Active" : "Activate";
+}
 ---
 
 <AtlasLayout
   title="Hub — LYRA"
-  description="Operator and partner surface for deepening the LYRA ecosystem — deployments, portfolio programs, internal runbooks."
+  description="Operator console — full service catalog, deployment posture, and Hub APIs for every LYRA SKU."
   active="agency"
 >
   <section class="border-b border-white/5">
@@ -49,16 +58,18 @@ const gaKeys = getGeneralAvailabilityKeys();
       <div class="kicker mb-3 mt-10">HUB · invite-only</div>
       <h1 class="page-title">The <em>operator</em> console.</h1>
       <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
-        Hub is for Agency deployments, portfolio partners, and internal teams —
-        not the open Atlas catalog. Use it as the home for runbooks, partner
-        programs, and anything that sits <em>around</em> the product spine while
-        you keep shipping sub-agents, services, and landings.
+        This page is the live index of <strong class="font-normal text-white">every service</strong> in LYRA — same
+        rows as <span class="font-mono text-[11px] text-ink-400">serviceCatalog</span> and
+        <span class="font-mono text-[11px] text-ink-400">/api/hub/service-catalog</span>. GTM phase is how we package
+        and price for partners and infra (<em>preview</em> · <em>general availability</em> · <em>roadmap</em>), not
+        whether the SKU is real: every agent has a product surface, integration targets, and a deployment path.
       </p>
       <div class="mt-12 flex flex-wrap gap-3">
-        <a href="/hub/drafts" class="btn-primary">Roadmap agents ({draftAgents}) →</a>
+        <a href="#all-services" class="btn-primary">All services ({stats.total}) →</a>
+        <a href="/hub/services" class="btn-ghost">Catalog detail →</a>
         <a href="/hub/ecosystem" class="btn-ghost">Ecosystem map →</a>
         <a href="/hub/batches" class="btn-primary">Interface batches →</a>
-        <a href="/hub/services" class="btn-primary">Service catalog →</a>
+        <a href="/hub/drafts" class="btn-ghost">SKU pipeline →</a>
         <a href="/passport" class="btn-ghost">Passport network</a>
         <a href="/agency" class="btn-ghost">Agency</a>
         <a href="/atlas" class="btn-ghost">Atlas catalog</a>
@@ -69,28 +80,136 @@ const gaKeys = getGeneralAvailabilityKeys();
 
   <section class="border-b border-white/5">
     <div class="mx-auto max-w-[84rem] px-6 py-16">
-      <div class="kicker mb-3">Passport · network snapshot</div>
+      <div class="kicker mb-3">Catalog · commercial snapshot</div>
       <p class="max-w-2xl text-sm leading-relaxed text-ink-300">
-        Same identity spine as <a href="/passport" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/passport</a> — counts come from Atlas + service catalog (GA = general availability SKUs).
+        Counts recompute from <span class="font-mono text-ink-400">getAgentServiceOffers()</span> on every build — no
+        separate “draft” list for what counts as a SKU.
       </p>
-      <dl class="mt-8 grid max-w-4xl grid-cols-2 gap-6 sm:grid-cols-4">
+      <dl class="mt-8 grid max-w-5xl grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
         <div class="border-l border-white/10 pl-4">
-          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Holdings</dt>
-          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{HOLDINGS.length}</dd>
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Total SKUs</dt>
+          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{stats.total}</dd>
         </div>
         <div class="border-l border-white/10 pl-4">
-          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Live agents</dt>
-          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{liveAgents}</dd>
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Sellable modes</dt>
+          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{stats.sellableSkus}</dd>
         </div>
         <div class="border-l border-white/10 pl-4">
-          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">GA SKUs</dt>
-          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{stats.liveGa}</dd>
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">GA phase</dt>
+          <dd class="mt-1 font-light text-2xl text-violet-300/90 tabular-nums">{gtmGa}</dd>
         </div>
         <div class="border-l border-white/10 pl-4">
-          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Preview SKUs</dt>
-          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{stats.livePreview}</dd>
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Preview phase</dt>
+          <dd class="mt-1 font-light text-2xl text-emerald-300/90 tabular-nums">{gtmPreview}</dd>
+        </div>
+        <div class="border-l border-white/10 pl-4">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Roadmap GTM</dt>
+          <dd class="mt-1 font-light text-2xl text-ink-200 tabular-nums">{gtmRoadmap}</dd>
+        </div>
+        <div class="border-l border-white/10 pl-4">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Deploy hints</dt>
+          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{stats.deploymentHints}</dd>
         </div>
       </dl>
+      <p class="mt-6 max-w-2xl text-[11px] leading-relaxed text-ink-500">
+        Holdings in Atlas: <span class="text-ink-300">{HOLDINGS.length}</span> · GA keys with marketplace-style posture:{" "}
+        <span class="font-mono text-ink-400">{gaKeys.length}</span>
+        <span class="ml-2">
+          (<a href="/api/hub/service-catalog" class="text-ink-400 underline decoration-white/15 hover:text-ink-200"
+            >GET /api/hub/service-catalog</a
+          >)
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <section id="all-services" class="scroll-mt-24 border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">All services</div>
+      <p class="max-w-3xl text-sm leading-relaxed text-ink-300">
+        One row per agent. <span class="text-ink-200">Active</span> = live in Atlas retail; <span class="text-ink-200"
+          >Activate</span> = same Matter pattern, partner packaging in flight. Links go to product page, Hub surface
+        stub, and queue stub.
+      </p>
+
+      <div class="mt-10 space-y-14">
+        {
+          HOLDINGS.map((holding) => {
+            const rows = allOffers
+              .filter((o) => o.holdingSlug === holding.slug)
+              .sort((a, b) => a.agentSlug.localeCompare(b.agentSlug));
+            return (
+              <div>
+                <h2 class="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-500">
+                  {holding.code} · {holding.name}
+                  <span class="ml-2 font-normal normal-case tracking-normal text-ink-400">· {holding.vertical}</span>
+                </h2>
+                <div class="mt-4 overflow-x-auto rounded-lg border border-white/10">
+                  <table class="w-full min-w-[56rem] text-left font-mono text-[11px]">
+                    <thead>
+                      <tr class="border-b border-white/10 bg-white/[0.03] text-[10px] uppercase tracking-wider text-ink-500">
+                        <th class="px-3 py-2.5 font-medium">SKU</th>
+                        <th class="px-3 py-2.5 font-medium">Agent</th>
+                        <th class="px-3 py-2.5 font-medium">Tier</th>
+                        <th class="px-3 py-2.5 font-medium">Atlas</th>
+                        <th class="px-3 py-2.5 font-medium">GTM</th>
+                        <th class="px-3 py-2.5 font-medium">SKU mode</th>
+                        <th class="px-3 py-2.5 font-medium">Deploy</th>
+                        <th class="px-3 py-2.5 font-medium">Links</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rows.map((o) => {
+                        const surface = `/api/hub/surface?holding=${encodeURIComponent(o.holdingSlug)}&agent=${encodeURIComponent(o.agentSlug)}`;
+                        const queue = `/api/hub/queue-preview?holding=${encodeURIComponent(o.holdingSlug)}&agent=${encodeURIComponent(o.agentSlug)}`;
+                        const isGa = o.gtmPhase === "general_availability";
+                        return (
+                          <tr
+                            class:list={[
+                              "border-b border-white/5 text-ink-300",
+                              isGa && "bg-violet-500/[0.06]",
+                            ]}
+                          >
+                            <td class="px-3 py-2.5 text-ink-200">{o.key}</td>
+                            <td class="max-w-[14rem] px-3 py-2.5">
+                              <div class="text-ink-200">{o.agentName}</div>
+                              <div class="mt-0.5 line-clamp-2 text-[10px] font-normal text-ink-500">{o.agentBlurb}</div>
+                            </td>
+                            <td class="px-3 py-2.5 text-ink-400">{o.tier}</td>
+                            <td class="px-3 py-2.5 text-ink-400">{atlasLabel(o.atlasStatus)}</td>
+                            <td class="px-3 py-2.5">
+                              <span class:list={[o.gtmPhase === "general_availability" && "text-violet-300/90"]}>
+                                {o.gtmPhase}
+                              </span>
+                            </td>
+                            <td class="px-3 py-2.5 text-ink-400">{o.skuMode}</td>
+                            <td class="max-w-[12rem] truncate px-3 py-2.5 text-ink-500" title={o.deploymentHint ?? ""}>
+                              {o.deploymentHint ?? "—"}
+                            </td>
+                            <td class="px-3 py-2.5">
+                              <div class="flex flex-wrap gap-x-2 gap-y-1">
+                                <a href={o.path} class="text-ink-400 hover:text-white">
+                                  page
+                                </a>
+                                <a href={surface} class="text-ink-400 hover:text-white">
+                                  surface
+                                </a>
+                                <a href={queue} class="text-ink-400 hover:text-white">
+                                  queue
+                                </a>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
     </div>
   </section>
 
@@ -116,7 +235,7 @@ const gaKeys = getGeneralAvailabilityKeys();
         </div>
       )}
       <div class="mt-10">
-        <div class="label-xs mb-3 text-ink-500">All GA keys — product · surface · queue stub</div>
+        <div class="label-xs mb-3 text-ink-500">GA keys — quick links (subset of table above)</div>
         <ul class="max-w-5xl space-y-2 font-mono text-[11px]">
           {gaKeys.map((key) => {
             const [h, a] = key.split("/");
@@ -171,7 +290,7 @@ const gaKeys = getGeneralAvailabilityKeys();
       <p class="max-w-3xl text-sm leading-relaxed text-ink-300">
         Run Cursor slash commands from <span class="font-mono text-[11px] text-ink-400">.cursor/commands/steps/</span> per phase. Repo playbook for{" "}
         <strong class="font-normal text-ink-200">landing + interface shell + service catalog + UX</strong>:{" "}
-        <span class="font-mono text-[11px] text-ink-400">docs/lyra/PRODUCT-SHIP-LOOP.md</span> (per-agent checklist and step mapping). Brownfield interface focus:{" "}
+        <span class="font-mono text-[11px] text-ink-400">docs/lyra/PRODUCT-SHIP-LOOP.md</span>. Brownfield interface focus:{" "}
         <span class="font-mono text-[11px] text-ink-400">docs/lyra/SIGMA-SUB-AGENT-WORKFLOW.md</span>.
       </p>
     </div>
@@ -183,7 +302,7 @@ const gaKeys = getGeneralAvailabilityKeys();
       <ul class="max-w-2xl space-y-2 text-sm leading-relaxed text-ink-300">
         <li class="flex gap-2"><span class="text-ink-500">—</span>Ship interface + landing in <a href="/hub/batches" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">groups of three</a> — Batch 1 shows a live UI panel on each page.</li>
         <li class="flex gap-2"><span class="text-ink-500">—</span>Hub API: <a href="/api/hub/health" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/api/hub/health</a> · <a href="/api/hub/surface?holding=tide&agent=ops" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/api/hub/surface</a> · <a href="/api/hub/service-catalog" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/api/hub/service-catalog</a> · <a href="/api/hub/queue-preview?holding=tide&agent=revenue" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/api/hub/queue-preview</a> (stub queue for dev shells).</li>
-        <li class="flex gap-2"><span class="text-ink-500">—</span>Structure stays in <span class="font-mono text-[11px] text-ink-400">atlas.ts</span> + Batch log; Obsidian mirrors narrative.</li>
+        <li class="flex gap-2"><span class="text-ink-500">—</span>Structure stays in <span class="font-mono text-[11px] text-ink-400">atlas.ts</span> + catalog; this page reflects both on every deploy.</li>
       </ul>
     </div>
   </section>

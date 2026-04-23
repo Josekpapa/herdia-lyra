@@ -1,6 +1,6 @@
 ---
 /**
- * /hub/drafts — all Atlas roadmap (draft) agents in one operator list.
+ * /hub/drafts — SKU pipeline: Atlas agents in activate posture (operator slice of full Hub index).
  */
 import AtlasLayout from "../../layouts/AtlasLayout.astro";
 import HubConsoleNav from "../../components/hub/HubConsoleNav.astro";
@@ -48,8 +48,8 @@ const draftCount = totalDraftAgents();
 ---
 
 <AtlasLayout
-  title="Hub — Roadmap agents · LYRA"
-  description="Every draft agent in the Atlas — Matter-pattern landings, roadmap GTM, Hub links."
+  title="Hub — SKU pipeline · LYRA"
+  description="Activate-posture SKUs in Atlas — same Matter landings as active agents; GTM roadmap until partner packaging promotes."
   active="agency"
 >
   <section class="border-b border-white/5">
@@ -59,15 +59,15 @@ const draftCount = totalDraftAgents();
         <span>/</span>
         <a href="/hub" class="hover:text-white transition">Hub</a>
         <span>/</span>
-        <span class="text-ink-300">Roadmap agents</span>
+        <span class="text-ink-300">SKU pipeline</span>
       </div>
       <HubConsoleNav current="drafts" />
-      <div class="kicker mb-3 mt-10">HUB · roadmap</div>
+      <div class="kicker mb-3 mt-10">HUB · activate-ready</div>
       <h1 class="page-title">
-        <em>{draftCount}</em> agents in the queue.
+        <em>{draftCount}</em> SKUs in partner packaging.
       </h1>
       <p class="mt-6 max-w-3xl text-base leading-relaxed text-ink-200 lede">
-        Draft rows in <span class="font-mono text-[11px] text-ink-400">atlas.ts</span> now have Matter-pattern product pages (same shell as live agents) with roadmap copy, tier grammar, and design-partner CTAs. Promote to live when interface batches and catalog posture catch up.
+        These Atlas rows use <span class="font-mono text-[11px] text-ink-400">status: draft</span> internally but ship the same Matter landings and Hub surfaces as active SKUs — GTM stays <span class="font-mono text-[11px] text-ink-400">roadmap</span> until catalog and interface batches match your go-to-market. Full matrix: <a href="/hub#all-services" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/hub → All services</a>.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
         <a href="/hub/ecosystem" class="btn-primary">Full ecosystem map →</a>
