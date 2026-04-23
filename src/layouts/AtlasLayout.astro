@@ -7,8 +7,13 @@
  * Bloomberg-terminal register. No Fidelis nav — that lives on /fidelis.
  */
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import LyraSiteMotion from "../components/motion/LyraSiteMotion.astro";
 import LyraLanguageSwitcher from "../components/ui/LyraLanguageSwitcher.astro";
-import { HOLDINGS } from "../data/atlas";
+import { HOLDINGS, totalLiveAgents } from "../data/atlas";
+import { resolveLocale } from "../i18n/locale";
+
+const locale = resolveLocale(Astro);
 
 interface Props {
   title?: string;
@@ -32,10 +37,11 @@ const primaryNav = [
 ];
 
 const isActive = (key: string) => active === key;
+const liveAgentCount = totalLiveAgents();
 ---
 
 <!doctype html>
-<html lang="en" class="h-full">
+<html lang={locale} class="h-full">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -52,10 +58,11 @@ const isActive = (key: string) => active === key;
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
     />
+    <ClientRouter />
   </head>
   <body class="min-h-full antialiased" data-page="app">
     <!-- ──────────────────────────── HEADER ──────────────────────────── -->
-    <header class="relative z-20">
+    <header class="lyra-site-header relative z-20">
       <div class="mx-auto flex max-w-[84rem] items-stretch justify-between gap-8 px-6">
         <!-- Brand: LYRA wordmark + tagline -->
         <a href="/" class="group flex items-center gap-3 py-5" aria-label="LYRA — home">
@@ -65,7 +72,7 @@ const isActive = (key: string) => active === key;
           </span>
           <span class="flex flex-col leading-tight">
             <span class="font-mono text-[10px] tracking-[0.34em] uppercase text-white/85">LYRA</span>
-            <span class="font-mono text-[9px] tracking-[0.22em] uppercase text-ink-400/80">
+            <span class="font-mono text-[9px] tracking-[0.22em] uppercase text-ink-400/80" data-shell-i18n="atlas.tagline.sub">
               a private network
             </span>
           </span>
@@ -91,7 +98,7 @@ const isActive = (key: string) => active === key;
             {primaryNav.map((item) => (
               <a href={item.href} class:list={["nav-link", isActive(item.key) && "is-active"]}>
                 <span class="mr-2 text-ink-500/70">{item.code}</span>
-                <span>{item.label}</span>
+                <span data-shell-i18n={`atlas.nav.${item.key}`}>{item.label}</span>
               </a>
             ))}
           </nav>
@@ -103,9 +110,11 @@ const isActive = (key: string) => active === key;
     </header>
 
     <!-- Ticker strip -->
-    <div class="lyra-unified-strip" aria-hidden="false">
+    <div class="lyra-unified-strip lyra-ticker-gleam" aria-hidden="false">
       <p class="lyra-unified-strip-inner">
-        LYRA · 8 holdings · 53 live agents · one passport · the operating layer for a founder's systems.
+        <span data-shell-i18n="atlas.strip.before">LYRA · 8 holdings ·</span>{liveAgentCount}<span data-shell-i18n="atlas.strip.after">
+          live agents · one passport · the operating layer for a founder's systems.
+        </span>
       </p>
     </div>
 
@@ -127,7 +136,7 @@ const isActive = (key: string) => active === key;
       <div class="hairline-x opacity-60"></div>
     </div>
 
-    <main class="relative z-10">
+    <main class="lyra-motion-main relative z-10">
       <slot />
     </main>
 
@@ -138,13 +147,13 @@ const isActive = (key: string) => active === key;
         <div class="grid grid-cols-1 gap-10 md:grid-cols-4">
           <div class="md:col-span-1">
             <div class="kicker mb-3">LYRA</div>
-            <p class="text-sm leading-relaxed text-ink-300 max-w-xs">
+            <p class="text-sm leading-relaxed text-ink-300 max-w-xs" data-shell-i18n="atlas.footer.blurb">
               A private network for the systems that run a founder's life.
               Agency builds the shelf. Atlas sells it forever.
             </p>
           </div>
           <div>
-            <div class="label-xs mb-3">Holdings</div>
+            <div class="label-xs mb-3" data-shell-i18n="atlas.footer.holdings">Holdings</div>
             <ul class="space-y-1.5">
               {HOLDINGS.map((h) => (
                 <li><a href={`/${h.slug}`} class="text-sm text-ink-300 hover:text-white transition">{h.name} · <span class="text-ink-500">{h.tagline}</span></a></li>
@@ -152,34 +161,39 @@ const isActive = (key: string) => active === key;
             </ul>
           </div>
           <div>
-            <div class="label-xs mb-3">Network</div>
+            <div class="label-xs mb-3" data-shell-i18n="atlas.footer.network">Network</div>
             <ul class="space-y-1.5">
-              <li><a href="/atlas" class="text-sm text-ink-300 hover:text-white transition">Atlas catalog</a></li>
-              <li><a href="/pricing" class="text-sm text-ink-300 hover:text-white transition">Pricing</a></li>
-              <li><a href="/agency" class="text-sm text-ink-300 hover:text-white transition">Agency</a></li>
-              <li><a href="/founders-day" class="text-sm text-ink-300 hover:text-white transition">Founder's Day</a></li>
-              <li><a href="/field-notes" class="text-sm text-ink-300 hover:text-white transition">Field Notes</a></li>
-              <li><a href="/passport" class="text-sm text-ink-300 hover:text-white transition">Passport</a></li>
+              <li><a href="/atlas" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.link.atlas">Atlas catalog</a></li>
+              <li><a href="/pricing" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.link.pricing">Pricing</a></li>
+              <li><a href="/bundles" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.link.bundles">Bundles</a></li>
+              <li><a href="/agency" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.link.agency">Agency</a></li>
+              <li><a href="/founders-day" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.link.founders">Founder's Day</a></li>
+              <li><a href="/field-notes" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.link.fieldNotes">Field Notes</a></li>
+              <li><a href="/passport" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.link.passport">Passport</a></li>
+              <li><a href="/core" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.link.core">Core plumbing</a></li>
+              <li><a href="/hub" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.link.hub">Hub</a></li>
+              <li><a href="/hub/ecosystem" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.link.hubEcosystem">Ecosystem map</a></li>
             </ul>
           </div>
           <div>
-            <div class="label-xs mb-3">Access</div>
+            <div class="label-xs mb-3" data-shell-i18n="atlas.footer.access">Access</div>
             <ul class="space-y-1.5">
-              <li><a href="/join" class="text-sm text-ink-300 hover:text-white transition">Request access</a></li>
-              <li><a href="/agency" class="text-sm text-ink-300 hover:text-white transition">Hire LYRA</a></li>
-              <li><a href="/login" class="text-sm text-ink-300 hover:text-white transition">Sign in</a></li>
+              <li><a href="/join" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.access.request">Request access</a></li>
+              <li><a href="/agency" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.access.hire">Hire LYRA</a></li>
+              <li><a href="/login" class="text-sm text-ink-300 hover:text-white transition" data-shell-i18n="atlas.access.signin">Sign in</a></li>
             </ul>
           </div>
         </div>
         <div class="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-500">
-            © {new Date().getFullYear()} LYRA · all entities are part of the LYRA operating group.
+            © {new Date().getFullYear()} LYRA · <span data-shell-i18n="atlas.footer.entitiesNote">all entities are part of the LYRA operating group.</span>
           </span>
-          <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-500/70">
+          <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-ink-500/70" data-shell-i18n="atlas.footer.builtStack">
             Built on Astro · one terminal
           </span>
         </div>
       </div>
     </footer>
+    <LyraSiteMotion />
   </body>
 </html>

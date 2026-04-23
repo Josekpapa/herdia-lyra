@@ -1,0 +1,441 @@
+---
+import type { Holding, Agent } from "../../data/atlas";
+import type { SubAgentCopy } from "../../data/subAgentCopy/types";
+import {
+  ACTIVE_INTERFACE_DEV_BATCH,
+  getDevStepsForBatch,
+  getSequenceHumanStep,
+  INTERFACE_DEV_BATCHES,
+  INTERFACE_DEV_SEQUENCE_INDEX,
+  isSequenceFocus,
+  type InterfacePreview,
+} from "../../data/interfaceBatches";
+import { InterfaceRemotionBackdrop } from "../react/InterfaceRemotionBackdrop";
+import IntakeInterface from "./interface/batch1/IntakeInterface.astro";
+import OpsInterface from "./interface/batch1/OpsInterface.astro";
+import StampInterface from "./interface/batch1/StampInterface.astro";
+import ConciergeInterface from "./interface/batch2/ConciergeInterface.astro";
+import RevenueInterface from "./interface/batch2/RevenueInterface.astro";
+import HousekeepingInterface from "./interface/batch2/HousekeepingInterface.astro";
+import GuestbookInterface from "./interface/batch3/GuestbookInterface.astro";
+import ScoutInterface from "./interface/batch3/ScoutInterface.astro";
+import LedgerInterface from "./interface/batch3/LedgerInterface.astro";
+import VaultInterface from "./interface/batch4/VaultInterface.astro";
+import FilingInterface from "./interface/batch4/FilingInterface.astro";
+import CounselInterface from "./interface/batch4/CounselInterface.astro";
+import AuditInterface from "./interface/batch5/AuditInterface.astro";
+import PortfolioInterface from "./interface/batch5/PortfolioInterface.astro";
+import LedgerWInterface from "./interface/batch5/LedgerWInterface.astro";
+import TrustInterface from "./interface/batch6/TrustInterface.astro";
+import EstateInterface from "./interface/batch6/EstateInterface.astro";
+import FamilyOfficeInterface from "./interface/batch6/FamilyOfficeInterface.astro";
+import YieldInterface from "./interface/batch7/YieldInterface.astro";
+import KairosIntakeInterface from "./interface/batch7/KairosIntakeInterface.astro";
+import ProtocolInterface from "./interface/batch7/ProtocolInterface.astro";
+import LabsInterface from "./interface/batch8/LabsInterface.astro";
+import CadenceInterface from "./interface/batch8/CadenceInterface.astro";
+import ConciergeMInterface from "./interface/batch8/ConciergeMInterface.astro";
+import AtriaInterface from "./interface/batch9/AtriaInterface.astro";
+import BlueprintInterface from "./interface/batch9/BlueprintInterface.astro";
+import PermitInterface from "./interface/batch9/PermitInterface.astro";
+import type { LyraLocale } from "../../i18n/shell";
+
+interface Props {
+  holding: Holding;
+  agent: Agent;
+  preview: InterfacePreview;
+  accent: string;
+  copy: SubAgentCopy;
+  locale?: LyraLocale;
+}
+
+const { holding, agent, preview, accent, copy, locale = "en" } = Astro.props;
+const key = `${holding.slug}/${agent.slug}` as const;
+const queueStubId = `lyra-queue-stub-${holding.slug}-${agent.slug}`;
+
+const ifaceTitleEn: Record<string, string> = {
+  "fidelis/intake": "Intake desk · entity graph",
+  "tide/ops": "Ops floor · property triage",
+  "seal/stamp": "Stamp queue · attestation",
+  "tide/concierge": "Guest threads · SLA + handoff",
+  "tide/revenue": "Revenue desk · pace + variance",
+  "tide/housekeeping": "Housekeeping board · room state",
+  "tide/guestbook": "Guest memory · profiles + stays",
+  "tide/scout": "Channel lab · lift experiments",
+  "fidelis/ledger": "Ledger desk · books + close",
+  "fidelis/vault": "Vault room · chain of custody",
+  "fidelis/filing": "Filing runway · deadline to filed",
+  "fidelis/counsel": "Counsel desk · advisor on staff",
+  "fidelis/audit": "Audit read · findings on demand",
+  "helios/portfolio": "Portfolio tower · one household read",
+  "helios/ledger-w": "Wealth ledger · audit-clean books",
+  "helios/trust": "Trust administration · distributions + minutes",
+  "helios/estate": "Estate map · every asset, every heir",
+  "helios/family-office": "Family office · household admin layer",
+  "helios/yield": "Yield desk · where cash actually sits",
+  "alder/intake": "Kairos intake · biomarkers + baseline",
+  "alder/protocol": "Protocol loop · weekly evidence deltas",
+  "alder/labs": "Labs rail · order, read, remember",
+  "alder/cadence": "Cadence board · streaks that matter",
+  "alder/concierge-m": "Concierge medicine · bookings + logistics",
+  "alder/atria": "Kairos foyer · guided entry",
+  "mortar/blueprint": "Blueprint stack · drawings + RFIs",
+  "mortar/permit": "Permit filings · agencies + deadlines",
+  "mortar/crew": "Crew roster · who is on site",
+  "mortar/site": "Site daily · photos + delays",
+  "mortar/ledger-c": "Construction ledger · draws + COs",
+  "mortar/punch": "Punch list · close-out bracketed",
+  "lex/matter": "Matter desk · scope, price, ship",
+  "lex/brief": "Brief studio · house voice drafts",
+  "lore/tutor": "Tutor desk · syllabus Q&A",
+};
+const ifaceTitleEs: Record<string, string> = {
+  "fidelis/intake": "Mesa de ingreso · grafo de entidades",
+  "tide/ops": "Piso de ops · triage de propiedades",
+  "seal/stamp": "Cola de sello · attestación",
+  "tide/concierge": "Hilos de huéspedes · SLA + handoff",
+  "tide/revenue": "Mesa de ingresos · ritmo + varianza",
+  "tide/housekeeping": "Tablero HK · estado de habitación",
+  "tide/guestbook": "Memoria de huéspedes · perfiles",
+  "tide/scout": "Laboratorio de canales",
+  "fidelis/ledger": "Mesa Ledger · cierre + libros",
+  "fidelis/vault": "Sala Vault · cadena de custodia",
+  "fidelis/filing": "Pista de filing · plazo a presentado",
+  "fidelis/counsel": "Mesa counsel · asesor interno",
+  "fidelis/audit": "Lectura de auditoría · hallazgos bajo demanda",
+  "helios/portfolio": "Torre de cartera · lectura del hogar",
+  "helios/ledger-w": "Ledger patrimonial · libros listos para auditoría",
+  "helios/trust": "Administración de trusts · distribuciones + minutas",
+  "helios/estate": "Mapa patrimonial · cada activo, cada heredero",
+  "helios/family-office": "Family office · capa admin del hogar",
+  "helios/yield": "Mesa yield · dónde está el efectivo",
+  "alder/intake": "Ingreso Kairos · biomarcadores + línea base",
+  "alder/protocol": "Bucle protocolo · deltas semanales",
+  "alder/labs": "Carril labs · pedir, leer, recordar",
+  "alder/cadence": "Tablero cadencia · rachas que importan",
+  "alder/concierge-m": "Medicina concierge · reservas + logística",
+  "alder/atria": "Vestíbulo Kairos · entrada guiada",
+  "mortar/blueprint": "Pila blueprint · planos + RFI",
+  "mortar/permit": "Trámites de permiso · agencias + plazos",
+  "mortar/crew": "Cuadrilla · quién está en obra",
+  "mortar/site": "Diario de obra · fotos + retrasos",
+  "mortar/ledger-c": "Ledger de obra · draws + COs",
+  "mortar/punch": "Punch list · cierre acotado",
+  "lex/matter": "Mesa de asunto · alcance, precio, envío",
+  "lex/brief": "Estudio de brief · borradores en voz de la firma",
+  "lore/tutor": "Mesa tutor · Q&A del programa",
+};
+const ifaceTitle =
+  locale === "es" ? (ifaceTitleEs[key] ?? "Cómo se siente en el shell") : (ifaceTitleEn[key] ?? "How it feels in the shell");
+
+const sectionId = `iface-${holding.slug}-${agent.slug}`;
+const isFocus = isSequenceFocus(holding.slug, agent.slug);
+const humanStep = getSequenceHumanStep();
+
+const batchDevSteps = getDevStepsForBatch(ACTIVE_INTERFACE_DEV_BATCH);
+const batchStep = batchDevSteps[INTERFACE_DEV_SEQUENCE_INDEX];
+
+const activeBatchSlugs =
+  INTERFACE_DEV_BATCHES.find((b) => b.id === ACTIVE_INTERFACE_DEV_BATCH)?.slugs ?? [];
+const inActiveInterfaceBatch = activeBatchSlugs.includes(key);
+const showBatchRail = inActiveInterfaceBatch && batchDevSteps.length > 0;
+---
+
+<section
+  class="lyra-sec overflow-hidden border-b border-white/5"
+  aria-labelledby="iface-title"
+  id={sectionId}
+>
+  <InterfaceRemotionBackdrop client:only="react" accent={accent} variant={key} />
+  <div class="lyra-layer-content mx-auto max-w-[84rem] px-6 py-20">
+    {
+      showBatchRail && (
+        <div class="mb-8 flex flex-col gap-3 border-b border-white/5 pb-8 sm:flex-row sm:items-center sm:justify-between">
+          {ACTIVE_INTERFACE_DEV_BATCH === 1 && (
+            <span class="label-xs text-ink-500" data-shell-i18n="iface.batchLine">
+              Batch 1 · ship in order
+            </span>
+          )}
+          {ACTIVE_INTERFACE_DEV_BATCH === 2 && (
+            <span class="label-xs text-ink-500" data-shell-i18n="iface.batch2Line">
+              Batch 2 · Tide depth · ship in order
+            </span>
+          )}
+          {ACTIVE_INTERFACE_DEV_BATCH === 3 && (
+            <span class="label-xs text-ink-500" data-shell-i18n="iface.batch3Line">
+              Batch 3 · guest memory · scout · ledger lane
+            </span>
+          )}
+          {
+            ACTIVE_INTERFACE_DEV_BATCH > 3 && (
+              <span class="label-xs text-ink-500">
+                Batch {ACTIVE_INTERFACE_DEV_BATCH} · ship in order
+              </span>
+            )
+          }
+          <div class="flex flex-wrap gap-2">
+            {batchDevSteps.map((s) => {
+              const [hs, ha] = s.slug.split("/");
+              const isSlot = humanStep === s.step;
+              return (
+                <a
+                  href={`/${hs}/${ha}`}
+                  class:list={[
+                    "rounded-md px-3 py-2 font-mono text-[11px] tracking-wide transition",
+                    isSlot
+                      ? "bg-emerald-500/15 text-emerald-100 ring-1 ring-emerald-500/35"
+                      : "bg-white/[0.04] text-ink-400 hover:bg-white/[0.07] hover:text-ink-200",
+                  ]}
+                >
+                  {s.step}. {s.short}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      )
+    }
+    {
+      isFocus && batchStep && inActiveInterfaceBatch && ACTIVE_INTERFACE_DEV_BATCH === 1 && (
+        <div class="mb-8 rounded-lg border border-emerald-500/25 bg-emerald-500/[0.06] px-5 py-4">
+          <div class="font-mono text-[10px] tracking-[0.2em] text-emerald-300/90">
+            ACTIVE BUILD · STEP {batchStep.step} OF 3 · {batchStep.short}
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-ink-200">
+            Order is <span class="text-white">1 Intake → 2 Ops → 3 Stamp</span>. When this step ships, set{" "}
+            <span class="font-mono text-[11px] text-ink-400">INTERFACE_DEV_SEQUENCE_INDEX</span> to{" "}
+            {batchStep.step < 3 ? (
+              <span class="font-mono text-[11px] text-emerald-200/90">{INTERFACE_DEV_SEQUENCE_INDEX + 1}</span>
+            ) : (
+              <span>
+                <span class="font-mono text-[11px] text-ink-400">0</span> and{" "}
+                <span class="font-mono text-[11px] text-ink-400">ACTIVE_INTERFACE_DEV_BATCH</span> to{" "}
+                <span class="font-mono text-[11px] text-emerald-200/90">2</span>
+              </span>
+            )}
+            .
+          </p>
+        </div>
+      )
+    }
+    {
+      isFocus && batchStep && inActiveInterfaceBatch && ACTIVE_INTERFACE_DEV_BATCH === 2 && (
+        <div class="mb-8 rounded-lg border border-emerald-500/25 bg-emerald-500/[0.06] px-5 py-4">
+          <div class="font-mono text-[10px] tracking-[0.2em] text-emerald-300/90">
+            ACTIVE BUILD · STEP {batchStep.step} OF 3 · {batchStep.short}
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-ink-200">
+            Order is <span class="text-white">1 Concierge → 2 Revenue → 3 Housekeeping</span>. When this step ships, set{" "}
+            <span class="font-mono text-[11px] text-ink-400">INTERFACE_DEV_SEQUENCE_INDEX</span> to{" "}
+            {batchStep.step < 3 ? (
+              <span class="font-mono text-[11px] text-emerald-200/90">{INTERFACE_DEV_SEQUENCE_INDEX + 1}</span>
+            ) : (
+              <span>
+                <span class="font-mono text-[11px] text-ink-400">0</span> and{" "}
+                <span class="font-mono text-[11px] text-ink-400">ACTIVE_INTERFACE_DEV_BATCH</span> to{" "}
+                <span class="font-mono text-[11px] text-emerald-200/90">3</span>
+              </span>
+            )}
+            .
+          </p>
+        </div>
+      )
+    }
+    {
+      isFocus && batchStep && inActiveInterfaceBatch && ACTIVE_INTERFACE_DEV_BATCH >= 3 && (
+        <div class="mb-8 rounded-lg border border-emerald-500/25 bg-emerald-500/[0.06] px-5 py-4">
+          <div class="font-mono text-[10px] tracking-[0.2em] text-emerald-300/90">
+            ACTIVE BUILD · STEP {batchStep.step} OF 3 · {batchStep.short}
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-ink-200">
+            Order is{" "}
+            <span class="text-white">{batchDevSteps.map((s) => `${s.step} ${s.short}`).join(" → ")}</span>
+            . When this step ships, set{" "}
+            <span class="font-mono text-[11px] text-ink-400">INTERFACE_DEV_SEQUENCE_INDEX</span> to{" "}
+            {batchStep.step < 3 ? (
+              <span class="font-mono text-[11px] text-emerald-200/90">{INTERFACE_DEV_SEQUENCE_INDEX + 1}</span>
+            ) : (
+              <span>
+                <span class="font-mono text-[11px] text-ink-400">0</span> and{" "}
+                <span class="font-mono text-[11px] text-ink-400">ACTIVE_INTERFACE_DEV_BATCH</span> to{" "}
+                <span class="font-mono text-[11px] text-emerald-200/90">{ACTIVE_INTERFACE_DEV_BATCH + 1}</span>
+              </span>
+            )}
+            .
+          </p>
+        </div>
+      )
+    }
+    <div class="kicker mb-3" data-shell-i18n="iface.kicker">Product interface</div>
+    <h2 id="iface-title" class="page-title">{ifaceTitle}</h2>
+    <p class="mt-4 max-w-2xl text-sm text-ink-400">
+      {locale === "es" ? "Lote" : "Batch"} {ACTIVE_INTERFACE_DEV_BATCH}
+      <span data-shell-i18n="iface.subSuffix"> · static shell — wire to Gateway / Hub when workflows go live.</span>
+    </p>
+
+    <div
+      class="lyra-layer-chrome mt-12 overflow-hidden rounded-lg border bg-[#0a0d14]/80 shadow-[0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur-xl backdrop-saturate-150"
+      style={`border-color: color-mix(in oklab, ${accent} 22%, rgba(255,255,255,0.08));`}
+    >
+      <div
+        class="flex items-center justify-between border-b px-4 py-2.5 font-mono text-[10px] tracking-[0.18em] text-ink-400"
+        style={`border-color: color-mix(in oklab, ${accent} 12%, rgba(255,255,255,0.06)); background: color-mix(in oklab, ${accent} 6%, transparent);`}
+      >
+        <span class="text-ink-200">{holding.code} · {agent.name.toUpperCase()} · <span data-shell-i18n="iface.shell.ui">UI</span></span>
+        <span class="text-ink-500" data-shell-i18n="iface.shell.dev">dev shell</span>
+      </div>
+
+      {key === "fidelis/intake" && (
+        <IntakeInterface holding={holding} agent={agent} preview={preview} accent={accent} copy={copy} />
+      )}
+      {key === "tide/ops" && <OpsInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "seal/stamp" && <StampInterface holding={holding} agent={agent} preview={preview} accent={accent} copy={copy} />}
+      {key === "tide/concierge" && <ConciergeInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "tide/revenue" && <RevenueInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "tide/housekeeping" && <HousekeepingInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "tide/guestbook" && <GuestbookInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "tide/scout" && <ScoutInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "fidelis/ledger" && <LedgerInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "fidelis/vault" && <VaultInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "fidelis/filing" && <FilingInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "fidelis/counsel" && <CounselInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "fidelis/audit" && <AuditInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "helios/portfolio" && <PortfolioInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "helios/ledger-w" && <LedgerWInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "helios/trust" && <TrustInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "helios/estate" && <EstateInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "helios/family-office" && (
+        <FamilyOfficeInterface holding={holding} agent={agent} preview={preview} accent={accent} />
+      )}
+      {key === "helios/yield" && <YieldInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "alder/intake" && (
+        <KairosIntakeInterface holding={holding} agent={agent} preview={preview} accent={accent} />
+      )}
+      {key === "alder/protocol" && <ProtocolInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "alder/labs" && <LabsInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "alder/cadence" && <CadenceInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "alder/concierge-m" && (
+        <ConciergeMInterface holding={holding} agent={agent} preview={preview} accent={accent} />
+      )}
+      {key === "alder/atria" && <AtriaInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+      {key === "mortar/blueprint" && (
+        <BlueprintInterface holding={holding} agent={agent} preview={preview} accent={accent} />
+      )}
+      {key === "mortar/permit" && <PermitInterface holding={holding} agent={agent} preview={preview} accent={accent} />}
+
+      {
+        key !== "fidelis/intake" &&
+          key !== "tide/ops" &&
+          key !== "seal/stamp" &&
+          key !== "tide/concierge" &&
+          key !== "tide/revenue" &&
+          key !== "tide/housekeeping" &&
+          key !== "tide/guestbook" &&
+          key !== "tide/scout" &&
+          key !== "fidelis/ledger" &&
+          key !== "fidelis/vault" &&
+          key !== "fidelis/filing" &&
+          key !== "fidelis/counsel" &&
+          key !== "fidelis/audit" &&
+          key !== "helios/portfolio" &&
+          key !== "helios/ledger-w" &&
+          key !== "helios/trust" &&
+          key !== "helios/estate" &&
+          key !== "helios/family-office" &&
+          key !== "helios/yield" &&
+          key !== "alder/intake" &&
+          key !== "alder/protocol" &&
+          key !== "alder/labs" &&
+          key !== "alder/cadence" &&
+          key !== "alder/concierge-m" &&
+          key !== "alder/atria" &&
+          key !== "mortar/blueprint" &&
+          key !== "mortar/permit" && (
+            <div class="grid gap-0 md:grid-cols-5">
+              <div class="border-b p-6 md:col-span-2 md:border-b-0 md:border-r border-white/5">
+                <div class="label-xs text-white">{preview.headline}</div>
+                <p class="mt-3 text-sm leading-relaxed text-ink-300">{preview.sub}</p>
+                <div class="mt-8 space-y-4">
+                  {
+                    preview.metrics.map((m) => (
+                      <div class="flex items-baseline justify-between gap-4 border-t border-white/5 pt-4 first:border-t-0 first:pt-0">
+                        <span class="label-xs text-ink-500">{m.label}</span>
+                        <span class="font-light text-white data-num text-xl">{m.value}</span>
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+              <div class="p-6 md:col-span-3">
+                <div class="label-xs text-ink-500">Queue</div>
+                <ul class="mt-4 space-y-0 divide-y divide-white/5">
+                  {
+                    preview.rows.map((row) => (
+                      <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between">
+                        <span class="text-sm text-ink-200">{row.key}</span>
+                        <span
+                          class:list={[
+                            "text-right font-mono text-[12px]",
+                            row.tone === "ok" && "text-emerald-300/90",
+                            row.tone === "warn" && "text-amber-200/90",
+                            (!row.tone || row.tone === "neutral") && "text-ink-400",
+                          ]}
+                        >
+                          {row.value}
+                        </span>
+                      </li>
+                    ))
+                  }
+                </ul>
+                <p class="mt-6 font-mono text-[10px] text-ink-500">
+                  Registry: <code class="text-ink-400">GET /api/hub/surface?holding={holding.slug}&amp;agent={agent.slug}</code>
+                </p>
+                <div class="mt-6 border-t border-white/5 pt-4">
+                  <div class="label-xs text-ink-500">Live queue (stub)</div>
+                  <p class="mt-1 text-[11px] text-ink-600">
+                    Hydrates from <code class="text-ink-500">/api/hub/queue-preview</code> — replace with Gateway when workflows exist.
+                  </p>
+                  <div
+                    id={queueStubId}
+                    class="mt-2 min-h-[3.5rem] rounded border border-white/5 bg-black/25 p-3 font-mono text-[11px] text-ink-300"
+                  >
+                    <span class="text-ink-600">Loading…</span>
+                  </div>
+                </div>
+                <script
+                  define:vars={{
+                    queueStubId,
+                    holdingSlug: holding.slug,
+                    agentSlug: agent.slug,
+                  }}
+                >
+                  const el = document.getElementById(queueStubId);
+                  if (el) {
+                    fetch(
+                      `/api/hub/queue-preview?holding=${encodeURIComponent(holdingSlug)}&agent=${encodeURIComponent(agentSlug)}`,
+                    )
+                      .then((r) => r.json())
+                      .then((data) => {
+                        if (!data?.ok || !Array.isArray(data.rows)) {
+                          el.textContent = "Stub unavailable.";
+                          return;
+                        }
+                        el.innerHTML = data.rows
+                          .map(
+                            (row) =>
+                              `<div class="flex justify-between gap-2 border-b border-dashed border-white/5 py-1.5"><span>${row.label}</span><span class="shrink-0 text-ink-500">${row.state}</span></div>`,
+                          )
+                          .join("");
+                      })
+                      .catch(() => {
+                        el.textContent = "Stub fetch failed.";
+                      });
+                  }
+                </script>
+              </div>
+            </div>
+          )
+      }
+    </div>
+  </div>
+</section>

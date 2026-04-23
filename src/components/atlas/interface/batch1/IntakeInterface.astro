@@ -1,0 +1,134 @@
+---
+/**
+ * Fidelis · Intake — clinical onboarding shell: step rail + entity card + doc gate.
+ * Pipeline labels come from `copy.steps` (single source with landing "How it works").
+ */
+import type { Holding, Agent } from "../../../../data/atlas";
+import type { InterfacePreview } from "../../../../data/interfaceBatches";
+import type { SubAgentCopy } from "../../../../data/subAgentCopy/types";
+import { railStepsFromCopy } from "../../../../lib/interfaceRail";
+
+interface Props {
+  holding: Holding;
+  agent: Agent;
+  preview: InterfacePreview;
+  accent: string;
+  copy: SubAgentCopy;
+}
+
+const { holding, agent, preview, accent, copy } = Astro.props;
+const muted = holding.voice.palette[1] ?? "#c8c4bc";
+
+const steps = railStepsFromCopy(copy, ["done", "done", "active", "next"]);
+
+const docs = [
+  { name: "Certificate of formation", status: "stamped" as const },
+  { name: "EIN letter (SS-4)", status: "stamped" as const },
+  { name: "Banking resolution", status: "stamped" as const },
+  { name: "NY payroll registration", status: "pending" as const },
+];
+---
+
+<div class="grid min-w-0 gap-0 lg:grid-cols-12">
+  <div
+    class="min-w-0 border-b p-6 lg:col-span-4 lg:border-b-0 lg:border-r border-white/5"
+    style={`background: linear-gradient(165deg, color-mix(in oklab, ${accent} 12%, transparent) 0%, transparent 55%);`}
+  >
+    <div class="label-xs text-white" data-shell-i18n="iface.intake.pipeline">Pipeline</div>
+    <ol class="mt-6 space-y-4">
+      {
+        steps.map((s) => (
+          <li class="flex gap-3">
+            <span
+              class:list={[
+                "flex h-7 w-7 shrink-0 items-center justify-center rounded-full font-mono text-[10px]",
+                s.state === "done" && "bg-emerald-500/15 text-emerald-300",
+                s.state === "active" && "ring-1 text-white",
+                s.state === "next" && "bg-white/5 text-ink-500",
+              ]}
+              style={s.state === "active" ? `ring-color: color-mix(in oklab, ${accent} 55%, transparent); background: color-mix(in oklab, ${accent} 18%, transparent)` : undefined}
+            >
+              {s.state === "done" ? "✓" : s.id}
+            </span>
+            <div>
+              <div class="font-mono text-[10px] tracking-wider text-ink-500">{s.id}</div>
+              <div class:list={["text-sm", s.state === "active" ? "text-white" : "text-ink-300"]}>{s.label}</div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="mt-8 rounded-md border border-white/5 bg-black/20 p-4">
+      <div class="label-xs text-ink-500" data-shell-i18n="iface.intake.deskSla">Desk SLA</div>
+      <div class="mt-3 grid min-w-0 grid-cols-3 gap-3">
+        {
+          preview.metrics.map((m) => (
+            <div>
+              <div class="text-[10px] uppercase tracking-wider text-ink-500">{m.label}</div>
+              <div class="mt-1 font-light text-white data-num text-lg">{m.value}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="min-w-0 p-6 lg:col-span-8">
+    <div class="flex flex-wrap items-start justify-between gap-4">
+      <div class="min-w-0">
+        <div class="label-xs" style={`color: ${muted};`} data-shell-i18n="iface.intake.activeEntity">Active entity</div>
+        <h3 class="mt-2 font-display text-2xl font-light text-white">Aurora HoldCo LLC</h3>
+        <p class="mt-1 font-mono text-[11px] text-ink-400">EIN 84-XXXXXXX · DE · nexus CA · remote payroll NY</p>
+      </div>
+      <div class="flex shrink-0 flex-wrap gap-2" aria-describedby="intake-doc-blocker-note">
+        <span class="rounded border border-emerald-500/25 bg-emerald-500/10 px-2 py-1 font-mono text-[10px] text-emerald-300" data-shell-i18n="iface.intake.promoteReady">Promote ready</span>
+        <span class="rounded border border-amber-500/25 bg-amber-500/10 px-2 py-1 font-mono text-[10px] text-amber-200" data-shell-i18n="iface.intake.blockerOne">1 blocker</span>
+      </div>
+    </div>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-2">
+      <div
+        class="rounded-lg border p-4"
+        style={`border-color: color-mix(in oklab, ${accent} 22%, rgba(255,255,255,0.06));`}
+      >
+        <div class="label-xs text-ink-500" data-shell-i18n="iface.intake.vault">Vault</div>
+        <p class="mt-2 font-mono text-[12px] leading-relaxed text-ink-200">
+          Formation + banking res linked · <span class="text-ink-400">V-9921 · V-9922</span>
+        </p>
+      </div>
+      <div class="rounded-lg border border-white/5 bg-white/[0.02] p-4">
+        <div class="label-xs text-ink-500" data-shell-i18n="iface.intake.ledger">Ledger</div>
+        <p class="mt-2 font-mono text-[12px] text-ink-300">Opening balances staged · GL-2026-04-INT-07</p>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <div class="label-xs text-ink-500" data-shell-i18n="iface.intake.documents">Documents</div>
+      <ul class="mt-3 divide-y divide-white/5 rounded-lg border border-white/5" aria-label="Entity documents">
+        {
+          docs.map((d) => (
+            <li class="flex min-w-0 items-center justify-between gap-4 px-4 py-3">
+              <span class="min-w-0 truncate text-sm text-ink-200">{d.name}</span>
+              <span
+                class:list={[
+                  "shrink-0 font-mono text-[10px]",
+                  d.status === "stamped" ? "text-emerald-300/90" : "text-amber-200/90",
+                ]}
+                data-shell-i18n={d.status === "stamped" ? "iface.intake.status.stamped" : "iface.intake.status.pending"}
+              >
+                {d.status === "stamped" ? "stamped" : "awaiting signer"}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+      <p id="intake-doc-blocker-note" class="mt-3 max-w-2xl text-[11px] leading-relaxed text-ink-500" data-shell-i18n="iface.intake.blockerExplain">
+        NY payroll registration is awaiting state portal signature — that open item drives the blocker badge until signed.
+      </p>
+    </div>
+
+    <p class="mt-6 font-mono text-[10px] text-ink-500">
+      {holding.code} · {agent.name} · <code class="text-ink-400">/api/hub/surface?holding={holding.slug}&amp;agent={agent.slug}</code>
+    </p>
+  </div>
+</div>

@@ -1,11 +1,21 @@
 ---
 /**
- * /passport — the SSO identity layer.
- * Stub for now; wires to auth later. Exists so we can link to "one identity"
- * from every holding page and the footer.
+ * /passport — the SSO identity layer + network map (auth wires later).
  */
 import AtlasLayout from "../layouts/AtlasLayout.astro";
-import { CORE } from "../data/atlas";
+import { CORE, HOLDINGS, totalLiveAgents, totalDraftAgents } from "../data/atlas";
+import { getGeneralAvailabilityKeys, serviceCatalogStats } from "../data/serviceCatalog";
+
+const liveAgents = totalLiveAgents();
+const draftAgents = totalDraftAgents();
+const { liveGa, livePreview } = serviceCatalogStats();
+const gaKeys = getGeneralAvailabilityKeys();
+
+const holdingsForNetwork = HOLDINGS.map((h) => ({
+  ...h,
+  liveCount: h.agents.filter((a) => a.status === "live").length,
+  flagshipPath: h.flagship ? `/${h.slug}/${h.flagship.slug}` : `/${h.slug}`,
+}));
 ---
 
 <AtlasLayout
@@ -26,6 +36,106 @@ import { CORE } from "../data/atlas";
       <div class="mt-10 flex flex-wrap gap-3">
         <a href="/login" class="btn-primary">Sign in</a>
         <a href="/join" class="btn-ghost">Request access</a>
+        <a href="/hub/ecosystem" class="btn-ghost">Ecosystem map</a>
+        <a href="/hub/services" class="btn-ghost">Service catalog</a>
+        <a href="/hub" class="btn-ghost">Hub console</a>
+      </div>
+      <dl class="mt-14 grid max-w-3xl grid-cols-2 gap-6 sm:grid-cols-4">
+        <div class="border-l border-white/10 pl-4">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Holdings</dt>
+          <dd class="mt-1 font-light text-3xl text-white tabular-nums">{HOLDINGS.length}</dd>
+        </div>
+        <div class="border-l border-white/10 pl-4">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Live agents</dt>
+          <dd class="mt-1 font-light text-3xl text-white tabular-nums">{liveAgents}</dd>
+        </div>
+        <div class="border-l border-white/10 pl-4">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">GA SKUs</dt>
+          <dd class="mt-1 font-light text-3xl text-white tabular-nums">{liveGa}</dd>
+        </div>
+        <div class="border-l border-white/10 pl-4">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Preview SKUs</dt>
+          <dd class="mt-1 font-light text-3xl text-white tabular-nums">{livePreview}</dd>
+        </div>
+      </dl>
+      <p class="mt-4 max-w-2xl font-mono text-[11px] text-ink-500">
+        {draftAgents} draft agents in atlas · Passport is the spine across all routes below.
+      </p>
+      <div class="mt-10 max-w-3xl rounded-lg border border-white/10 bg-white/[0.02] p-5">
+        <div class="label-xs text-ink-500">GTM · what the counts mean</div>
+        <p class="mt-3 text-sm leading-relaxed text-ink-300">
+          <strong class="font-medium text-ink-200">GA</strong> (general availability) SKUs are sellable with integration specs and Hub surface lines — see{" "}
+          <a href="/hub/services" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/hub/services</a>.
+          <strong class="font-medium text-ink-200"> Preview</strong> live agents are not yet promoted in{" "}
+          <span class="font-mono text-[11px] text-ink-500">OFFER_OVERRIDES</span>; they still use Passport for identity but may lack marketplace ids and deploy hints.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">GA catalog spine</div>
+      <h2 class="page-title">Every <em>listed</em> SKU shares Passport.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-300">
+        Jump to the product page or the operator surface for any GA key ({gaKeys.length} today).
+      </p>
+      <ul class="mt-8 max-w-4xl space-y-1.5 font-mono text-[11px]">
+        {gaKeys.map((gk) => {
+          const [h, a] = gk.split("/");
+          return (
+            <li class="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-white/5 py-2 text-ink-400">
+              <span class="text-ink-200">{gk}</span>
+              <a href={`/${h}/${a}`} class="hover:text-white">
+                product →
+              </a>
+              <a
+                href={`/api/hub/surface?holding=${encodeURIComponent(h)}&agent=${encodeURIComponent(a)}`}
+                class="hover:text-white"
+              >
+                surface →
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Network</div>
+      <h2 class="page-title">Eight holdings · <em>one</em> identity.</h2>
+      <p class="mt-4 max-w-2xl text-sm leading-relaxed text-ink-300">
+        Every vertical links below the same Passport. Open a holding for the flagship, then fan out
+        into sub-agents. Hub catalog tracks GTM phase and integration surfaces per SKU.
+      </p>
+      <div class="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {holdingsForNetwork.map((h) => (
+          <div class="surface flex min-h-0 flex-col p-5">
+            <div class="flex items-baseline justify-between gap-2">
+              <span class="font-mono text-[10px] text-ink-500">{h.code}</span>
+              <span class="rounded border border-white/10 px-2 py-0.5 font-mono text-[10px] text-ink-400">
+                {h.liveCount} live
+              </span>
+            </div>
+            <a href={`/${h.slug}`} class="mt-3 text-base font-medium text-white hover:text-ink-100">
+              {h.name}
+            </a>
+            <p class="mt-2 flex-1 text-[13px] leading-relaxed text-ink-400">{h.tagline}</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <a
+                href={h.flagshipPath}
+                class="font-mono text-[10px] text-ink-500 hover:text-white"
+              >
+                Flagship →
+              </a>
+              <a href={`/${h.slug}`} class="font-mono text-[10px] text-ink-500 hover:text-white">
+                Holding →
+              </a>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -35,12 +145,20 @@ import { CORE } from "../data/atlas";
       <div class="kicker mb-3">Five rails</div>
       <h2 class="page-title">Core plumbing.</h2>
       <div class="mt-10 grid grid-cols-1 gap-3 md:grid-cols-5">
-        {CORE.map((c) => (
-          <div class="surface p-5">
-            <div class="label-xs">{c.name}</div>
-            <p class="mt-3 text-[13px] leading-relaxed text-ink-300">{c.blurb}</p>
-          </div>
-        ))}
+        {CORE.map((c) => {
+          const href = c.slug === "passport" ? "/passport" : `/core/${c.slug}`;
+          return (
+            <a href={href} class="surface group block p-5 transition hover:border-white/18">
+              <div class="label-xs">{c.name}</div>
+              <p class="mt-3 text-[13px] leading-relaxed text-ink-300 group-hover:text-ink-200">
+                {c.blurb}
+              </p>
+              <span class="mt-3 inline-block font-mono text-[10px] text-ink-500 group-hover:text-white">
+                Open →
+              </span>
+            </a>
+          );
+        })}
       </div>
     </div>
   </section>

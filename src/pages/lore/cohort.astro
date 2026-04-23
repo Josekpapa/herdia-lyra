@@ -1,0 +1,373 @@
+---
+/**
+ * /lore/cohort — Lore · Cohort sub-agent product page.
+ *
+ * Cohort = the living dashboard — at-risk, shipping, tutor load, room
+ * temperature — the program director's single screen.
+ *
+ * Voice: scholarly · patient (inherits Lore). Accent: #e8c99a (warm beige).
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const lore = getHolding("lore")!;
+const related = lore.agents.filter((a) => a.slug !== "cohort" && a.status === "live").slice(0, 5);
+const accent = "#e8c99a";
+---
+
+<AtlasLayout
+  title="Cohort — Lore · LYRA"
+  description="The living dashboard — who's at risk, who's shipping, what the room is asking. Muse, compressed to the one screen directors actually read."
+  active="lore"
+>
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1100px 600px at 20% 20%, rgba(232, 201, 154, 0.12), transparent 60%), radial-gradient(760px 480px at 82% 72%, rgba(74, 110, 184, 0.06), transparent 62%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/lore" class="hover:text-white transition">Lore</a>
+        <span>/</span>
+        <span class="text-ink-300">Cohort</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Agent · 02.cohort</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">CHAPTER · VOLUME</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Cohort
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        The room, live — risk, velocity, voice.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Muse is the program's memory. Cohort is the pulse — who's drifting,
+        who's carrying load, which workshop landed, which language the room
+        is asking in. The program director's Tuesday in one terminal, no tab
+        archaeology.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/join" class="btn-primary">Request access →</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Risk signals</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">12+</div>
+        </div>
+        <div>
+          <div class="label-xs">Languages</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">EN · ES · PT</div>
+        </div>
+        <div>
+          <div class="label-xs">Director read time</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">&lt; 3 min</div>
+        </div>
+        <div>
+          <div class="label-xs">Target operator</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">P6 · institution</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Why Cohort is its own product</div>
+          <h2 class="section-title">Muse remembers. Cohort intervenes.</h2>
+        </div>
+        <div class="md:col-span-3">
+          <p class="text-base leading-relaxed text-ink-200">
+            Programs buy Muse for the long record. They renew when someone
+            catches at-risk learners before week eight — when tutor load is
+            balanced, when the room's language mix shifts mid-cohort, when
+            alumni mentors match in real time. That's Cohort's job.
+          </p>
+          <p class="mt-6 text-base leading-relaxed text-ink-300">
+            It's the sub-agent you screen-share in faculty standup — not the
+            full flagship, not a spreadsheet export.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What Cohort replaces</div>
+      <h2 class="page-title">Slack scroll + three dashboards.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        Directors shouldn't assemble a story from tools that don't share a
+        learner ID. Cohort is the story — updated hourly, trilingual, honest
+        about who's drowning.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before · program ops</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Airtable for attendance · Slack for vibes · Sheets for risk</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>"At-risk" defined differently in each tutor's head</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Office-hours queue invisible until someone complains</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Alumni mentor matches done in a quarterly email blast</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Week-10 surprises that were visible in week 3</li>
+          </ul>
+        </div>
+        <div class="surface p-8" style={`border-color: color-mix(in oklab, ${accent} 28%, rgba(255,255,255,0.06));`}>
+          <div class="label-xs" style={`color: ${accent};`}>After · Cohort</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Unified risk: Path drift + attendance + tutor latency</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Language mix live: when to add ES/PT coverage</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Queue aging for Desk — escalates before 24h</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Alumni ↔ learner matching surfaced in-session</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Faculty brief exports — one click for board week</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">How it works</div>
+      <h2 class="page-title">Ingest · Score · Route · Brief.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="surface p-6">
+          <div class="label-xs" style={`color:${accent};`}>01 · Ingest</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Learner events from Path, Tutor, Lab, Desk — same IDs, same
+            timestamps. Workshop feedback rolls up automatically.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style={`color:${accent};`}>02 · Score</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Risk model tuned per program: drift thresholds, attendance bands,
+            language demand. No black-box scores — every flag links to evidence.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style={`color:${accent};`}>03 · Route</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Suggests tutor swaps, extra office-hour blocks, alumni touch —
+            routed to Muse agents with one accept.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style={`color:${accent};`}>04 · Brief</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Morning brief + board packet mode. Exports the narrative donors
+            expect without another deck rebuild.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Terminal</div>
+          <h2 class="section-title">Tuesday standup · cohort C-2026-S.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            Week 6 of 12 — the director view with language mix, at-risk, and
+            alumni matches in one pass.
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div
+            class="surface corner-ticks p-8"
+            style={`border-color: color-mix(in oklab, ${accent} 26%, rgba(255,255,255,0.06));`}
+          >
+            <div class="flex items-center justify-between">
+              <span class="label-xs" style={`color:${accent};`}>COHORT · C-2026-S · WEEK 6 / 12 · TUE 08:40</span>
+              <span class="tag tag-accent">● live</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+$ lyra cohort board --id C-2026-S
+
+┌─ Pulse ──────────────────────────────────────
+│ Active learners ... 18   ·   At-risk .... 2
+│ Avg path health .... 0.81   (target ≥ 0.78)
+│ Languages .......... EN×11  ES×5  PT×2  ·  ES demand ↑ this week
+└──────────────────────────────────────────────
+
+$ lyra cohort risk --open
+
+  Learner-07  ·  Path drift 0.62  ·  3 workshops missed  ·  ES tutor queued
+  Learner-14  ·  Desk queue 31h  ·  flagged gentle  ·  alumni-088 matched
+
+$ lyra cohort tutors --load
+
+  Dr. A ... 6.1 hrs this week  ·  within band
+  Mx. B ... 11.4 hrs  ·  <span style="color:#e8c99a;">▲</span> over  ·  suggest offload Workshop-8 recap
+
+$ lyra cohort alumni --mentor-ready
+
+  23 open  ·  6 strong match for at-risk list
+  → Draft nudges queued for Muse  ·  consent gates on
+
+  <span class="text-ink-500">// static preview. live terminal lands with the first cohort.</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Use case</div>
+          <h2 class="section-title">Founder residency · NPS 79 → 91.</h2>
+          <p class="mt-4 text-sm text-ink-400">Anonymized. Same shape as Muse's flagship story — Cohort as the lever.</p>
+        </div>
+        <div class="md:col-span-3 space-y-6">
+          <div class="surface p-6">
+            <div class="label-xs">00 · The setup</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              18 learners × 12 weeks, hybrid, trilingual faculty. Risk lived
+              in standup anecdotes. Alumni matching was a quarterly spreadsheet.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">01 · Cohort one</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Cohort board goes live week two. First at-risk caught day nine —
+              Path + Desk signals combined. Tutor overload visible before
+              burnout week.
+            </p>
+          </div>
+          <div class="surface p-6" style={`border-color: color-mix(in oklab, ${accent} 26%, rgba(255,255,255,0.06));`}>
+            <div class="label-xs" style={`color:${accent};`}>02 · Cohort three</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Admissions 2.4× prior — rubric calibrated on two full cohorts.
+              Alumni-sourced pipeline 38%. Directors cite Cohort standup as
+              the weekly ritual they won't give up.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Cohort</div>
+      <h2 class="page-title">Dashboard-only, or full Muse.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        Small programs buy Cohort at PAGE for the board alone. Institutions
+        bundle with Muse at CHAPTER — that's where risk + memory lock together.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="surface p-8">
+          <div class="label-xs">PAGE · Cohort solo</div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$129 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Single cohort · live board · exports  ·  no full Muse stack
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8 md:-translate-y-2" style={`border-color: color-mix(in oklab, ${accent} 34%, rgba(255,255,255,0.06));`}>
+          <div class="flex items-start justify-between">
+            <div class="label-xs">CHAPTER · with Muse</div>
+            <span class="tag tag-accent">Recommended</span>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$999 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Institution · Muse + Cohort + Tutor + Path + Desk
+          </p>
+          <a href="/join" class="btn-primary mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8">
+          <div class="label-xs">VOLUME · program + alumni</div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$9,990 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Multi-cohort · alumni network ops · API to LMS of record
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Integrations</div>
+      <h2 class="section-title">Every learner event, one cohort ID.</h2>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {[
+          "Muse (native)",
+          "Path (native)",
+          "Tutor (native)",
+          "Desk (native)",
+          "Lab (native)",
+          "Slack",
+          "Notion",
+          "Airtable",
+          "Zoom",
+          "Google Classroom",
+          "HubSpot",
+          "Zapier",
+        ].map((n) => (
+          <div class="surface px-4 py-3 text-center">
+            <div class="font-mono text-[11px] tracking-wider text-ink-300">{n}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">More inside Lore</div>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {related.map((a) => (
+          <AgentTile agent={a} holdingSlug="lore" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Design partner cohort</div>
+          <h2 class="page-title">Cohort opens with two residencies and one academy.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            We wire your existing learner IDs, tune the risk model to your
+            syllabus, and run parallel with your current stack for one cohort.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="/join" class="btn-primary">Apply →</a>
+          <a href="/lore/muse" class="btn-ghost">See Muse</a>
+          <a href="/lore" class="btn-link">Back to Lore →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

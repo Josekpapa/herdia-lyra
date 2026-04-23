@@ -1,0 +1,13 @@
+---
+import SubAgentProduct from "../../components/atlas/SubAgentProduct.astro";
+import { getHolding } from "../../data/atlas";
+import { getSubAgentCopy } from "../../data/subAgentCopy";
+import { resolveLocale } from "../../i18n/locale";
+
+const holding = getHolding("helios")!;
+const agent = holding.agents.find((a) => a.slug === "desk")!;
+const locale = resolveLocale(Astro);
+const copy = getSubAgentCopy(holding, agent, locale);
+---
+
+<SubAgentProduct holding={holding} agent={agent} copy={copy} locale={locale} />

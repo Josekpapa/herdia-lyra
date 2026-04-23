@@ -1,0 +1,172 @@
+---
+/**
+ * Shared bundle landing layout (Shore Pack pattern).
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import type { Bundle } from "../../data/atlas";
+import type { BundleLandingCopy } from "../../data/bundleLandingCopy";
+
+interface Props {
+  bundle: Bundle;
+  copy: BundleLandingCopy;
+}
+
+const { bundle, copy } = Astro.props;
+const accent = copy.accent;
+
+const receiptBody = `LINE ITEM                          AMOUNT
+──────────────────────────────────────────
+${copy.receiptLines.join("\n")}
+${bundle.name} (${bundle.tier}) ................ ${bundle.price}
+──────────────────────────────────────────
+// Billed per bundle terms · Passport included`;
+---
+
+<AtlasLayout
+  title={`${bundle.name} — bundle · LYRA`}
+  description={`${bundle.tier} bundle: ${bundle.includes.join(" · ")}.`}
+  active="pricing"
+>
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style={`background: radial-gradient(1000px 560px at 18% 18%, color-mix(in oklab, ${accent} 14%, transparent), transparent 58%), radial-gradient(720px 480px at 88% 75%, rgba(74, 110, 184, 0.06), transparent 60%);`}
+    ></div>
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-28">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/bundles" class="hover:text-white transition">Bundles</a>
+        <span>/</span>
+        <span class="text-ink-300">{bundle.name}</span>
+      </div>
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <span class="kicker">Bundle · {copy.kickerSuffix}</span>
+        <span class="tag tag-accent">{bundle.tier}</span>
+        <span class="label-xs text-ink-400">{copy.holdingTag}</span>
+      </div>
+      <h1 class="mt-8 font-display text-[clamp(2.75rem,8vw,5.5rem)] font-light leading-[0.92] tracking-tight text-white">
+        {bundle.name}
+      </h1>
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        {copy.heroItalic}
+      </p>
+      <div class="hairline mt-8 max-w-md"></div>
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        {copy.heroLede}
+      </p>
+      <div class="mt-12 flex flex-wrap gap-3">
+        <a href="/join" class="btn-primary">Request {bundle.name} →</a>
+        <a href={copy.flagshipHref} class="btn-ghost">{copy.flagshipLabel}</a>
+        <a href="/pricing" class="btn-link">Tier grammar</a>
+      </div>
+      <div class="mt-14 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Bundle price</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">{bundle.price}</div>
+        </div>
+        <div>
+          <div class="label-xs">Floor story</div>
+          <div class="mt-1 text-sm text-ink-200">{copy.floorStory}</div>
+        </div>
+        <div>
+          <div class="label-xs">Persona</div>
+          <div class="mt-1 text-sm text-ink-200">{copy.personaLine}</div>
+        </div>
+        <div>
+          <div class="label-xs">Tier grammar</div>
+          <div class="mt-1 text-sm text-ink-200">{copy.tierNote}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What's inside</div>
+      <h2 class="page-title">{copy.whatsTitle}</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">{copy.whatsSub}</p>
+      <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
+        {copy.includes.map((item) => (
+          <a
+            href={item.href}
+            class="surface group block p-6 transition hover:border-white/18"
+            style={`border-color: color-mix(in oklab, ${accent} 22%, rgba(255,255,255,0.06));`}
+          >
+            <div class="label-xs" style={`color: ${accent};`}>{item.label}</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-300 group-hover:text-ink-200">{item.blurb}</p>
+            <span class="mt-4 inline-block font-mono text-[11px] text-ink-500 group-hover:text-white">Open →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Before / after</div>
+      <h2 class="page-title">{copy.beforeTitle}</h2>
+      <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            {copy.beforeItems.map((line) => (
+              <li class="flex gap-3">
+                <span class="font-mono text-ink-500">—</span>
+                {line}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="surface p-8" style={`border-color: color-mix(in oklab, ${accent} 28%, rgba(255,255,255,0.06));`}>
+          <div class="label-xs" style={`color: ${accent};`}>{copy.afterLabel}</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            {copy.afterItems.map((line) => (
+              <li class="flex gap-3">
+                <span class="font-mono" style={`color:${accent};`}>●</span>
+                {line}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Receipt</div>
+          <h2 class="section-title">{copy.receiptTitle}</h2>
+          <p class="mt-4 text-sm text-ink-400">{copy.receiptSub}</p>
+        </div>
+        <div class="lg:col-span-3">
+          <div class="surface corner-ticks p-8" style={`border-color: color-mix(in oklab, ${accent} 26%, rgba(255,255,255,0.06));`}>
+            <div class="flex items-center justify-between">
+              <span class="label-xs" style={`color: ${accent};`}>LYRA · BUNDLE · {bundle.slug.toUpperCase().replace(/-/g, "·")}</span>
+              <span class="tag tag-accent">{bundle.tier}</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">{receiptBody}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">{copy.ctaKicker}</div>
+          <h2 class="page-title">{copy.ctaTitle}</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">{copy.ctaBody}</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="/join" class="btn-primary">Apply →</a>
+          <a href={copy.backHref} class="btn-ghost">{copy.backLabel}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

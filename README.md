@@ -10,6 +10,8 @@ It ships as a base agent you can drop into an advisor platform, plus a set
 of advisor-facing surfaces (scenarios, document intake, PDF memos, audit log)
 built on the same tools.
 
+**LYRA Atlas** (holdings, Hub, Passport network, service catalog) lives in the same repo. **`AGENTS.md`** and **`CLAUDE.md`** describe Sigma workflow, current interface batch focus, and **handoff tasks** (e.g. Vercel `LYRA_MP_*` env vars) that sandbox agents cannot complete. **`docs/lyra/README.md`** indexes Lyra-specific docs.
+
 **Monolith, not micro-frontends:** Marea (Herdia × Lyra hospitality surface),
 Fidelis (tax intelligence), agent, residency tracker, scenarios, and APIs all
 ship from this Astro app — **one repository** and **one deployable unit**. The
@@ -19,7 +21,7 @@ tracker’s *Agent workspace* card.
 This repo is the canonical place to merge **`Josekpapa/herdia-lyra`** (formerly
 a static `index.html` only): Marea is served from **`/marea.html`**, Fidelis
 editorial from **`/fidelis`**, and **`/`** redirects to Marea. Connect Vercel
-to this repository and use **`npm run build`** (not a bare `astro` CLI).
+to this repository and use **`npm run build`** (runs the Hub deploy manifest writer, then `astro build` — see `package.json`).
 
 ---
 
@@ -37,6 +39,8 @@ to this repository and use **`npm run build`** (not a bare `astro` CLI).
 | `/memo/[id]`     | Branded, print-ready PDF memo of any conversation.                                     |
 | `/audit`         | Firm-scoped compliance log: every turn, tokens, tool latency, cost.                    |
 | `/login`, `/signup`, `/team` | Multi-tenant auth (opt-in via `FIDELIS_AUTH=1`).                           |
+| `/hub`, `/hub/services`, `/hub/batches` | LYRA operator console, service catalog JSON, interface batch roadmap. |
+| `/passport`, `/core/*`      | Passport identity + Core rails (Memory, Grammar, Gateway, Billing).      |
 
 ### Under the hood
 
@@ -93,8 +97,7 @@ goes to `./data/fidelis.sqlite`.
 
 1. Push this repo to GitHub (you already have a single codebase; no merging of
    separate repos required).
-2. In [Vercel](https://vercel.com/new), **Import** that repository. Vercel
-   detects Astro; leave the default build command (`astro build`) and output.
+2. In [Vercel](https://vercel.com/new), **Import** that repository. Set **Build command** to **`npm run build`** (manifest + Astro). Output follows the Astro adapter defaults.
    The `engines.node` field in `package.json` selects **Node 22** on Vercel so
    it matches Astro’s requirement.
 3. Add environment variables (see below), then deploy. Every route (`/`,
@@ -123,7 +126,13 @@ Required environment variables on Vercel (set exactly one key):
 - `OPENAI_API_KEY` — fallback. Enables the above **plus** true semantic RAG
   over the knowledge base.
 
-Optional:
+**LYRA Hub / marketplace (optional, separate from LLM keys):**
+
+- `LYRA_MP_<HOLDING>_<AGENT>` — Vercel Marketplace listing id per GA SKU. Table: `docs/lyra/runbooks/vercel-ga-env.md`.
+- `PUBLIC_HUB_CRM_URL` — only if wiring Hub CRM (otherwise leave unset).
+- `LYRA_LAST_DEPLOY_AT` / `LYRA_DEPLOY_REVISION` — optional global deploy fallback for `/api/hub/surface` if you bypass the baked manifest.
+
+Optional (LLM):
 
 - `LLM_MODEL` — override chat/tool model. Defaults: Groq →
   `llama-3.3-70b-versatile`, OpenAI → `gpt-4o-mini`.

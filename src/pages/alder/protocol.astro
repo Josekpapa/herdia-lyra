@@ -1,0 +1,375 @@
+---
+/**
+ * /alder/protocol — Alder · Protocol sub-agent product page.
+ *
+ * Protocol = the weekly plan — supplements, training, sleep window, travel
+ * overrides — the layer Kairos executes between lab draws.
+ *
+ * Voice: calm · evidence-first (inherits Alder). Accent: #a7f3d0 (mint).
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const alder = getHolding("alder")!;
+const related = alder.agents.filter((a) => a.slug !== "protocol" && a.status === "live").slice(0, 5);
+const accent = "#a7f3d0";
+---
+
+<AtlasLayout
+  title="Protocol — Alder · LYRA"
+  description="The weekly plan — adjusted for travel, labs, and life. The layer under Kairos that turns biomarkers into behavior."
+  active="alder"
+>
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1100px 600px at 20% 20%, rgba(167, 243, 208, 0.11), transparent 60%), radial-gradient(760px 480px at 82% 72%, rgba(74, 110, 184, 0.07), transparent 62%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/alder" class="hover:text-white transition">Alder</a>
+        <span>/</span>
+        <span class="text-ink-300">Protocol</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Agent · 05.protocol</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">PAGE · CHAPTER</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Protocol
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        The plan — adjusted weekly · never abandoned quietly.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Kairos is the household flagship. Protocol is the rhythm underneath —
+        what you do this week given last week's sleep debt, next month's lab
+        draw, and the conference that breaks every streak. Evidence becomes
+        a schedule you can actually keep.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/join" class="btn-primary">Request access →</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Review cadence</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">weekly</div>
+        </div>
+        <div>
+          <div class="label-xs">Override types</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">travel · sick · lab</div>
+        </div>
+        <div>
+          <div class="label-xs">Household scope</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">adults + minors</div>
+        </div>
+        <div>
+          <div class="label-xs">Target operator</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">P5 · Helios crossover</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Why Protocol is its own product</div>
+          <h2 class="section-title">Labs tell you what moved. Protocol tells you what to do.</h2>
+        </div>
+        <div class="md:col-span-3">
+          <p class="text-base leading-relaxed text-ink-200">
+            Kairos without Protocol is a dashboard of numbers. Households churn
+            when the plan doesn't survive Tuesday. Protocol owns the diff —
+            what changes this week, what waits for the draw, what gets handed
+            to a spouse mid-trip — so Labs and Cadence don't argue in separate
+            apps.
+          </p>
+          <p class="mt-6 text-base leading-relaxed text-ink-300">
+            Sell Protocol, you sell the weekly habit that makes Kairos
+            irreplaceable.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What Protocol replaces</div>
+      <h2 class="page-title">Static PDFs and static habits.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        Most "plans" are a one-time doc. Protocol is a living schedule with
+        guardrails — the thing your physician would edit weekly if they lived
+        in your calendar.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before · the longevity plan</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>A Notion page called "Protocol Q1" nobody updates</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Supplement stack from a podcast, not from your ApoB curve</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Training blocks that ignore the red-eye you booked anyway</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Two adults following two different screenshots</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Minors' protocols living in a parent's head</li>
+          </ul>
+        </div>
+        <div class="surface p-8" style={`border-color: color-mix(in oklab, ${accent} 28%, rgba(255,255,255,0.06));`}>
+          <div class="label-xs" style={`color: ${accent};`}>After · Protocol</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Weekly diff vs last week — sleep, load, nutrition targets</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Travel + sick overrides with explicit handoff to spouse</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Lab-aware holds: what pauses until ApoB comes back</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Minor protocols with consent boundaries and tutor language</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Cadence reads streaks against the plan — not generic steps</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">How it works</div>
+      <h2 class="page-title">Baseline · Diff · Overrides · Handoff.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="surface p-6">
+          <div class="label-xs" style={`color:${accent};`}>01 · Baseline</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Intake + Labs establish targets: sleep window, training volume,
+            protein floor, the three supplements with evidence for <em>this</em>
+            household — not a generic stack.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style={`color:${accent};`}>02 · Diff</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Every Monday, Protocol compares last week to plan. Flags drift
+            before it becomes a quarterly surprise. Surfaces one change, not
+            twelve.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style={`color:${accent};`}>03 · Overrides</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Travel, illness, a kid home from school — structured overrides with
+            explicit recovery timelines. No silent gaps in the record.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs" style={`color:${accent};`}>04 · Handoff</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            When Concierge-M books the MD or the flight, Protocol reconciles
+            the plan so Kairos stays one narrative.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Terminal</div>
+          <h2 class="section-title">Monday · the weekly diff.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            Household K-0007 · two adults · what changed vs last week, what
+            waits for Wednesday's draw.
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div
+            class="surface corner-ticks p-8"
+            style={`border-color: color-mix(in oklab, ${accent} 26%, rgba(255,255,255,0.06));`}
+          >
+            <div class="flex items-center justify-between">
+              <span class="label-xs" style={`color:${accent};`}>PROTOCOL · HOUSEHOLD K-0007 · WEEK 23 · MON 06:10</span>
+              <span class="tag tag-accent">● live</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+$ lyra protocol diff --household K-0007
+
+┌─ Last 7d vs plan ────────────────────────────
+│ Sleep window hit .... 4 / 7  (target 6+)
+│ Zone-2 sessions ..... 2 / 3  (deload week)
+│ Protein floor ........ met 5 / 7
+└──────────────────────────────────────────────
+
+$ lyra protocol flags
+
+  <span style="color:#a7f3d0;">▲</span> ApoB draw Wed 17:00  ·  hold ezetimibe until result posts
+  <span style="color:#a7f3d0;">▲</span> Spouse travel Thu–Sun  ·  handoff pack generated
+  ·  Minor-A: sport week  ·  recovery cap + hydration floor raised
+
+$ lyra protocol apply --week
+
+  Mon ... Zone-2 40m easy (deload)  ·  no HIIT
+  Tue ... Protein floor +10g (travel preload)
+  Wed ... Labs fasted  ·  breakfast after draw
+  Sat ... Review with Dr. N  ·  Protocol v23.4 locked
+
+  <span class="text-ink-500">// static preview. live terminal lands with the first household.</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Use case</div>
+          <h2 class="section-title">Two founders, one kid, twelve weeks of travel.</h2>
+          <p class="mt-4 text-sm text-ink-400">Anonymized. P5 profile. Protocol as the habit layer.</p>
+        </div>
+        <div class="md:col-span-3 space-y-6">
+          <div class="surface p-6">
+            <div class="label-xs">00 · The setup</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Household on Kairos: quarterly labs, shared supplements, uneven
+              travel. Protocols lived in Notes; every trip erased the streak
+              without documenting why.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">01 · Month one</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Protocol ships weekly diffs. First overseas trip runs on a
+              handoff pack — spouse adherence +18% vs prior self-directed
+              weeks. Labs post; ezetimibe hold automatic.
+            </p>
+          </div>
+          <div class="surface p-6" style={`border-color: color-mix(in oklab, ${accent} 26%, rgba(255,255,255,0.06));`}>
+            <div class="label-xs" style={`color:${accent};`}>02 · Month three</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Cadence streaks now track "window kept" vs raw steps — churn
+              risk down. Household renews CHAPTER: Protocol cited as the reason
+              the plan survived the quarter, not the dashboard.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Protocol</div>
+      <h2 class="page-title">Standalone, or the reason Kairos renews.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        Individuals buy Protocol at PAGE. Households bundle with Kairos at
+        CHAPTER — that's where weekly review actually ships.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="surface p-8">
+          <div class="label-xs">PAGE · Protocol solo</div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$249 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Individual · weekly diff + overrides · no full Kairos seat
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8 md:-translate-y-2" style={`border-color: color-mix(in oklab, ${accent} 34%, rgba(255,255,255,0.06));`}>
+          <div class="flex items-start justify-between">
+            <div class="label-xs">CHAPTER · with Kairos</div>
+            <span class="tag tag-accent">Recommended</span>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$1,999 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Household · Kairos + Protocol + Labs + Cadence
+          </p>
+          <a href="/join" class="btn-primary mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8">
+          <div class="label-xs">VOLUME · concierge year</div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$9,990 / yr</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Household + Concierge-M · MD-led overrides · priority lab routing
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Integrations</div>
+      <h2 class="section-title">Reads labs. Writes the week.</h2>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {[
+          "Kairos (native)",
+          "Labs (native)",
+          "Cadence (native)",
+          "Oura / Whoop",
+          "Apple Health",
+          "Quest / Labcorp",
+          "Function Health",
+          "Cronometer",
+          "Google Calendar",
+          "Concierge-M",
+          "Telehealth (FHIR)",
+          "Slack (household)",
+        ].map((n) => (
+          <div class="surface px-4 py-3 text-center">
+            <div class="font-mono text-[11px] tracking-wider text-ink-300">{n}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">More inside Alder</div>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {related.map((a) => (
+          <AgentTile agent={a} holdingSlug="alder" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Design partner cohort</div>
+          <h2 class="page-title">Protocol opens with five households and one MD group.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            We import your last two quarters of labs, tune override templates to
+            your travel patterns, and co-write the minor handoff language.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="/join" class="btn-primary">Apply →</a>
+          <a href="/alder/kairos" class="btn-ghost">See Kairos</a>
+          <a href="/alder" class="btn-link">Back to Alder →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

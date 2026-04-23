@@ -1,0 +1,184 @@
+---
+/**
+ * /bundles/shore-pack — Tide CHAPTER bundle landing.
+ * P1 · design hoteliers · guest voice + memory + channel scout.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import { getBundle } from "../../data/atlas";
+
+const bundle = getBundle("shore-pack")!;
+const accent = "#b8926a";
+
+const includes = [
+  { label: "Marea Concierge", href: "/tide/concierge", blurb: "Guest-facing voice · EN · ES · PT" },
+  { label: "Guestbook", href: "/tide/guestbook", blurb: "Every guest, every visit, forever" },
+  { label: "Scout", href: "/tide/scout", blurb: "New channels, new inventory, quietly" },
+] as const;
+---
+
+<AtlasLayout
+  title="Shore Pack — Tide bundle · LYRA"
+  description="CHAPTER bundle for one property: Concierge + Guestbook + Scout. The Shore Pack revenue story for design hoteliers."
+  active="pricing"
+>
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1000px 560px at 18% 18%, rgba(184, 146, 106, 0.14), transparent 58%), radial-gradient(720px 480px at 88% 75%, rgba(74, 110, 184, 0.06), transparent 60%);"
+    ></div>
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-28">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/pricing" class="hover:text-white transition">Pricing</a>
+        <span>/</span>
+        <span class="text-ink-300">Shore Pack</span>
+      </div>
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <span class="kicker">Bundle · 01.shore</span>
+        <span class="tag tag-accent">{bundle.tier}</span>
+        <span class="label-xs text-ink-400">TIDE</span>
+      </div>
+      <h1 class="mt-8 font-display text-[clamp(2.75rem,8vw,5.5rem)] font-light leading-[0.92] tracking-tight text-white">
+        Shore Pack
+      </h1>
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        One property · full guest voice · quiet growth.
+      </p>
+      <div class="hairline mt-8 max-w-md"></div>
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Shore Pack is the CHAPTER anchor for P1 — the operator who runs a small
+        portfolio of design-forward rooms and cannot staff a 24/7 desk the old
+        way. Concierge absorbs inbound, Guestbook remembers preference, Scout
+        finds demand you were leaving on the table.
+      </p>
+      <div class="mt-12 flex flex-wrap gap-3">
+        <a href="/join" class="btn-primary">Request Shore Pack →</a>
+        <a href="/tide/marea" class="btn-ghost">See Marea</a>
+        <a href="/pricing" class="btn-link">All bundles</a>
+      </div>
+      <div class="mt-14 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Bundle price</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">{bundle.price}</div>
+        </div>
+        <div>
+          <div class="label-xs">Floor story</div>
+          <div class="mt-1 text-sm text-ink-200">~$18k ARR · 1 property</div>
+        </div>
+        <div>
+          <div class="label-xs">Persona</div>
+          <div class="mt-1 text-sm text-ink-200">P1 · Design Hotelier</div>
+        </div>
+        <div>
+          <div class="label-xs">Tier grammar</div>
+          <div class="mt-1 text-sm text-ink-200">CHAPTER · one stack</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What's inside</div>
+      <h2 class="page-title">Three agents · one invoice.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        Priced as a bundle so the property doesn't buy Concierge and forget
+        Guestbook — the combination is how direct booking and repeat rate move.
+      </p>
+      <div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
+        {includes.map((item) => (
+          <a
+            href={item.href}
+            class="surface group block p-6 transition hover:border-white/18"
+            style={`border-color: color-mix(in oklab, ${accent} 22%, rgba(255,255,255,0.06));`}
+          >
+            <div class="label-xs" style={`color: ${accent};`}>{item.label}</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-300 group-hover:text-ink-200">
+              {item.blurb}
+            </p>
+            <span class="mt-4 inline-block font-mono text-[11px] text-ink-500 group-hover:text-white">Open agent →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Before / after</div>
+      <h2 class="page-title">Front desk as software.</h2>
+      <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>OTA-only guest history · no voice continuity</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>WhatsApp for VIPs · inbox for everyone else</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>RevPAR meetings without a channel experiment log</li>
+          </ul>
+        </div>
+        <div class="surface p-8" style={`border-color: color-mix(in oklab, ${accent} 28%, rgba(255,255,255,0.06));`}>
+          <div class="label-xs" style={`color: ${accent};`}>After · Shore Pack</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>One guest thread · trilingual · property voice</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Preference and stay history queryable forever</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Scout proposes channels with pickup you can measure</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Receipt</div>
+          <h2 class="section-title">What shows up on the invoice.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            One CHAPTER line. Passport ties the three agents to the same
+            property identity.
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div class="surface corner-ticks p-8" style={`border-color: color-mix(in oklab, ${accent} 26%, rgba(255,255,255,0.06));`}>
+            <div class="flex items-center justify-between">
+              <span class="label-xs" style={`color: ${accent};`}>LYRA · BUNDLE · SHORE-PACK</span>
+              <span class="tag tag-accent">{bundle.tier}</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+LINE ITEM                          AMOUNT
+──────────────────────────────────────────
+TIDE · Shore Pack (CHAPTER)        {bundle.price}
+  └ Concierge · property H-0031      included
+  └ Guestbook · unified memory       included
+  └ Scout · channel experiments      included
+Passport seat · 1 property         included
+──────────────────────────────────────────
+<span class="text-ink-500">// Billed monthly · annual prepay −15% on request</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Tide</div>
+          <h2 class="page-title">Start with one shoreline.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            We co-configure voice, languages, and OTA handoff in week one — then
+            Guestbook backfills history from your PMS export.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="/join" class="btn-primary">Apply →</a>
+          <a href="/tide" class="btn-ghost">Back to Tide</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

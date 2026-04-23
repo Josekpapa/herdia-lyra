@@ -401,7 +401,7 @@ export const TIER_GRAMMAR: { tier: Tier; monthly: string; annual: string; for: s
 /* --------------------------------------------------------------------- */
 
 export const CORE = [
-  { name: "Passport", slug: "passport", blurb: "Single sign-on · one identity across all 53 agents." },
+  { name: "Passport", slug: "passport", blurb: "Single sign-on · one identity across every live agent route." },
   { name: "Memory",   slug: "memory",   blurb: "Graph · shared context, consent-gated." },
   { name: "Grammar",  slug: "grammar",  blurb: "Voice engine · trilingual · per-holding tone." },
   { name: "Gateway",  slug: "gateway",  blurb: "API · model routing · observability · fallbacks." },
@@ -428,6 +428,10 @@ export const PERSONAS = [
 
 export function getHolding(slug: string): Holding | undefined {
   return HOLDINGS.find((h) => h.slug === slug);
+}
+
+export function getBundle(slug: string): Bundle | undefined {
+  return BUNDLES.find((b) => b.slug === slug);
 }
 
 export function totalLiveAgents(): number {

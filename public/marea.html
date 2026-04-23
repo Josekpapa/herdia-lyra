@@ -2691,6 +2691,7 @@
 
   const I18N = {
     en: {
+      docTitle: "Lyra × Marea — A Hospitality AI Ecosystem",
       tagline: "Same soul. More soil.",
       ch1Sub: "Concierge · Advisor · Partner · Memory · Pricing · Corporate · Operations",
       ch1Quote: "\"A hospitality brand becomes an ecosystem the moment software carries the soul — so the grammar travels without the founder having to.\"",
@@ -2728,9 +2729,30 @@
       meta: "— Marea · by Lyra",
       progress: ["Marea", "The Forge", "The Thesis", "The Rails"],
       kbdHint: ['HOLD', 'TO SPEAK', 'NAVIGATE'],
-      voiceLabel: "LISTENING"
+      voiceLabel: "LISTENING",
+      flNamePrompt: "Before we begin — <em>what should I call you?</em>",
+      flNamePh: "your name",
+      flNameNextAria: "continue",
+      flIntentPrompt: "What brings you here?",
+      flChip1n: "Planning a stay",
+      flChip1s: "I want to visit Papaya Playa.",
+      flChip2n: "Travel agent · partner",
+      flChip2s: "I book for my clients.",
+      flChip3n: "Tax / residency advisor",
+      flChip3s: "I help founders who live abroad.",
+      flChip4n: "Just curious",
+      flChip4s: "I want to understand the ecosystem.",
+      flTastePrompt: "Two quick rituals.",
+      flOr: "OR",
+      flTasteSkip: "skip →",
+      flDawn: "Dawn",
+      flDusk: "Dusk",
+      flCenote: "Cenote",
+      flShore: "Shoreline",
+      kbdHintHtml: '<span>HOLD <kbd>SPACE</kbd> TO SPEAK</span><span>·</span><span><kbd>↑↓</kbd> NAVIGATE</span>'
     },
     es: {
+      docTitle: "Lyra × Marea — Un ecosistema de IA para hospitalidad",
       tagline: "Misma alma. Más tierra.",
       ch1Sub: "Concierge · Asesor · Socio · Memoria · Precios · Corporativo · Operaciones",
       ch1Quote: "\"Una marca de hospitalidad se convierte en ecosistema en el momento en que el software carga el alma — para que la gramática viaje sin que el fundador tenga que hacerlo.\"",
@@ -2768,9 +2790,30 @@
       meta: "— Marea · por Lyra",
       progress: ["Marea", "La Fragua", "La Tesis", "Los Rieles"],
       kbdHint: ['MANTÉN', 'PARA HABLAR', 'NAVEGAR'],
-      voiceLabel: "ESCUCHANDO"
+      voiceLabel: "ESCUCHANDO",
+      flNamePrompt: "Antes de empezar — <em>¿cómo debo llamarte?</em>",
+      flNamePh: "tu nombre",
+      flNameNextAria: "continuar",
+      flIntentPrompt: "¿Qué te trae aquí?",
+      flChip1n: "Planeo una estancia",
+      flChip1s: "Quiero visitar Papaya Playa.",
+      flChip2n: "Agente de viajes · socio",
+      flChip2s: "Reservo para mis clientes.",
+      flChip3n: "Asesor fiscal / residencia",
+      flChip3s: "Ayudo a fundadores en el extranjero.",
+      flChip4n: "Solo curiosidad",
+      flChip4s: "Quiero entender el ecosistema.",
+      flTastePrompt: "Dos rituales rápidos.",
+      flOr: "O",
+      flTasteSkip: "saltar →",
+      flDawn: "Amanecer",
+      flDusk: "Atardecer",
+      flCenote: "Cenote",
+      flShore: "Orilla",
+      kbdHintHtml: '<span>MANTÉN <kbd>SPACE</kbd> PARA HABLAR</span><span>·</span><span><kbd>↑↓</kbd> NAVEGAR</span>'
     },
     de: {
+      docTitle: "Lyra × Marea — Ein Hospitality-KI-Ökosystem",
       tagline: "Gleiche Seele. Mehr Boden.",
       ch1Sub: "Concierge · Berater · Partner · Gedächtnis · Preise · Corporate · Operations",
       ch1Quote: "\"Eine Hospitality-Marke wird zum Ökosystem in dem Moment, in dem Software die Seele trägt — damit die Grammatik reisen kann, ohne dass der Gründer es muss.\"",
@@ -2808,7 +2851,27 @@
       meta: "— Marea · von Lyra",
       progress: ["Marea", "Die Schmiede", "Die These", "Die Schienen"],
       kbdHint: ['HALTE', 'ZUM SPRECHEN', 'NAVIGATION'],
-      voiceLabel: "HÖRT ZU"
+      voiceLabel: "HÖRT ZU",
+      flNamePrompt: "Bevor wir beginnen — <em>wie soll ich dich nennen?</em>",
+      flNamePh: "dein Name",
+      flNameNextAria: "weiter",
+      flIntentPrompt: "Was führt dich hierher?",
+      flChip1n: "Aufenthalt planen",
+      flChip1s: "Ich möchte Papaya Playa besuchen.",
+      flChip2n: "Reiseagent · Partner",
+      flChip2s: "Ich buche für meine Kunden.",
+      flChip3n: "Steuer · Aufenthaltsberater",
+      flChip3s: "Ich helfe Gründern im Ausland.",
+      flChip4n: "Nur neugierig",
+      flChip4s: "Ich will das Ökosystem verstehen.",
+      flTastePrompt: "Zwei kurze Rituale.",
+      flOr: "ODER",
+      flTasteSkip: "überspringen →",
+      flDawn: "Morgendämmerung",
+      flDusk: "Abenddämmerung",
+      flCenote: "Cenote",
+      flShore: "Küste",
+      kbdHintHtml: '<span>HALTE <kbd>LEERTASTE</kbd> ZUM SPRECHEN</span><span>·</span><span><kbd>↑↓</kbd> NAVIGATION</span>'
     }
   };
 
@@ -3422,6 +3485,11 @@
     if (!I18N[lang]) return;
     currentLang = lang;
     const t = I18N[lang];
+    try {
+      localStorage.setItem('lyra.locale', lang);
+      document.cookie = 'lyra.locale=' + encodeURIComponent(lang) + ';path=/;max-age=31536000;SameSite=Lax';
+    } catch (e) {}
+    if (t.docTitle) document.title = t.docTitle;
     document.documentElement.lang = lang;
     document.querySelectorAll('.lang-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.lang === lang);
@@ -3474,6 +3542,42 @@
 
     // Progress labels
     progressButtons.forEach((b, i) => b.setAttribute('data-label', t.progress[i]));
+
+    /* First Light onboarding + bottom keyboard hint */
+    set('flNamePrompt', t.flNamePrompt, true);
+    const flNameIn = document.getElementById('flName');
+    if (flNameIn) flNameIn.placeholder = t.flNamePh;
+    const flNameNx = document.getElementById('flNameNext');
+    if (flNameNx) flNameNx.setAttribute('aria-label', t.flNameNextAria);
+    if (typeof FL !== 'undefined' && FL.data && FL.data.name) {
+      updateIntentPrompt();
+    } else {
+      set('flIntentPrompt', t.flIntentPrompt, true);
+    }
+    const chipPairs = [
+      [t.flChip1n, t.flChip1s],
+      [t.flChip2n, t.flChip2s],
+      [t.flChip3n, t.flChip3s],
+      [t.flChip4n, t.flChip4s],
+    ];
+    document.querySelectorAll('#firstLight .fl-chip').forEach((chip, i) => {
+      const spans = chip.querySelectorAll('span');
+      if (!chipPairs[i]) return;
+      if (spans[0]) spans[0].textContent = chipPairs[i][0];
+      if (spans[1]) spans[1].textContent = chipPairs[i][1];
+    });
+    set('flTastePrompt', t.flTastePrompt);
+    document.querySelectorAll('#firstLight .fl-or').forEach((el) => {
+      el.textContent = t.flOr;
+    });
+    const flSk = document.getElementById('flTasteSkip');
+    if (flSk) flSk.textContent = t.flTasteSkip;
+    const choiceTx = [t.flDawn, t.flDusk, t.flCenote, t.flShore];
+    document.querySelectorAll('#firstLight .fl-choice').forEach((c, i) => {
+      if (choiceTx[i]) c.textContent = choiceTx[i];
+    });
+    const kbdEl = document.getElementById('kbdHint');
+    if (kbdEl && t.kbdHintHtml) kbdEl.innerHTML = t.kbdHintHtml;
 
     applyTextAnimations();
   }
@@ -3765,7 +3869,7 @@
   function flSubmitName() {
     const raw = FL.nameInput.value.trim();
     const safe = raw.replace(/[*<>&]/g, '').slice(0, 40);
-    FL.data.name = safe || (currentLang === 'es' ? 'amigo' : 'friend');
+    FL.data.name = safe || (currentLang === 'es' ? 'amigo' : currentLang === 'de' ? 'Freund' : 'friend');
     updateIntentPrompt();
     flStep('intent');
   }
@@ -3780,7 +3884,8 @@
     const safeName = n.replace(/[<>&]/g, '');
     const prompts = {
       en: n ? `What brings you here, <em>${safeName}</em>?` : 'What brings you here?',
-      es: n ? `¿Qué te trae aquí, <em>${safeName}</em>?` : '¿Qué te trae aquí?'
+      es: n ? `¿Qué te trae aquí, <em>${safeName}</em>?` : '¿Qué te trae aquí?',
+      de: n ? `Was führt dich hierher, <em>${safeName}</em>?` : 'Was führt dich hierher?'
     };
     document.getElementById('flIntentPrompt').innerHTML = prompts[currentLang];
   }
@@ -4551,8 +4656,21 @@
   }
   window.__flSkipAll = flSkipAll;
 
-  // Initial text-animation pass (EN baked into HTML — no setLang yet)
-  applyTextAnimations();
+  /* Language: ?lang= > localStorage lyra.locale (shared with rest of Lyra) > en */
+  (function initPageLang() {
+    const params = new URLSearchParams(location.search);
+    const q = params.get('lang');
+    let initial = 'en';
+    if (q === 'es' || q === 'de' || q === 'en') initial = q;
+    else {
+      try {
+        const v = localStorage.getItem('lyra.locale');
+        if (v === 'es' || v === 'de' || v === 'en') initial = v;
+      } catch (e) {}
+    }
+    setLang(initial);
+  })();
+
   initMapInteractions();
 
   /* ============================================================
@@ -4561,13 +4679,10 @@
      ?demo=story      → jump + auto-run "origin story" scenario
      ?demo=portugal   → jump + auto-run "Portugal" scenario
      ?demo=scale      → jump + auto-run "what can Marea do" scenario
-     ?lang=es         → boot in Spanish
+     ?lang=es         → boot in Spanish (also handled in initPageLang)
      ============================================================ */
   (function initDemoMode() {
     const params = new URLSearchParams(location.search);
-    const lang = params.get('lang');
-    if (lang === 'es' || lang === 'en' || lang === 'de') setLang(lang);
-
     const demo = params.get('demo');
     if (!demo) return;
 

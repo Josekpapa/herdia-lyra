@@ -1,0 +1,12 @@
+---
+description: Sigma Protocol — 14-step workflow, PRD artifacts, and how it combines with LYRA Atlas
+alwaysApply: true
+---
+
+# Sigma Protocol (LYRA)
+
+- **Steps:** Run Sigma methodology via Cursor slash commands under `.cursor/commands/steps/` (`step-0-environment-setup.md` … `step-14-agent-runtime-bootstrap.md`, plus `dev-loop.md`, `validate-methodology.md`). Prefer the step that matches the current phase; do not skip gates inside a step unless the user asks to exit the methodology.
+- **Artifacts:** Steps expect outputs such as `docs/specs/MASTER_PRD.md`, architecture/UX docs under `docs/`, PRDs under `docs/prds/`, and eventually `.sigma/backlogs/` and `.sigma/orchestration/` when the Sigma CLI is available.
+- **LYRA precedence:** Product truth stays in `src/data/atlas.ts` and LYRA patterns (sub-agent Matter pages, batches, three-wave interface roadmap). When a Sigma step implies generic folder names, map them to this repo’s existing `docs/` layout and LYRA conventions.
+- **Skills:** Full Sigma skills live in the separate Sigma clone (`.codex/skills/<name>/SKILL.md`). Register selected skills under `~/.cursor/skills-cursor/<name>/SKILL.md`. See root `AGENTS.md` for suggested skill names and workflow table.
+- **CLI:** Commands like `sigma prd-json` and `sigma doctor` are optional and require installing the Sigma CLI from the upstream project; if the CLI is missing, still produce the markdown artifacts the step defines.

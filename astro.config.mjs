@@ -23,7 +23,8 @@ export default defineConfig({
     plugins: [tailwindcss()],
     ssr: {
       external: ["better-sqlite3"],
-      noExternal: [],
+      // Remotion Player bundles for client; allow SSR resolve when imported from islands
+      noExternal: ["remotion", "@remotion/player"],
     },
     optimizeDeps: {
       exclude: ["better-sqlite3"],

@@ -1,0 +1,377 @@
+---
+/**
+ * /helios/trust — Helios · Trust sub-agent product page.
+ *
+ * Trust = distributions, minutes, beneficiary logic — the spreadsheet
+ * Crest sits on top of.
+ *
+ * Voice: patient · quiet · generational (inherits Helios). Accent: #d4a574.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import AgentTile from "../../components/atlas/AgentTile.astro";
+import { getHolding } from "../../data/atlas";
+
+const helios = getHolding("helios")!;
+const related = helios.agents.filter((a) => a.slug !== "trust" && a.status === "live").slice(0, 5);
+const accent = "#d4a574";
+---
+
+<AtlasLayout
+  title="Trust — Helios · LYRA"
+  description="Distributions, minutes, beneficiary logic — the trust layer Crest reads from. The scariest spreadsheet, finally legible."
+  active="helios"
+>
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1100px 600px at 20% 20%, rgba(212, 165, 116, 0.11), transparent 60%), radial-gradient(760px 480px at 82% 72%, rgba(74, 110, 184, 0.07), transparent 62%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-32">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/helios" class="hover:text-white transition">Helios</a>
+        <span>/</span>
+        <span class="text-ink-300">Trust</span>
+      </div>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="kicker">Agent · 04.trust</span>
+        <span class="tag tag-accent">● live</span>
+        <span class="label-xs">CHAPTER · VOLUME</span>
+      </div>
+
+      <h1 class="mt-8 font-display text-[clamp(3rem,10vw,8rem)] font-light leading-[0.9] tracking-tight text-white">
+        Trust
+      </h1>
+
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        The distribution engine · minutes · beneficiary truth.
+      </p>
+
+      <div class="hairline mt-8 max-w-md"></div>
+
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        Crest is the portfolio view. Trust is the layer underneath — units,
+        distribution eligibility, CRUT math, minutes that match the attorney's
+        file, and the heir list nobody wants to get wrong. When the
+        spreadsheet is the product, Trust is the agent.
+      </p>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3">
+        <a href="/join" class="btn-primary">Request access →</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+        <a href="#pricing" class="btn-link">Pricing ↓</a>
+      </div>
+
+      <div class="mt-16 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Distribution types</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">14</div>
+        </div>
+        <div>
+          <div class="label-xs">Minute cadence</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">quarterly+</div>
+        </div>
+        <div>
+          <div class="label-xs">Beneficiary graph</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">tiers · remainder · minors</div>
+        </div>
+        <div>
+          <div class="label-xs">Target operator</div>
+          <div class="mt-1 text-sm leading-relaxed text-ink-200">P2 · multi-entity</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Why Trust is its own product</div>
+          <h2 class="section-title">Crest shows the balance. Trust shows the law.</h2>
+        </div>
+        <div class="md:col-span-3">
+          <p class="text-base leading-relaxed text-ink-200">
+            Households buy Crest for the one-screen portfolio. They lose sleep
+            over whether the Q2 distribution respected the instrument, whether
+            the minutes from 2019 still govern a 2026 sale, and whether the
+            minor's trust terms flipped at 21. That work is not "another tab"
+            — it's a dedicated reasoning surface.
+          </p>
+          <p class="mt-6 text-base leading-relaxed text-ink-300">
+            Trust is the sub-agent that holds beneficiary logic, distribution
+            windows, and minute lineage so Crest can stay quiet and legible.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What Trust replaces</div>
+      <h2 class="page-title">The spreadsheet only counsel understands.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        Most families run trust administration in Excel, email, and prayer.
+        Trust collapses that into one auditable run — before the wire leaves.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before · trust admin</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>A tab called <em>Units v9 FINAL</em> nobody will rename</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>PDF minutes from three firms, three formats, zero join key</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>Emails asking "did Grandad's CRUT allow this?"</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>The CPA's number vs the attorney's vs the heir's</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>A distribution held because nobody trusts the sheet</li>
+          </ul>
+        </div>
+        <div class="surface p-8" style={`border-color: color-mix(in oklab, ${accent} 28%, rgba(255,255,255,0.06));`}>
+          <div class="label-xs" style={`color: ${accent};`}>After · Trust</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Instrument-linked rules: units, tiers, timing, caps</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Minute lineage: which board action authorizes which wire</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Beneficiary graph with minors, remaindermen, consent flags</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Distribution preview → Attest stamp → Fidelis journal entry</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Crest reads the same numbers — no second spreadsheet</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">How it works</div>
+      <h2 class="page-title">Ingest · Graph · Preview · Minute.</h2>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div class="surface p-6">
+          <div class="label-xs text-white">01 · Ingest</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Trust deeds, amendments, restatements, and board packs land in one
+            queue. OCR + structure extraction — entities, trustees, schedules
+            of beneficiaries.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">02 · Graph</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Beneficiary relationships, remainder interests, and distribution
+            waterfalls rendered as logic — not cells. Conflict with Estate +
+            Portfolio agents surfaces before approval.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">03 · Preview</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Run the distribution against the instrument. See eligible amounts,
+            withholding, and the attest package Crest will show the family.
+          </p>
+        </div>
+        <div class="surface p-6">
+          <div class="label-xs text-white">04 · Minute</div>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+            Generate trustee-ready minutes with citations to clause + prior
+            actions. Seal stamps resolution; Vault stores the chain.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Terminal</div>
+          <h2 class="section-title">Tuesday · distribution window open.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            Household H-0012 · two trusts · one heir asking the question everyone
+            dreads: "Is this allowed?"
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div
+            class="surface corner-ticks p-8"
+            style={`border-color: color-mix(in oklab, ${accent} 26%, rgba(255,255,255,0.06));`}
+          >
+            <div class="flex items-center justify-between">
+              <span class="label-xs text-white">TRUST · HOUSEHOLD H-0012 · TUE 09:54</span>
+              <span class="tag tag-accent">● live</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+$ lyra trust status --household H-0012
+
+┌─ Trust instruments ──────────────────────────
+│ Family Trust (rev. 2021) .... trustee: sibling A
+│ GST Exempt Trust ........... minor tier active
+│ Estate doc ................. stale 112d (flagged in Crest)
+└──────────────────────────────────────────────
+
+$ lyra trust distribution --preview Q2-2026
+
+  Beneficiary .... heir-02 (remainder, 28%)
+  Eligible ....... $140,000  ·  window closes Fri 17:00 ET
+  Instrument ..... Art. IV §4.2 · CRUT ceiling respected
+  Withholding .... $0  ·  K-1 packet ready for Fidelis
+
+  <span style="color:#d4a574;">▲</span> Blocker: GST trust — consent of co-trustee required
+  → Draft minute TR-M-184 queued  ·  route to Seal for witness path
+
+$ lyra trust minute --draft TR-M-184
+
+  RESOLVED: distribution Q2-2026 to heir-02 authorized; CRUT calc attached;
+  counterparties notified; Vault hash → <span style="color:#ffffff;">sha256:e4b9…91c2</span>
+
+  <span class="text-ink-500">// static preview. live terminal lands with the first household.</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-5 md:items-start">
+        <div class="md:col-span-2">
+          <div class="kicker mb-3">Use case</div>
+          <h2 class="section-title">Three entities, two trusts, one nervous heir.</h2>
+          <p class="mt-4 text-sm text-ink-400">Anonymized. P2 profile. Trust as standalone depth.</p>
+        </div>
+        <div class="md:col-span-3 space-y-6">
+          <div class="surface p-6">
+            <div class="label-xs">00 · The setup</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Founder-led household: operating co, real-estate LLC, family
+              trust, GST-exempt bucket for kids. Quarterly distributions
+              negotiated by email. Counsel reviews the spreadsheet the night
+              before the wire.
+            </p>
+          </div>
+          <div class="surface p-6">
+            <div class="label-xs">01 · Month one</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Trust ingests instruments + last 36 months of minutes. First
+              preview run matches counsel's manual calc — in 40 seconds. One
+              latent beneficiary tier error caught pre-wire.
+            </p>
+          </div>
+          <div class="surface p-6" style={`border-color: color-mix(in oklab, ${accent} 26%, rgba(255,255,255,0.06));`}>
+            <div class="label-xs text-white">02 · Quarter two</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-200">
+              Distributions move from "email thread + PDF" to Attest-stamped
+              resolutions with Vault hashes. Family office time on trust admin
+              −62%. Crest stays the calm read — Trust holds the scary truth.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Pricing · Trust</div>
+      <h2 class="page-title">Household depth, or bundled with Crest.</h2>
+      <p class="mt-4 max-w-xl text-sm text-ink-400">
+        Most households buy Trust inside CHAPTER with Crest. Multi-trust
+        families graduate to VOLUME when the graph gets wide.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="surface p-8">
+          <div class="label-xs">PAGE · Trust focus</div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$349 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Single-trust household · preview + minutes · no full Crest seat
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8 md:-translate-y-2" style={`border-color: color-mix(in oklab, ${accent} 34%, rgba(255,255,255,0.06));`}>
+          <div class="flex items-start justify-between">
+            <div class="label-xs">CHAPTER · with Crest</div>
+            <span class="tag tag-accent">Recommended</span>
+          </div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$2,499 / mo</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Household · Crest + Trust + Ledger-W · one graph
+          </p>
+          <a href="/join" class="btn-primary mt-8 inline-block">Request access</a>
+        </div>
+        <div class="surface p-8">
+          <div class="label-xs">VOLUME · multi-trust</div>
+          <div class="mt-6 font-display text-4xl font-light text-white data-num">$7,990 / mo + bps</div>
+          <p class="mt-3 text-[13px] leading-relaxed text-ink-300">
+            Complex waterfalls · parallel trusts · white-glove attest routing
+          </p>
+          <a href="/join" class="btn-ghost mt-8 inline-block">Request access</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Integrations</div>
+      <h2 class="section-title">Instrument in · resolution out.</h2>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {[
+          "Crest (native)",
+          "Estate (native)",
+          "Vault (Fidelis)",
+          "Attest (Seal)",
+          "Ledger-W",
+          "DocuSign",
+          "Clio / Foundation",
+          "Black Diamond",
+          "Addepar (read)",
+          "Carta (entities)",
+          "Mercury (wires)",
+          "Slack (trustee ops)",
+        ].map((n) => (
+          <div class="surface px-4 py-3 text-center">
+            <div class="font-mono text-[11px] tracking-wider text-ink-300">{n}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">More inside Helios</div>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {related.map((a) => (
+          <AgentTile agent={a} holdingSlug="helios" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Design partner cohort</div>
+          <h2 class="page-title">Trust opens with two multi-entity households.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            We migrate instruments, reconcile your historical distributions, and
+            tune the preview engine to your counsel's interpretation.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="/join" class="btn-primary">Apply →</a>
+          <a href="/helios/crest" class="btn-ghost">See Crest</a>
+          <a href="/helios" class="btn-link">Back to Helios →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

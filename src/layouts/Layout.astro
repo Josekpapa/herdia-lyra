@@ -1,6 +1,11 @@
 ---
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import LyraSiteMotion from "../components/motion/LyraSiteMotion.astro";
 import LyraLanguageSwitcher from "../components/ui/LyraLanguageSwitcher.astro";
+import { resolveLocale } from "../i18n/locale";
+
+const locale = resolveLocale(Astro);
 
 interface Props {
   title?: string;
@@ -34,7 +39,7 @@ const navItems: Array<{ href: string; label: string; code: string; key: string }
 ---
 
 <!doctype html>
-<html lang="en" class="h-full">
+<html lang={locale} class="h-full">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -51,9 +56,10 @@ const navItems: Array<{ href: string; label: string; code: string; key: string }
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap"
     />
+    <ClientRouter />
   </head>
   <body class="min-h-full antialiased" data-page="app">
-    <header class="relative z-20">
+    <header class="lyra-site-header relative z-20">
       <div class="mx-auto flex max-w-7xl items-stretch justify-between gap-8 px-6">
         <!-- Brand -->
         <a href="/marea.html" class="group flex items-center gap-3 py-5" aria-label="Marea — home">
@@ -124,7 +130,7 @@ const navItems: Array<{ href: string; label: string; code: string; key: string }
       <div class="hairline-x"></div>
     </header>
 
-    <div class="lyra-unified-strip" aria-hidden="false">
+    <div class="lyra-unified-strip lyra-ticker-gleam" aria-hidden="false">
       <p class="lyra-unified-strip-inner" data-shell-i18n="strip.line">
         Travel & tax in one stack — Marea, Fidelis, and tools share this session.
       </p>
@@ -148,7 +154,7 @@ const navItems: Array<{ href: string; label: string; code: string; key: string }
       <div class="hairline-x opacity-60"></div>
     </div>
 
-    <main class="relative z-10">
+    <main class="lyra-motion-main relative z-10">
       <slot />
     </main>
 
@@ -177,5 +183,6 @@ const navItems: Array<{ href: string; label: string; code: string; key: string }
         </div>
       </div>
     </footer>
+    <LyraSiteMotion />
   </body>
 </html>

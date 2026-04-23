@@ -1,0 +1,13 @@
+---
+description: LYRA Atlas — source of truth, docs, and ship rules
+alwaysApply: true
+---
+
+# LYRA Atlas
+
+- **Agent handoff** (Vercel `LYRA_MP_*`, MCP limits, current focus): **`CLAUDE.md`** at repo root; Lyra doc map: **`docs/lyra/README.md`**.
+- **Canonical data** lives in `src/data/atlas.ts`. Prefer changing the code first, then mirroring narrative in Obsidian if needed.
+- **Obsidian mirror** (plain-English, not authoritative for routes): `~/obsidian-brain/01-Projects/Active/LYRA/` — especially `System/Batch log.md` for shipped batches and what’s next. LYRA **README**, **System/**, **Agents/**, and **Holdings/** notes use frontmatter `cssclasses: [lyra-atlas]` for the shared blue/grey palette (snippet `.obsidian/snippets/sigma-maps.css`). Sigma Protocol: hub `~/obsidian-brain/03-Resources/Frameworks/Sigma Protocol.md`, overview `Sigma Protocol/Overview.md`, generated **Departments/** and **Skills/** maps (`cssclasses: [sigma-maps]`; refresh via `scripts/generate-sigma-obsidian.py` in herdia-lyra).
+- **Product pages**: follow the templates described in Batch log (hero, terminal, pricing tiers, integrations, CTA). Sub-agent pages use the “Matter” pattern (why-own-page, related row, tier-straddling pricing). Copy layers: `subAgentCopy/generic.ts` → `holdingFlavor` → optional `agentOverrides.ts`. Interface roadmap: **three waves** (~⅓ of batches each via `getInterfaceDevWaves()`), batches of **three agents** (excluding holdings in **`INTERFACE_DEV_EXCLUDED_HOLDING_SLUGS`**, currently **`lore`** for a separate education app), sequential focus **`INTERFACE_DEV_SEQUENCE_INDEX`** (0→1→2) then bump **`ACTIVE_INTERFACE_DEV_BATCH`** — see `interfaceBatches.ts`, `/hub/batches`.
+- **Deploy / Vercel**: only when the user explicitly asks to ship; do not push or change production config unprompted.
+- **Development priority**: expand the ecosystem in depth — sub-agent landings (Matter pattern via `SubAgentProduct` + `src/data/subAgentCopy/`), bundle landings (`/bundles`, `bundleLandingCopy.ts`, `BundleProduct`), **`src/data/serviceCatalog.ts`** (sellable SKU + hook targets for every agent; `/hub/services`, `/api/hub/service-catalog`), and `atlas.ts` structure. Ecosystem playbook: `docs/lyra/ECOSYSTEM-SERVICES-MODEL.md`. **Sigma × sub-agents:** `docs/lyra/SIGMA-SUB-AGENT-WORKFLOW.md` and `docs/lyra/prds/` for interface-wave PRDs; active slot from `getSequenceFocusKey()` in `interfaceBatches.ts`. **CRM / Hub CRM integration is deferred** until explicitly requested; `src/lib/hub/crm.ts` is a stub only.

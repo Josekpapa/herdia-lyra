@@ -9,15 +9,19 @@
   },
   "scripts": {
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
-    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "build": "node scripts/write-deploy-manifest.mjs && ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
     "start": "node ./dist/server/entry.mjs",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "vercel deploy --yes",
+    "deploy:prod": "vercel deploy --prod --yes",
+    "build:vercel": "VERCEL=1 astro build"
   },
   "dependencies": {
     "@astrojs/node": "^10.0.5",
     "@astrojs/react": "^5.0.3",
     "@astrojs/vercel": "^10.0.4",
+    "@remotion/player": "^4.0.448",
     "@tailwindcss/vite": "^4.2.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
@@ -26,6 +30,7 @@
     "openai": "^6.34.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
+    "remotion": "^4.0.448",
     "tailwindcss": "^4.2.2",
     "zod": "^4.3.6"
   },

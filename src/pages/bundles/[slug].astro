@@ -1,0 +1,23 @@
+---
+/**
+ * Dynamic bundle landings — see `bundleLandingCopy.ts` for slugs.
+ * Static files (shore-pack, founder-pass, property-pass) take precedence.
+ */
+import BundleProduct from "../../components/atlas/BundleProduct.astro";
+import { getBundle } from "../../data/atlas";
+import { DYNAMIC_BUNDLE_SLUGS, getBundleLandingCopy } from "../../data/bundleLandingCopy";
+
+export function getStaticPaths() {
+  return DYNAMIC_BUNDLE_SLUGS.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const bundle = getBundle(String(slug ?? ""));
+const copy = slug ? getBundleLandingCopy(slug) : undefined;
+
+if (!bundle || !copy) {
+  return new Response("Not found", { status: 404 });
+}
+---
+
+<BundleProduct bundle={bundle} copy={copy} />

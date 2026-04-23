@@ -17,4 +17,7 @@ jobs:
           node-version: "22"
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - name: Build (includes deploy manifest for Hub surface)
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: npm run build

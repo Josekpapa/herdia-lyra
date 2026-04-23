@@ -1,0 +1,133 @@
+---
+/**
+ * Tide · Ops — property ops floor: GM strip + triage columns.
+ */
+import type { Holding, Agent } from "../../../../data/atlas";
+import type { InterfacePreview } from "../../../../data/interfaceBatches";
+
+interface Props {
+  holding: Holding;
+  agent: Agent;
+  preview: InterfacePreview;
+  accent: string;
+}
+
+const { holding, agent, preview, accent } = Astro.props;
+
+const columns = [
+  {
+    titleKey: "iface.ops.lane.hot" as const,
+    tone: "warn" as const,
+    items: [
+      { id: "HK-412", line: "AC leak · Rm 412", meta: "Eng onsite · 38m", tone: "warn" as const },
+      { id: "HK-401", line: "Noise · adjacency", meta: "Security called", tone: "neutral" as const },
+    ],
+  },
+  {
+    titleKey: "iface.ops.lane.floor" as const,
+    tone: "neutral" as const,
+    items: [
+      { id: "HK-308", line: "Guest recovery", meta: "Comp · GM ok", tone: "ok" as const },
+      { id: "HK-112", line: "Late checkout wave", meta: "Front synced", tone: "ok" as const },
+    ],
+  },
+  {
+    titleKey: "iface.ops.lane.night" as const,
+    tone: "neutral" as const,
+    items: [
+      { id: "NA-04", line: "Audit variance", meta: "$42 · finance", tone: "neutral" as const },
+      { id: "HK-220", line: "Minibar refresh", meta: "HK by 14:00", tone: "neutral" as const },
+    ],
+  },
+];
+
+const laneLabelEn: Record<(typeof columns)[number]["titleKey"], string> = {
+  "iface.ops.lane.hot": "Hot",
+  "iface.ops.lane.floor": "Floor",
+  "iface.ops.lane.night": "Night",
+};
+---
+
+<div class="min-w-0">
+  <div
+    class="flex min-w-0 flex-col gap-4 border-b px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
+    style={`border-color: color-mix(in oklab, ${accent} 14%, rgba(255,255,255,0.06)); background: color-mix(in oklab, ${accent} 8%, transparent);`}
+  >
+    <div>
+      <div class="font-mono text-[10px] tracking-[0.2em] text-ink-400" data-shell-i18n="iface.ops.property">PROPERTY</div>
+      <div class="mt-1 flex flex-wrap items-baseline gap-2">
+        <span class="font-display text-xl font-light text-white">Harbor Inn</span>
+        <span class="text-sm text-ink-400">San Francisco · 94 keys</span>
+      </div>
+    </div>
+    <div class="text-right">
+      <div class="font-mono text-[10px] text-ink-500" data-shell-i18n="iface.ops.standupBrief">Standup brief</div>
+      <p class="mt-1 max-w-md text-sm text-ink-200">P1×2 · engineering on 412 · no brand escalations · RevPAR +1.1% vs STLY.</p>
+    </div>
+  </div>
+
+  <div class="grid min-w-0 gap-0 md:grid-cols-4">
+    <div class="min-w-0 border-b p-5 md:border-b-0 md:border-r border-white/5">
+      <div class="label-xs text-ink-500" data-shell-i18n="iface.ops.pulse">Pulse</div>
+      <div class="mt-4 space-y-4">
+        {
+          preview.metrics.map((m) => (
+            <div>
+              <div class="text-[10px] uppercase tracking-wider text-ink-500">{m.label}</div>
+              <div class="mt-1 font-light text-white data-num text-2xl">{m.value}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="min-w-0 p-5 md:col-span-3">
+      <div class="label-xs text-ink-500" data-shell-i18n="iface.ops.triage">Triage</div>
+      <div class="mt-4 grid min-w-0 gap-4 lg:grid-cols-3">
+        {
+          columns.map((col) => (
+            <div class="rounded-lg border border-white/5 bg-black/15 p-3">
+              <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                <span class="font-mono text-[10px] tracking-wider text-ink-400" data-shell-i18n={col.titleKey}>
+                  {laneLabelEn[col.titleKey]}
+                </span>
+                {col.tone === "warn" && <span class="h-1.5 w-1.5 rounded-full bg-amber-400/90" />}
+              </div>
+              <ul class="mt-3 space-y-2">
+                {col.items.map((it) => (
+                  <li
+                    class="rounded border border-white/[0.04] bg-white/[0.02] px-3 py-2"
+                    style={
+                      it.tone === "warn"
+                        ? `border-color: color-mix(in oklab, ${accent} 20%, rgba(255,255,255,0.06));`
+                        : undefined
+                    }
+                  >
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="font-mono text-[10px] text-ink-500">{it.id}</span>
+                      <span
+                        class:list={[
+                          "font-mono text-[9px]",
+                          it.tone === "ok" && "text-emerald-300/85",
+                          it.tone === "warn" && "text-amber-200/90",
+                          it.tone === "neutral" && "text-ink-500",
+                        ]}
+                      >
+                        {it.tone === "ok" ? "●" : it.tone === "warn" ? "▲" : "○"}
+                      </span>
+                    </div>
+                    <div class="mt-1 text-[13px] text-ink-200">{it.line}</div>
+                    <div class="mt-0.5 font-mono text-[10px] text-ink-500">{it.meta}</div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-6 font-mono text-[10px] text-ink-500">
+        {holding.code} · {agent.name} · <code class="text-ink-400">/api/hub/surface?holding={holding.slug}&amp;agent={agent.slug}</code>
+      </p>
+    </div>
+  </div>
+</div>

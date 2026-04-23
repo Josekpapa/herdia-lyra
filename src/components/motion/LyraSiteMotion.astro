@@ -1,0 +1,82 @@
+---
+/**
+ * Sitewide scroll reveals + re-init on View Transitions navigation.
+ */
+---
+
+<script>
+  /** Direct <section> children of main, or sections under a single wrapper if Astro nests the slot. */
+  function getRevealSections(main) {
+    const direct = Array.from(main.querySelectorAll(":scope > section"));
+    if (direct.length) return direct;
+    const wrap = main.firstElementChild;
+    if (wrap && wrap.tagName !== "SECTION") {
+      const nested = Array.from(wrap.children).filter((n) => n.tagName === "SECTION");
+      if (nested.length) return nested;
+    }
+    return [];
+  }
+
+  function nearViewport(el) {
+    const r = el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    return r.top < vh + 48 && r.bottom > -24;
+  }
+
+  let revealObserver = null;
+  let revealGeneration = 0;
+
+  function initLyraReveal() {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const main = document.querySelector("main.lyra-motion-main");
+    if (!main) return;
+
+    const sections = getRevealSections(main);
+    if (!sections.length) return;
+
+    const gen = ++revealGeneration;
+
+    if (revealObserver) {
+      revealObserver.disconnect();
+      revealObserver = null;
+    }
+
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        for (const en of entries) {
+          if (!en.isIntersecting) continue;
+          en.target.classList.add("lyra-reveal--inview");
+          revealObserver?.unobserve(en.target);
+        }
+      },
+      { root: null, rootMargin: "0px 0px -8% 0px", threshold: 0.04 },
+    );
+
+    let i = 0;
+    for (const el of sections) {
+      el.classList.add("lyra-reveal");
+      el.style.setProperty("--lyra-stagger", String(i % 12));
+      i += 1;
+    }
+
+    // Two rAFs: let the browser commit opacity/transform from .lyra-reveal before .lyra-reveal--inview,
+    // otherwise the transition is skipped (same synchronous turn).
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (gen !== revealGeneration) return;
+        for (const el of sections) {
+          if (nearViewport(el)) {
+            el.classList.add("lyra-reveal--inview");
+          } else {
+            revealObserver?.observe(el);
+          }
+        }
+      });
+    });
+  }
+
+  initLyraReveal();
+  document.addEventListener("astro:page-load", initLyraReveal);
+</script>

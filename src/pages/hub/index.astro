@@ -1,0 +1,178 @@
+---
+/**
+ * /hub — operator / partner console (HUB scope).
+ * Land here for Agency-led work and future Hub-only tools — not consumer Atlas retail.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import { HOLDINGS, totalDraftAgents, totalLiveAgents } from "../../data/atlas";
+import {
+  getGeneralAvailabilityKeys,
+  serviceCatalogStats,
+} from "../../data/serviceCatalog";
+import {
+  ACTIVE_INTERFACE_DEV_BATCH,
+  getSequenceFocusKey,
+  INTERFACE_DEV_SEQUENCE_INDEX,
+} from "../../data/interfaceBatches";
+import HubConsoleNav from "../../components/hub/HubConsoleNav.astro";
+
+const focusKey = getSequenceFocusKey();
+const [focusHolding, focusAgent] = focusKey?.includes("/")
+  ? (focusKey.split("/") as [string, string])
+  : [null, null];
+const surfaceFocus =
+  focusHolding && focusAgent
+    ? `/api/hub/surface?holding=${encodeURIComponent(focusHolding)}&agent=${encodeURIComponent(focusAgent)}`
+    : null;
+const productFocus =
+  focusHolding && focusAgent ? `/${focusHolding}/${focusAgent}` : null;
+
+const liveAgents = totalLiveAgents();
+const draftAgents = totalDraftAgents();
+const stats = serviceCatalogStats();
+const gaKeys = getGeneralAvailabilityKeys();
+---
+
+<AtlasLayout
+  title="Hub — LYRA"
+  description="Operator and partner surface for deepening the LYRA ecosystem — deployments, portfolio programs, internal runbooks."
+  active="agency"
+>
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <span class="text-ink-300">Hub</span>
+      </div>
+      <HubConsoleNav current="overview" />
+      <div class="kicker mb-3 mt-10">HUB · invite-only</div>
+      <h1 class="page-title">The <em>operator</em> console.</h1>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
+        Hub is for Agency deployments, portfolio partners, and internal teams —
+        not the open Atlas catalog. Use it as the home for runbooks, partner
+        programs, and anything that sits <em>around</em> the product spine while
+        you keep shipping sub-agents, services, and landings.
+      </p>
+      <div class="mt-12 flex flex-wrap gap-3">
+        <a href="/hub/drafts" class="btn-primary">Roadmap agents ({draftAgents}) →</a>
+        <a href="/hub/ecosystem" class="btn-ghost">Ecosystem map →</a>
+        <a href="/hub/batches" class="btn-primary">Interface batches →</a>
+        <a href="/hub/services" class="btn-primary">Service catalog →</a>
+        <a href="/passport" class="btn-ghost">Passport network</a>
+        <a href="/agency" class="btn-ghost">Agency</a>
+        <a href="/atlas" class="btn-ghost">Atlas catalog</a>
+        <a href="/join" class="btn-link">Request access</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Passport · network snapshot</div>
+      <p class="max-w-2xl text-sm leading-relaxed text-ink-300">
+        Same identity spine as <a href="/passport" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/passport</a> — counts come from Atlas + service catalog (GA = general availability SKUs).
+      </p>
+      <dl class="mt-8 grid max-w-4xl grid-cols-2 gap-6 sm:grid-cols-4">
+        <div class="border-l border-white/10 pl-4">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Holdings</dt>
+          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{HOLDINGS.length}</dd>
+        </div>
+        <div class="border-l border-white/10 pl-4">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Live agents</dt>
+          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{liveAgents}</dd>
+        </div>
+        <div class="border-l border-white/10 pl-4">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">GA SKUs</dt>
+          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{stats.liveGa}</dd>
+        </div>
+        <div class="border-l border-white/10 pl-4">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Preview SKUs</dt>
+          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{stats.livePreview}</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Interface focus · surface API</div>
+      <p class="max-w-2xl text-sm text-ink-300">
+        Active batch <span class="font-mono text-ink-200">{ACTIVE_INTERFACE_DEV_BATCH}</span> · sequence index{" "}
+        <span class="font-mono text-ink-200">{INTERFACE_DEV_SEQUENCE_INDEX}</span>
+        {focusKey && (
+          <>
+            {" "}
+            → <span class="font-mono text-white">{focusKey}</span>
+          </>
+        )}
+      </p>
+      {surfaceFocus && productFocus && (
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href={surfaceFocus} class="btn-primary font-mono text-[12px]">
+            /api/hub/surface (focus) →
+          </a>
+          <a href={productFocus} class="btn-ghost">Product page →</a>
+        </div>
+      )}
+      <div class="mt-10">
+        <div class="label-xs mb-3 text-ink-500">All GA keys — product · surface · queue stub</div>
+        <ul class="max-w-5xl space-y-2 font-mono text-[11px]">
+          {gaKeys.map((key) => {
+            const [h, a] = key.split("/");
+            const surface = `/api/hub/surface?holding=${encodeURIComponent(h)}&agent=${encodeURIComponent(a)}`;
+            const queue = `/api/hub/queue-preview?holding=${encodeURIComponent(h)}&agent=${encodeURIComponent(a)}`;
+            const product = `/${h}/${a}`;
+            return (
+              <li class="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-white/5 pb-2 text-ink-400">
+                <span class="min-w-[10rem] text-ink-200">{key}</span>
+                <a href={product} class="hover:text-white">
+                  page →
+                </a>
+                <a href={surface} class="hover:text-white">
+                  surface →
+                </a>
+                <a href={queue} class="hover:text-white">
+                  queue →
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Rails & feeds (stubs)</div>
+      <p class="max-w-2xl text-sm text-ink-300">
+        Operator snapshot for Passport · Memory · Gateway · Billing posture and stub feeds. CRM stays off until{" "}
+        <span class="font-mono text-ink-400">PUBLIC_HUB_CRM_URL</span> is set.
+      </p>
+      <ul class="mt-6 flex flex-wrap gap-3 font-mono text-[11px]">
+        <li>
+          <a href="/api/hub/health" class="text-ink-400 hover:text-white">
+            GET /api/hub/health
+          </a>
+        </li>
+        <li>
+          <a href="/api/hub/queue-preview?holding=tide&agent=revenue" class="text-ink-400 hover:text-white">
+            GET /api/hub/queue-preview
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Focus</div>
+      <ul class="max-w-2xl space-y-2 text-sm leading-relaxed text-ink-300">
+        <li class="flex gap-2"><span class="text-ink-500">—</span>Ship interface + landing in <a href="/hub/batches" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">groups of three</a> — Batch 1 shows a live UI panel on each page.</li>
+        <li class="flex gap-2"><span class="text-ink-500">—</span>Hub API: <a href="/api/hub/health" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/api/hub/health</a> · <a href="/api/hub/surface?holding=tide&agent=ops" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/api/hub/surface</a> · <a href="/api/hub/service-catalog" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/api/hub/service-catalog</a> · <a href="/api/hub/queue-preview?holding=tide&agent=revenue" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/api/hub/queue-preview</a> (stub queue for dev shells).</li>
+        <li class="flex gap-2"><span class="text-ink-500">—</span>Structure stays in <span class="font-mono text-[11px] text-ink-400">atlas.ts</span> + Batch log; Obsidian mirrors narrative.</li>
+      </ul>
+    </div>
+  </section>
+</AtlasLayout>

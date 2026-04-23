@@ -1,0 +1,58 @@
+---
+/**
+ * Tide · Housekeeping — room board + turns (Batch 2).
+ */
+import type { Holding, Agent } from "../../../../data/atlas";
+import type { InterfacePreview } from "../../../../data/interfaceBatches";
+
+interface Props {
+  holding: Holding;
+  agent: Agent;
+  preview: InterfacePreview;
+  accent: string;
+}
+
+const { holding, agent, preview, accent } = Astro.props;
+---
+
+<div class="grid min-w-0 gap-0 lg:grid-cols-12">
+  <div class="min-w-0 border-b p-6 lg:col-span-5 lg:border-b-0 lg:border-r border-white/5">
+    <div class="label-xs text-ink-500" data-shell-i18n="iface.hk.board">Housekeeping board</div>
+    <p class="mt-3 text-sm leading-relaxed text-ink-400">{preview.sub}</p>
+    <div class="mt-8 grid min-w-0 grid-cols-3 gap-3">
+      {
+        preview.metrics.map((m) => (
+          <div class="rounded-md border border-white/5 bg-white/[0.02] p-3">
+            <div class="text-[10px] uppercase tracking-wider text-ink-500">{m.label}</div>
+            <div class="mt-1 font-light text-white data-num text-xl">{m.value}</div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <div class="min-w-0 p-6 lg:col-span-7">
+    <div class="label-xs text-ink-500" data-shell-i18n="iface.hk.floor">Floor queue</div>
+    <ul class="mt-4 divide-y divide-white/5 rounded-lg border border-white/5" aria-label="Room queue">
+      {
+        preview.rows.map((row) => (
+          <li class="flex min-w-0 flex-col gap-1 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <span class="min-w-0 font-mono text-[13px] text-ink-200">{row.key}</span>
+            <span
+              class:list={[
+                "shrink-0 text-right font-mono text-[11px]",
+                row.tone === "ok" && "text-emerald-300/90",
+                row.tone === "warn" && "text-amber-200/90",
+                (!row.tone || row.tone === "neutral") && "text-ink-400",
+              ]}
+            >
+              {row.value}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-6 font-mono text-[10px] text-ink-500">
+      {holding.code} · {agent.name} · <code class="text-ink-400">/api/hub/surface?holding={holding.slug}&amp;agent={agent.slug}</code>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,172 @@
+---
+/**
+ * /core/{memory|grammar|gateway|billing} — core rail landings.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import { CORE } from "../../data/atlas";
+
+const SLUGS = ["memory", "grammar", "gateway", "billing"] as const;
+type CoreSlug = (typeof SLUGS)[number];
+
+export function getStaticPaths() {
+  return SLUGS.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+if (!SLUGS.includes(slug as CoreSlug)) {
+  return new Response("Not found", { status: 404 });
+}
+
+const core = CORE.find((c) => c.slug === slug)!;
+
+const EXTRA: Record<
+  CoreSlug,
+  { lede: string; bullets: string[]; passportTie: string; terminal: string }
+> = {
+  memory: {
+    lede:
+      "Shared context across agents, gated by consent and purpose. What Lex knew about a matter follows to Seal only when the workflow allows — not because the database is shared by default.",
+    bullets: [
+      "Entity-scoped graphs: household, property, project, matter",
+      "Consent lanes: what crosses holdings vs what stays vertical",
+      "Decay & retention: operational memory vs legal hold",
+    ],
+    passportTie:
+      "Recall and links are scoped to the same Passport subject — guest, household, matter, or project — so Memory never stitches graphs across tenants by accident. Billing and Gateway still key off that Passport id for quotas and traces.",
+    terminal: `$ lyra memory scope --household H-0012
+
+┌─ Consent lanes ─────────────────────────────
+│ Fidelis ↔ Lex .......... counsel + tax (opt-in)
+│ Helios ↔ Alder ......... longevity line item (default on)
+│ Tide ↔ Mortar .......... property + build (project-tied)
+└─────────────────────────────────────────────
+
+  Active nodes ........ 2,417
+  Recall budget ....... 840k tokens / 30d
+
+  // static preview`,
+  },
+  grammar: {
+    lede:
+      "The voice engine: each holding speaks in its register (cinematic, clinical, precise…) while Passport keeps you one person. EN · ES · PT by default — extendable per program.",
+    bullets: [
+      "Holding metaphors from Atlas — not generic “AI voice”",
+      "Locale routing: guest SMS vs board memo vs filing",
+      "Tutor + concierge: same user, different grammar slots",
+    ],
+    passportTie:
+      "Grammar picks the register for a given Passport session; tier and program (PAGE vs CHAPTER) can narrow which locales and metaphors apply. Gateway passes the Passport context into model calls so tone stays consistent per user, not per API key.",
+    terminal: `$ lyra grammar show --holding tide
+
+  Register .... cinematic · coastal · warm
+  Locales ..... EN (primary) · ES · PT
+  Metaphor .... "concierge who never sleeps"
+
+  Sample (ES · WhatsApp):
+  Hola, Gabriela — habitación con vista al mar lista.
+
+  // static preview`,
+  },
+  gateway: {
+    lede:
+      "Unified API surface for agents: model routing, failover, tracing, and cost attribution per Passport. The shelf Agency installs runs through Gateway — not ad-hoc keys in every repo.",
+    bullets: [
+      "Provider routing: Groq / OpenAI / others with policy",
+      "Per-tenant limits and circuit breakers",
+      "Traces tied to agent + holding for support",
+    ],
+    passportTie:
+      "Every authenticated request carries a Passport principal: limits, tracing, and cost rollups attach to that identity. Partner integrations should treat Passport (or a delegated service token) as the stable tenant key — not a per-agent API key sprawl.",
+    terminal: `$ lyra gateway health
+
+  Region ........ us-west
+  Latency p50 ... 420ms
+  Failovers ..... 0 (24h)
+  Models ........ llama-3.3-70b · gpt-4o-mini (embed)
+
+  // static preview`,
+  },
+  billing: {
+    lede:
+      "CHAPTER and VOLUME roll into one LYRA invoice. Cross-holding bundles (Shore Pack, Founder Pass…) stay readable as line items — finance sees SKU + holding, users see one bill.",
+    bullets: [
+      "Bundle line items map to agents in atlas.ts",
+      "Annual prepay and seat math centralized",
+      "Hub / Agency revenue splits (where contracted) isolated from Atlas retail",
+    ],
+    passportTie:
+      "Passport seats and entitlements are what Billing counts: one bill can cover many agents because the subscription is anchored to orgs and people the Passport knows. Cross-holding bundles still resolve to a single payer identity.",
+    terminal: `$ lyra billing invoice --last
+
+  LYRA Parent · INV-2026-04-001
+  Shore Pack (CHAPTER) .... $1,499.00
+  Passport seats .......... included
+  Taxes ................... per jurisdiction
+
+  // static preview`,
+  },
+};
+
+const x = EXTRA[slug as CoreSlug];
+---
+
+<AtlasLayout
+  title={`${core.name} — Core · LYRA`}
+  description={core.blurb}
+  active="home"
+>
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none opacity-90"
+      style="background: radial-gradient(900px 520px at 15% 20%, rgba(74, 110, 184, 0.08), transparent 55%);"
+    ></div>
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/core" class="hover:text-white transition">Core</a>
+        <span>/</span>
+        <span class="text-ink-300">{core.name}</span>
+      </div>
+      <div class="kicker mb-3 mt-8">Core · {core.name}</div>
+      <h1 class="page-title"><em>{core.name}</em></h1>
+      <p class="mt-4 max-w-2xl font-display text-xl italic font-light text-ink-200/90">{core.blurb}</p>
+      <p class="mt-6 max-w-3xl text-base leading-relaxed text-ink-200 lede">{x.lede}</p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="/passport" class="btn-ghost">Passport</a>
+        <a href="/pricing" class="btn-link">Tier grammar</a>
+        <a href="/join" class="btn-primary">Request access</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">What it does</div>
+      <ul class="mt-6 max-w-3xl space-y-3">
+        {x.bullets.map((b) => (
+          <li class="flex gap-3 text-sm leading-relaxed text-ink-200">
+            <span class="font-mono text-ink-500">●</span>
+            {b}
+          </li>
+        ))}
+      </ul>
+      <div class="mt-10 max-w-3xl rounded-lg border border-white/10 bg-white/[0.02] p-5">
+        <div class="label-xs text-ink-500">Passport · how this rail ties in</div>
+        <p class="mt-3 text-sm leading-relaxed text-ink-200">{x.passportTie}</p>
+        <a href="/passport" class="mt-4 inline-block font-mono text-[11px] text-ink-500 hover:text-white">
+          Passport overview →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Terminal</div>
+      <div class="surface corner-ticks max-w-4xl p-8">
+        <pre class="whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">{x.terminal}</pre>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

@@ -1,0 +1,245 @@
+---
+/**
+ * /hub/ecosystem — full Atlas × catalog × interface-batch matrix (operator console).
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import HubConsoleNav from "../../components/hub/HubConsoleNav.astro";
+import { HOLDINGS, totalDraftAgents, totalLiveAgents } from "../../data/atlas";
+import { getAgentServiceOffers, serviceCatalogStats } from "../../data/serviceCatalog";
+import {
+  ACTIVE_INTERFACE_DEV_BATCH,
+  getBatchIdForAgentKey,
+  getDevStepsForBatch,
+  getSequenceFocusKey,
+  INTERFACE_DEV_BATCHES,
+  INTERFACE_DEV_SEQUENCE_INDEX,
+  isAgentKeyInActiveInterfaceBatch,
+  waveContainingBatchId,
+} from "../../data/interfaceBatches";
+
+const offers = getAgentServiceOffers();
+const offerByKey = new Map(offers.map((o) => [o.key, o]));
+const stats = serviceCatalogStats(offers);
+const focusKey = getSequenceFocusKey();
+const activeWave = waveContainingBatchId(ACTIVE_INTERFACE_DEV_BATCH);
+const batchDevSteps = getDevStepsForBatch(ACTIVE_INTERFACE_DEV_BATCH);
+const batchSlot = batchDevSteps[INTERFACE_DEV_SEQUENCE_INDEX];
+const liveAgents = totalLiveAgents();
+const draftAgents = totalDraftAgents();
+const batchCount = INTERFACE_DEV_BATCHES.length;
+---
+
+<AtlasLayout
+  title="Hub — Ecosystem map · LYRA"
+  description="Every holding and agent with GTM posture, interface-dev batch, and Hub API links — Sigma protocol operating view."
+  active="agency"
+>
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/hub" class="hover:text-white transition">Hub</a>
+        <span>/</span>
+        <span class="text-ink-300">Ecosystem</span>
+      </div>
+      <HubConsoleNav current="ecosystem" />
+      <div class="kicker mb-3 mt-10">HUB · ecosystem</div>
+      <h1 class="page-title">Everything on <em>one</em> rail.</h1>
+      <p class="mt-6 max-w-3xl text-base leading-relaxed text-ink-200 lede">
+        This is the operator map inside LYRA: Atlas structure, commercial posture from{" "}
+        <span class="font-mono text-[11px] text-ink-400">serviceCatalog.ts</span>, and interface-dev batch placement from{" "}
+        <span class="font-mono text-[11px] text-ink-400">interfaceBatches.ts</span>. Deepen each product with the Sigma brownfield loop ( Matter landings + interface shells + catalog row + hooks spec ), one sequential focus at a time.
+      </p>
+
+      <div class="mt-10 rounded-lg border border-white/10 bg-white/[0.03] p-5">
+        <div class="font-mono text-[10px] tracking-[0.2em] text-emerald-300/90">SEQUENTIAL FOCUS · SIGMA × LYRA</div>
+        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-ink-300">
+          <strong class="font-normal text-ink-100">Now building:</strong>{" "}
+          {
+            focusKey ? (
+              <a
+                href={`/${focusKey.split("/")[0]}/${focusKey.split("/")[1]}`}
+                class="font-mono text-emerald-200/90 underline decoration-emerald-500/30 hover:decoration-emerald-400/50"
+              >
+                /{focusKey}
+              </a>
+            ) : (
+              <span class="text-ink-500">— configure batch + index</span>
+            )
+          }
+          {batchSlot && (
+            <>
+              <span class="text-ink-600"> · </span>
+              <span class="text-ink-400">
+                step {batchSlot.step}/3 · {batchSlot.short}
+              </span>
+            </>
+          )}
+          <span class="text-ink-600"> · batch </span>
+          <span class="font-mono text-ink-400">{ACTIVE_INTERFACE_DEV_BATCH}</span>
+          {activeWave && (
+            <>
+              <span class="text-ink-600"> · </span>
+              <span class="text-ink-400">wave {activeWave.id}</span>
+            </>
+          )}
+        </p>
+        <ol class="mt-4 list-decimal space-y-2 pl-5 text-[13px] leading-relaxed text-ink-400">
+          <li>
+            Lock narrative + <a href="/hub/batches" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">interface batch</a> order; ship one slug per{" "}
+            <span class="font-mono text-[11px]">INTERFACE_DEV_SEQUENCE_INDEX</span> slot.
+          </li>
+          <li>
+            Align <a href="/hub/services" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">GTM + SKU + integrations</a> per agent; GA rows need deploy manifest + marketplace env per runbook.
+          </li>
+          <li>
+            Product page + <span class="font-mono text-[11px] text-ink-500">SubAgentInterfacePanel</span> shell; wire <span class="font-mono text-[11px] text-ink-500">/api/hub/surface</span> when Gateway is ready.
+          </li>
+          <li>
+            Technical hooks (webhooks, OAuth, MCP) — treat as Sigma Step 8 spec before calling a SKU production-complete.
+          </li>
+        </ol>
+      </div>
+
+      <dl class="mt-10 grid max-w-6xl grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div class="rounded-lg border border-white/5 bg-black/20 px-4 py-3">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Holdings</dt>
+          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{HOLDINGS.length}</dd>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-black/20 px-4 py-3">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Live agents</dt>
+          <dd class="mt-1 font-light text-2xl text-emerald-300/90 tabular-nums">{liveAgents}</dd>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-black/20 px-4 py-3">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Roadmap agents</dt>
+          <dd class="mt-1 font-light text-2xl text-amber-200/90 tabular-nums">{draftAgents}</dd>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-black/20 px-4 py-3">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Catalog rows</dt>
+          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{stats.total}</dd>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-black/20 px-4 py-3">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">GA SKUs</dt>
+          <dd class="mt-1 font-light text-2xl text-violet-300/90 tabular-nums">{stats.liveGa}</dd>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-black/20 px-4 py-3">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Iface batches</dt>
+          <dd class="mt-1 font-light text-2xl text-white tabular-nums">{batchCount}</dd>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-black/20 px-4 py-3">
+          <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-500">Active batch</dt>
+          <dd class="mt-1 font-light text-2xl text-sky-300/90 tabular-nums">{ACTIVE_INTERFACE_DEV_BATCH}</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">By holding</div>
+      <p class="mb-10 max-w-3xl text-sm text-ink-400">
+        Expand a holding to see every agent: Atlas status, GTM phase, interface-dev batch, and quick links to the product page, Hub surface, and queue stub.
+      </p>
+
+      {
+        HOLDINGS.map((holding) => {
+          const liveInHolding = holding.agents.filter((a) => a.status === "live").length;
+          return (
+            <details
+              open
+              class="group mb-4 rounded-lg border border-white/5 bg-white/[0.02] [&_summary::-webkit-details-marker]:hidden"
+            >
+              <summary class="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-5 py-4 font-display text-lg font-light text-white transition hover:bg-white/[0.03]">
+                <span>
+                  <span class="font-mono text-[11px] text-ink-500">{holding.code}</span> · {holding.name}
+                </span>
+                <span class="font-mono text-[11px] text-ink-500">
+                  {holding.agents.length} agents · {liveInHolding} live
+                </span>
+              </summary>
+              <div class="border-t border-white/5 px-2 pb-4 pt-2">
+                <div class="overflow-x-auto">
+                  <table class="w-full min-w-[56rem] border-collapse text-left text-sm">
+                    <thead>
+                      <tr class="border-b border-white/10 text-[10px] uppercase tracking-wider text-ink-500">
+                        <th class="py-3 pl-3 pr-3">Agent</th>
+                        <th class="py-3 pr-3">Atlas</th>
+                        <th class="py-3 pr-3">GTM</th>
+                        <th class="py-3 pr-3">Iface batch</th>
+                        <th class="py-3 pr-3">SKU mode</th>
+                        <th class="py-3 pr-3">Hub</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {holding.agents.map((agent) => {
+                        const key = `${holding.slug}/${agent.slug}`;
+                        const o = offerByKey.get(key);
+                        const batchId = getBatchIdForAgentKey(key);
+                        const inActive = isAgentKeyInActiveInterfaceBatch(key);
+                        const isFocus = key === focusKey;
+                        const surface = `/api/hub/surface?holding=${encodeURIComponent(holding.slug)}&agent=${encodeURIComponent(agent.slug)}`;
+                        const queue = `/api/hub/queue-preview?holding=${encodeURIComponent(holding.slug)}&agent=${encodeURIComponent(agent.slug)}`;
+                        return (
+                          <tr
+                            class:list={[
+                              "border-b border-white/[0.06] text-ink-300",
+                              isFocus && "bg-emerald-500/[0.06]",
+                            ]}
+                          >
+                            <td class="py-3 pl-3 pr-3">
+                              <a href={o?.path ?? `/${holding.slug}/${agent.slug}`} class="text-ink-100 hover:text-white hover:underline">
+                                {agent.name}
+                              </a>
+                              <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-mono text-[10px] text-ink-500">{key}</span>
+                                {isFocus && (
+                                  <span class="rounded border border-emerald-500/35 bg-emerald-500/10 px-1.5 py-0.5 font-mono text-[9px] tracking-wider text-emerald-300/90">
+                                    NEXT
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+                            <td class="py-3 pr-3">
+                              <span class:list={[agent.status === "live" ? "text-emerald-300/85" : "text-amber-200/80"]}>
+                                {agent.status}
+                              </span>
+                              <span class="text-ink-600"> · {agent.tier}</span>
+                            </td>
+                            <td class="py-3 pr-3 font-mono text-[11px] text-ink-400">{o?.gtmPhase ?? "—"}</td>
+                            <td class="py-3 pr-3">
+                              {batchId != null ? (
+                                <span class="font-mono text-[11px] text-ink-300">
+                                  {batchId}
+                                  {inActive && <span class="text-sky-300/90"> · active</span>}
+                                </span>
+                              ) : (
+                                <span class="text-ink-600">—</span>
+                              )}
+                            </td>
+                            <td class="py-3 pr-3 font-mono text-[11px] text-ink-500">
+                              {o?.skuMode ?? "—"}
+                            </td>
+                            <td class="py-3 pr-3 font-mono text-[10px]">
+                              <a href={surface} class="text-sky-300/90 hover:underline">
+                                surface
+                              </a>
+                              <span class="text-ink-600"> · </span>
+                              <a href={queue} class="text-sky-300/90 hover:underline">
+                                queue
+                              </a>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </details>
+          );
+        })
+      }
+    </div>
+  </section>
+</AtlasLayout>

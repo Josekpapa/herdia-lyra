@@ -1,0 +1,187 @@
+---
+/**
+ * /bundles/founder-pass — cross-holding VOLUME bundle.
+ * P2 · multi-entity founder · books + wealth + legal intake.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import { getBundle } from "../../data/atlas";
+
+const bundle = getBundle("founder-pass")!;
+const accent = "#4a6eb8";
+const accent2 = "#d4a574";
+
+const includes = [
+  { label: "Ledger", href: "/fidelis/ledger", blurb: "Advisory books · closes with counsel" },
+  { label: "Portfolio", href: "/helios/portfolio", blurb: "All accounts · one household read" },
+  { label: "Matter", href: "/lex/matter", blurb: "Intake → scope → opens to Docket" },
+  { label: "Intake", href: "/fidelis/intake", blurb: "Onboard an entity in one pass" },
+] as const;
+---
+
+<AtlasLayout
+  title="Founder Pass — bundle · LYRA"
+  description="VOLUME bundle: Ledger + Portfolio + Matter + Intake. The multi-entity founder's default stack across Fidelis, Helios, and Lex."
+  active="pricing"
+>
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(1000px 560px at 20% 20%, rgba(74, 110, 184, 0.12), transparent 58%), radial-gradient(720px 480px at 85% 72%, rgba(212, 165, 116, 0.10), transparent 58%);"
+    ></div>
+    <div class="relative mx-auto max-w-[84rem] px-6 py-24 sm:py-28">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/pricing" class="hover:text-white transition">Pricing</a>
+        <span>/</span>
+        <span class="text-ink-300">Founder Pass</span>
+      </div>
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <span class="kicker">Bundle · 02.founder</span>
+        <span class="tag tag-accent">{bundle.tier}</span>
+        <span class="label-xs text-ink-400">FIDELIS × HELIOS × LEX</span>
+      </div>
+      <h1 class="mt-8 font-display text-[clamp(2.75rem,8vw,5.5rem)] font-light leading-[0.92] tracking-tight text-white">
+        Founder Pass
+      </h1>
+      <p class="mt-4 max-w-2xl font-display text-2xl italic font-light text-ink-200/90">
+        Books · balance sheet · matters · entities.
+      </p>
+      <div class="hairline mt-8 max-w-md"></div>
+      <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-200 lede">
+        The multi-entity founder doesn't want four logins for four problems.
+        Founder Pass wires Fidelis, Helios, and Lex on one Passport: Ledger
+        for the advisory truth, Portfolio for the wealth read, Matter for
+        legal intake, Intake for entity onboarding — the spine of the $60k/yr
+        story.
+      </p>
+      <div class="mt-12 flex flex-wrap gap-3">
+        <a href="/join" class="btn-primary">Request Founder Pass →</a>
+        <a href="/fidelis/ledger" class="btn-ghost">Start at Ledger</a>
+        <a href="/pricing" class="btn-link">All bundles</a>
+      </div>
+      <div class="mt-14 grid grid-cols-2 gap-6 border-t border-white/5 pt-8 sm:grid-cols-4">
+        <div>
+          <div class="label-xs">Bundle price</div>
+          <div class="mt-1 data-num text-3xl font-light text-white">{bundle.price}</div>
+        </div>
+        <div>
+          <div class="label-xs">Floor story</div>
+          <div class="mt-1 text-sm text-ink-200">~$60k ARR · crossover stack</div>
+        </div>
+        <div>
+          <div class="label-xs">Persona</div>
+          <div class="mt-1 text-sm text-ink-200">P2 · Multi-Entity Founder</div>
+        </div>
+        <div>
+          <div class="label-xs">Tier grammar</div>
+          <div class="mt-1 text-sm text-ink-200">VOLUME · cross-holding</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">What's inside</div>
+      <h2 class="page-title">Four agents · one founder identity.</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        Passport carries context: the same entity list in Intake, the same
+        household in Portfolio, the same matter IDs when Matter opens work.
+      </p>
+      <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {includes.map((item) => (
+          <a
+            href={item.href}
+            class="surface group block p-6 transition hover:border-white/18"
+            style={`border-color: color-mix(in oklab, ${accent} 20%, rgba(255,255,255,0.06));`}
+          >
+            <div class="label-xs" style={`color: ${accent};`}>{item.label}</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-ink-300 group-hover:text-ink-200">
+              {item.blurb}
+            </p>
+            <span class="mt-4 inline-block font-mono text-[11px] text-ink-500 group-hover:text-white">Open agent →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="kicker mb-3">Why bundles exist</div>
+      <h2 class="page-title">Margin lives between silos.</h2>
+      <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="surface-warm p-8">
+          <div class="label-xs text-ink-500">Before</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-300">
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>QuickBooks + spreadsheet + attorney's inbox</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>RIA statement monthly · cash truth weekly · never the same number</li>
+            <li class="flex gap-3"><span class="font-mono text-ink-500">—</span>New LLC · new thread · new scope creep</li>
+          </ul>
+        </div>
+        <div class="surface p-8" style={`border-color: color-mix(in oklab, ${accent} 26%, rgba(255,255,255,0.06));`}>
+          <div class="label-xs" style={`color: ${accent2};`}>After · Founder Pass</div>
+          <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-200">
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Ledger is the advisory book of record</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent2};`}>●</span>Portfolio reads the same entities Ledger journals</li>
+            <li class="flex gap-3"><span class="font-mono" style={`color:${accent};`}>●</span>Matter + Intake keep legal and entity setup inside grammar</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5" data-page="app">
+    <div class="mx-auto max-w-[84rem] px-6 py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-2">
+          <div class="kicker mb-3">Receipt</div>
+          <h2 class="section-title">One VOLUME line · four rails.</h2>
+          <p class="mt-4 text-sm text-ink-400">
+            Cross-holding billing still shows up as one invoice from LYRA parent.
+          </p>
+        </div>
+        <div class="lg:col-span-3">
+          <div class="surface corner-ticks p-8" style={`border-color: color-mix(in oklab, ${accent} 24%, rgba(255,255,255,0.06));`}>
+            <div class="flex items-center justify-between">
+              <span class="label-xs" style={`color: ${accent};`}>LYRA · BUNDLE · FOUNDER-PASS</span>
+              <span class="tag tag-accent">{bundle.tier}</span>
+            </div>
+            <pre class="mt-6 whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink-200">
+LINE ITEM                          AMOUNT
+──────────────────────────────────────────
+BUNDLE · Founder Pass (VOLUME)     {bundle.price}
+  FIDELIS · Ledger                 included
+  HELIOS · Portfolio               included
+  LEX · Matter                     included
+  FIDELIS · Intake                 included
+Passport · cross-holding           included
+──────────────────────────────────────────
+<span class="text-ink-500">// Add Crest, Vault, or Docket without new identity work</span>
+</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="kicker mb-3">Network</div>
+          <h2 class="page-title">Bundle the founder, not the SKU list.</h2>
+          <p class="mt-4 max-w-xl text-sm text-ink-300">
+            Onboarding sequences entity + household + default matter templates
+            in one pass — so week-one isn't a project plan, it's a live stack.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="/join" class="btn-primary">Apply →</a>
+          <a href="/atlas" class="btn-ghost">Open Atlas</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

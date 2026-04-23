@@ -1,0 +1,61 @@
+---
+/**
+ * Alder · Concierge-M — booking strip + logistics queue (Batch 8).
+ */
+import type { Holding, Agent } from "../../../../data/atlas";
+import type { InterfacePreview } from "../../../../data/interfaceBatches";
+
+interface Props {
+  holding: Holding;
+  agent: Agent;
+  preview: InterfacePreview;
+  accent: string;
+}
+
+const { holding, agent, preview, accent } = Astro.props;
+---
+
+<div class="grid min-w-0 gap-0 lg:grid-cols-12">
+  <div
+    class="min-w-0 border-b p-6 lg:col-span-5 lg:border-b-0 lg:border-r border-white/5"
+    style={`background: linear-gradient(165deg, color-mix(in oklab, ${accent} 10%, transparent) 0%, transparent 55%);`}
+  >
+    <div class="label-xs text-white" data-shell-i18n="iface.conciergeM.bookingStrip">Bookings</div>
+    <p class="mt-2 text-sm leading-relaxed text-ink-400">{preview.sub}</p>
+    <div class="mt-8 space-y-4">
+      {
+        preview.metrics.map((m) => (
+          <div class="border-t border-white/5 pt-4 first:border-t-0 first:pt-0">
+            <div class="text-[10px] uppercase tracking-wider text-ink-500">{m.label}</div>
+            <div class="mt-1 font-light text-white data-num text-2xl">{m.value}</div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <div class="min-w-0 p-6 lg:col-span-7">
+    <div class="label-xs text-ink-500" data-shell-i18n="iface.conciergeM.logisticsQueue">Logistics queue</div>
+    <ul class="mt-4 divide-y divide-white/5 rounded-lg border border-white/5" aria-label="Concierge medicine">
+      {
+        preview.rows.map((row) => (
+          <li class="flex min-w-0 flex-col gap-1 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <span class="min-w-0 text-sm text-ink-200">{row.key}</span>
+            <span
+              class:list={[
+                "shrink-0 text-right font-mono text-[11px]",
+                row.tone === "ok" && "text-emerald-300/90",
+                row.tone === "warn" && "text-amber-200/90",
+                (!row.tone || row.tone === "neutral") && "text-ink-400",
+              ]}
+            >
+              {row.value}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-6 font-mono text-[10px] text-ink-500">
+      {holding.code} · {agent.name} · <code class="text-ink-400">/api/hub/surface?holding={holding.slug}&amp;agent={agent.slug}</code>
+    </p>
+  </div>
+</div>

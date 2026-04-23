@@ -1,0 +1,98 @@
+---
+/**
+ * Bookmarkable index for Batch 1 interface + Remotion backdrop demos.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import { getSequenceFocusKey } from "../../data/interfaceBatches";
+
+const focusKey = getSequenceFocusKey();
+
+const demos = [
+  {
+    step: 1,
+    href: "/fidelis/intake",
+    title: "Fidelis · Intake",
+    kicker: "03 · intake",
+    blurb: "Clinical intake desk, ledger grid shimmer, looping Remotion field.",
+  },
+  {
+    step: 2,
+    href: "/tide/ops",
+    title: "Tide · Ops",
+    kicker: "01 · ops",
+    blurb: "Property triage columns, horizontal scan band, accent bloom.",
+  },
+  {
+    step: 3,
+    href: "/seal/stamp",
+    title: "Seal · Stamp",
+    kicker: "08 · stamp",
+    blurb: "Stamp queue + ring pulse, KYC pipeline, dual-glow background.",
+  },
+];
+---
+
+<AtlasLayout
+  title="Demos · Batch 1 interfaces · LYRA"
+  description="Looping Remotion backdrops and Batch 1 product shells — Intake, Ops, Stamp."
+  active="atlas"
+>
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <span class="text-ink-300">Demos</span>
+      </div>
+      <div class="kicker mb-3 mt-8">Batch 1</div>
+      <h1 class="page-title">Interface demos</h1>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
+        Open a page, then scroll to <strong class="font-normal text-white">Product interface</strong>. The Remotion layer
+        loops in the background (not tied to scroll); each route uses a different shell (Intake desk · Ops floor · Stamp queue).
+      </p>
+      <p class="mt-4 text-sm text-ink-400">
+        Run <code class="font-mono text-[11px] text-ink-300">npm run dev</code> — Remotion Player is client-only. Build{" "}
+        <a href="/hub/batches" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">one agent at a time</a>{" "}
+        per <span class="font-mono text-[11px]">INTERFACE_DEV_SEQUENCE_INDEX</span>.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="grid gap-6 lg:grid-cols-3">
+        {
+          demos.map((d) => {
+            const isFocus = focusKey && d.href === `/${focusKey}`;
+            return (
+            <a
+              href={d.href}
+              class:list={[
+                "group surface block rounded-lg border p-8 transition",
+                isFocus
+                  ? "border-emerald-500/35 bg-emerald-500/[0.04] ring-1 ring-emerald-500/20"
+                  : "border-white/5 hover:border-white/15",
+              ]}
+            >
+              {isFocus && (
+                <div class="mb-3 font-mono text-[9px] tracking-[0.25em] text-emerald-300/90">SEQUENTIAL FOCUS</div>
+              )}
+              <div class="font-mono text-[10px] tracking-[0.2em] text-ink-500">
+                Step {d.step}/3 · {d.kicker}
+              </div>
+              <h2 class="mt-4 font-display text-2xl font-light text-white group-hover:text-ink-100">{d.title}</h2>
+              <p class="mt-3 text-sm leading-relaxed text-ink-400">{d.blurb}</p>
+              <span class="mt-8 inline-block font-mono text-[11px] text-ink-300 group-hover:text-white">
+                Open demo →
+              </span>
+            </a>
+            );
+          })
+        }
+      </div>
+      <p class="mt-12 text-center text-sm text-ink-500">
+        <a href="/hub/batches" class="text-ink-300 underline decoration-white/15 hover:text-white hover:decoration-white/35">Hub · all batches →</a>
+      </p>
+    </div>
+  </section>
+</AtlasLayout>

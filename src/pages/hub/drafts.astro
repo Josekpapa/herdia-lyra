@@ -1,0 +1,142 @@
+---
+/**
+ * /hub/drafts — all Atlas roadmap (draft) agents in one operator list.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import HubConsoleNav from "../../components/hub/HubConsoleNav.astro";
+import { HOLDINGS, totalDraftAgents } from "../../data/atlas";
+import { getAgentServiceOffers } from "../../data/serviceCatalog";
+import { getBatchIdForAgentKey, isAgentKeyInActiveInterfaceBatch } from "../../data/interfaceBatches";
+
+const offers = getAgentServiceOffers();
+const offerByKey = new Map(offers.map((o) => [o.key, o]));
+const draftRows: {
+  key: string;
+  holdingSlug: string;
+  holdingCode: string;
+  holdingName: string;
+  agentSlug: string;
+  agentName: string;
+  tier: string;
+  gtm: string;
+  batchId: number | null;
+  inActiveBatch: boolean;
+}[] = [];
+
+for (const h of HOLDINGS) {
+  for (const a of h.agents) {
+    if (a.status !== "draft") continue;
+    const key = `${h.slug}/${a.slug}`;
+    const o = offerByKey.get(key);
+    draftRows.push({
+      key,
+      holdingSlug: h.slug,
+      holdingCode: h.code,
+      holdingName: h.name,
+      agentSlug: a.slug,
+      agentName: a.name,
+      tier: a.tier,
+      gtm: o?.gtmPhase ?? "—",
+      batchId: getBatchIdForAgentKey(key),
+      inActiveBatch: isAgentKeyInActiveInterfaceBatch(key),
+    });
+  }
+}
+
+draftRows.sort((a, b) => a.key.localeCompare(b.key));
+const draftCount = totalDraftAgents();
+---
+
+<AtlasLayout
+  title="Hub — Roadmap agents · LYRA"
+  description="Every draft agent in the Atlas — Matter-pattern landings, roadmap GTM, Hub links."
+  active="agency"
+>
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/hub" class="hover:text-white transition">Hub</a>
+        <span>/</span>
+        <span class="text-ink-300">Roadmap agents</span>
+      </div>
+      <HubConsoleNav current="drafts" />
+      <div class="kicker mb-3 mt-10">HUB · roadmap</div>
+      <h1 class="page-title">
+        <em>{draftCount}</em> agents in the queue.
+      </h1>
+      <p class="mt-6 max-w-3xl text-base leading-relaxed text-ink-200 lede">
+        Draft rows in <span class="font-mono text-[11px] text-ink-400">atlas.ts</span> now have Matter-pattern product pages (same shell as live agents) with roadmap copy, tier grammar, and design-partner CTAs. Promote to live when interface batches and catalog posture catch up.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/hub/ecosystem" class="btn-primary">Full ecosystem map →</a>
+        <a href="/hub/batches" class="btn-ghost">Interface batches</a>
+        <a href="/hub/services" class="btn-ghost">Service catalog</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[52rem] border-collapse text-left text-sm">
+          <thead>
+            <tr class="border-b border-white/10 text-[10px] uppercase tracking-wider text-ink-500">
+              <th class="py-3 pr-4">Agent</th>
+              <th class="py-3 pr-4">Holding</th>
+              <th class="py-3 pr-4">Tier</th>
+              <th class="py-3 pr-4">GTM</th>
+              <th class="py-3 pr-4">Iface batch</th>
+              <th class="py-3 pr-4">Links</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              draftRows.map((row) => {
+                const product = `/${row.holdingSlug}/${row.agentSlug}`;
+                const surface = `/api/hub/surface?holding=${encodeURIComponent(row.holdingSlug)}&agent=${encodeURIComponent(row.agentSlug)}`;
+                return (
+                  <tr class="border-b border-white/[0.06] text-ink-300">
+                    <td class="py-3 pr-4">
+                      <a href={product} class="text-ink-100 hover:text-white hover:underline">
+                        {row.agentName}
+                      </a>
+                      <div class="font-mono text-[10px] text-ink-500">{row.key}</div>
+                    </td>
+                    <td class="py-3 pr-4">
+                      <span class="text-ink-200">{row.holdingCode}</span>
+                      <span class="text-ink-600"> · </span>
+                      <span class="text-ink-400">{row.holdingName}</span>
+                    </td>
+                    <td class="py-3 pr-4 font-mono text-[11px] text-ink-400">{row.tier}</td>
+                    <td class="py-3 pr-4 font-mono text-[11px] text-ink-400">{row.gtm}</td>
+                    <td class="py-3 pr-4 font-mono text-[11px]">
+                      {row.batchId != null ? (
+                        <span class="text-ink-300">
+                          {row.batchId}
+                          {row.inActiveBatch && <span class="text-sky-300/90"> · active</span>}
+                        </span>
+                      ) : (
+                        <span class="text-ink-600">—</span>
+                      )}
+                    </td>
+                    <td class="py-3 pr-4 font-mono text-[10px]">
+                      <a href={product} class="text-sky-300/90 hover:underline">
+                        page
+                      </a>
+                      <span class="text-ink-600"> · </span>
+                      <a href={surface} class="text-sky-300/90 hover:underline">
+                        surface
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

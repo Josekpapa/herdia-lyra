@@ -1,0 +1,164 @@
+---
+/**
+ * Roadmap: interface + landing depth in groups of three live agents.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import HubConsoleNav from "../../components/hub/HubConsoleNav.astro";
+import {
+  INTERFACE_DEV_BATCHES,
+  ACTIVE_INTERFACE_DEV_BATCH,
+  getDevStepsForBatch,
+  INTERFACE_DEV_SEQUENCE_INDEX,
+  getInterfaceDevWaves,
+  getSequenceFocusKey,
+  waveContainingBatchId,
+} from "../../data/interfaceBatches";
+
+const waves = getInterfaceDevWaves();
+const focusKey = getSequenceFocusKey();
+const activeWave = waveContainingBatchId(ACTIVE_INTERFACE_DEV_BATCH);
+const batchDevSteps = getDevStepsForBatch(ACTIVE_INTERFACE_DEV_BATCH);
+const batchSlot = batchDevSteps[INTERFACE_DEV_SEQUENCE_INDEX];
+---
+
+<AtlasLayout
+  title="Interface batches — Hub · LYRA"
+  description="Live agents grouped in threes for interface and landing development order."
+  active="agency"
+>
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/hub" class="hover:text-white transition">Hub</a>
+        <span>/</span>
+        <span class="text-ink-300">Batches</span>
+      </div>
+      <HubConsoleNav current="batches" />
+      <div class="kicker mb-3 mt-10">HUB · roadmap</div>
+      <h1 class="page-title">Groups of three</h1>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
+        The full catalog splits into <strong class="font-normal text-white">three waves</strong> (each wave is ~⅓ of all batches). Inside the active batch, ship{" "}
+        <strong class="font-normal text-white">one agent at a time</strong> — bump{" "}
+        <span class="font-mono text-[11px] text-ink-400">INTERFACE_DEV_SEQUENCE_INDEX</span> (0→1→2), then advance{" "}
+        <span class="font-mono text-[11px] text-ink-400">ACTIVE_INTERFACE_DEV_BATCH</span>.
+      </p>
+      <p class="mt-4 max-w-2xl rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-ink-300">
+        <span class="font-mono text-[10px] tracking-wider text-ink-500">SEQUENTIAL FOCUS</span>
+        <br />
+        Now building:{" "}
+        {focusKey ? (
+          <a href={`/${focusKey.split("/")[0]}/${focusKey.split("/")[1]}`} class="font-mono text-ink-100 underline decoration-white/20 hover:decoration-white/45">
+            /{focusKey}
+          </a>
+        ) : (
+          <span class="text-ink-500">— set batch + index in interfaceBatches.ts</span>
+        )}
+        <span class="text-ink-500"> · </span>
+        {batchSlot ? (
+          <span class="text-ink-400">Step {batchSlot.step}/3 · {batchSlot.short}</span>
+        ) : (
+          <span class="text-ink-500">Configure batch steps in interfaceBatches.ts</span>
+        )}
+        <span class="text-ink-500"> · batch </span>
+        <span class="font-mono text-ink-400">{ACTIVE_INTERFACE_DEV_BATCH}</span>
+        {activeWave && (
+          <>
+            <span class="text-ink-500"> · </span>
+            <span class="text-ink-400">Wave {activeWave.id}</span>
+          </>
+        )}
+      </p>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        API stubs: <a href="/api/hub/health" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/api/hub/health</a>
+        · <a href="/api/hub/surface?holding=tide&agent=ops" class="text-ink-200 underline decoration-white/15 hover:decoration-white/40">/api/hub/surface</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">Three waves</div>
+      <h2 class="section-title">Everything, in thirds</h2>
+      <p class="mt-4 max-w-2xl text-sm text-ink-400">
+        Same batches as below — grouped so you can reason about momentum (wave 1 → 2 → 3).
+      </p>
+      <div class="mt-10 grid gap-6 lg:grid-cols-3">
+        {
+          waves.map((w) => (
+            <div
+              class:list={[
+                "rounded-lg border border-white/5 p-6",
+                w.batches.some((b) => b.id === ACTIVE_INTERFACE_DEV_BATCH) && "ring-1 ring-emerald-500/20 bg-emerald-500/[0.04]",
+              ]}
+            >
+              <div class="font-mono text-[10px] tracking-[0.2em] text-ink-500">WAVE {w.id}</div>
+              <h3 class="mt-2 font-display text-xl font-light text-white">{w.title}</h3>
+              <p class="mt-2 text-[13px] text-ink-500">{w.batches.length} batch{w.batches.length === 1 ? "" : "es"}</p>
+              <ul class="mt-4 space-y-1 font-mono text-[11px] text-ink-400">
+                {w.batches.map((b) => (
+                  <li>
+                    Batch {b.id}
+                    {b.id === ACTIVE_INTERFACE_DEV_BATCH && <span class="text-emerald-400/90"> · active</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="space-y-12">
+        {
+          INTERFACE_DEV_BATCHES.map((b) => (
+            <div
+              class:list={[
+                "rounded-lg border border-white/5 p-6",
+                b.id === ACTIVE_INTERFACE_DEV_BATCH && "ring-1 ring-white/10 bg-white/[0.02]",
+              ]}
+            >
+              <div class="flex flex-wrap items-baseline justify-between gap-4">
+                <div>
+                  <div class="font-mono text-[10px] tracking-[0.2em] text-ink-500">BATCH {b.id}</div>
+                  <h2 class="mt-2 section-title">{b.title}</h2>
+                </div>
+                {b.id === ACTIVE_INTERFACE_DEV_BATCH && (
+                  <span class="tag tag-accent">● active</span>
+                )}
+              </div>
+              <ul class="mt-6 space-y-2">
+                {b.slugs.map((slug) => {
+                  const [h, a] = slug.split("/");
+                  const isSeq = slug === focusKey;
+                  return (
+                    <li class="flex flex-wrap items-center gap-2">
+                      <a
+                        href={`/${h}/${a}`}
+                        class:list={[
+                          "font-mono text-[13px] underline decoration-white/10 transition hover:text-white hover:decoration-white/30",
+                          isSeq ? "text-emerald-200" : "text-ink-200",
+                        ]}
+                      >
+                        /{slug}
+                      </a>
+                      {isSeq && (
+                        <span class="rounded border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] tracking-wider text-emerald-300/90">
+                          NEXT BUILD
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</AtlasLayout>

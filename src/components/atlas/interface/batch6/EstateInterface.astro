@@ -1,0 +1,61 @@
+---
+/**
+ * Helios · Estate — map read + asset board (Batch 6).
+ */
+import type { Holding, Agent } from "../../../../data/atlas";
+import type { InterfacePreview } from "../../../../data/interfaceBatches";
+
+interface Props {
+  holding: Holding;
+  agent: Agent;
+  preview: InterfacePreview;
+  accent: string;
+}
+
+const { holding, agent, preview, accent } = Astro.props;
+---
+
+<div class="min-w-0">
+  <div
+    class="border-b px-5 py-4"
+    style={`border-color: color-mix(in oklab, ${accent} 14%, rgba(255,255,255,0.06)); background: color-mix(in oklab, ${accent} 6%, transparent);`}
+  >
+    <div class="label-xs text-ink-500" data-shell-i18n="iface.estate.mapRead">Estate map</div>
+    <p class="mt-2 max-w-3xl text-sm text-ink-300">{preview.sub}</p>
+    <div class="mt-6 grid min-w-0 gap-4 sm:grid-cols-3">
+      {
+        preview.metrics.map((m) => (
+          <div class="rounded-lg border border-white/5 bg-black/20 px-4 py-3">
+            <div class="text-[10px] uppercase tracking-wider text-ink-500">{m.label}</div>
+            <div class="mt-1 font-light text-white data-num text-2xl">{m.value}</div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <div class="p-5">
+    <div class="label-xs text-ink-500" data-shell-i18n="iface.estate.assetBoard">Assets & heirs</div>
+    <ul class="mt-4 divide-y divide-white/5 rounded-lg border border-white/5" aria-label="Estate queue">
+      {
+        preview.rows.map((row) => (
+          <li class="flex min-w-0 flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <span class="min-w-0 font-mono text-[12px] text-ink-200">{row.key}</span>
+            <span
+              class:list={[
+                "shrink-0 text-right font-mono text-[11px]",
+                row.tone === "ok" && "text-emerald-300/90",
+                row.tone === "warn" && "text-amber-200/90",
+                (!row.tone || row.tone === "neutral") && "text-ink-400",
+              ]}
+            >
+              {row.value}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-6 font-mono text-[10px] text-ink-500">
+      {holding.code} · {agent.name} · <code class="text-ink-400">/api/hub/surface?holding={holding.slug}&amp;agent={agent.slug}</code>
+    </p>
+  </div>
+</div>

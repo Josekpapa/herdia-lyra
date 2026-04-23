@@ -1,0 +1,175 @@
+---
+/**
+ * /hub/services — commercial + integration posture for every Atlas agent.
+ */
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import HubConsoleNav from "../../components/hub/HubConsoleNav.astro";
+import { getAgentServiceOffers, serviceCatalogStats } from "../../data/serviceCatalog";
+
+const offers = getAgentServiceOffers();
+const stats = serviceCatalogStats(offers);
+const byHolding = new Map<string, typeof offers>();
+for (const o of offers) {
+  const list = byHolding.get(o.holdingSlug) ?? [];
+  list.push(o);
+  byHolding.set(o.holdingSlug, list);
+}
+const holdingKeys = [...byHolding.keys()].sort();
+---
+
+<AtlasLayout
+  title="Hub — Service catalog · LYRA"
+  description="GTM phase, SKU mode, and integration targets for every live and draft agent — operator console."
+  active="agency"
+>
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-24">
+      <div class="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] uppercase text-ink-500">
+        <a href="/atlas" class="hover:text-white transition">Atlas</a>
+        <span>/</span>
+        <a href="/hub" class="hover:text-white transition">Hub</a>
+        <span>/</span>
+        <span class="text-ink-300">Services</span>
+      </div>
+      <HubConsoleNav current="services" />
+      <div class="kicker mb-3 mt-10">HUB · catalog</div>
+      <h1 class="page-title">Service <em>offers</em></h1>
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-200 lede">
+        Every sub-agent is a potential SKU: standalone, bundle-attached, or roadmap-only. This view mirrors
+        <span class="font-mono text-[11px] text-ink-400">atlas.ts</span> and adds GTM phase, SKU posture, and integration targets for
+        marketplace / partner hooks. JSON: <a href="/api/hub/service-catalog" class="underline decoration-white/20 hover:decoration-white/50">/api/hub/service-catalog</a>
+        · <a href="/api/hub/service-catalog?format=stats" class="underline decoration-white/20 hover:decoration-white/50">?format=stats</a>
+        · surface <a href="/api/hub/surface?holding=tide&agent=ops" class="underline decoration-white/20 hover:decoration-white/50">/api/hub/surface</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="border-b border-white/5">
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-lg border border-white/5 bg-white/[0.02] p-5">
+          <div class="label-xs text-ink-500">Total agents</div>
+          <div class="mt-2 font-light text-3xl text-white tabular-nums">{stats.total}</div>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-white/[0.02] p-5">
+          <div class="label-xs text-ink-500">Live</div>
+          <div class="mt-2 font-light text-3xl text-emerald-300/90 tabular-nums">{stats.live}</div>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-white/[0.02] p-5">
+          <div class="label-xs text-ink-500">Draft (roadmap)</div>
+          <div class="mt-2 font-light text-3xl text-amber-200/90 tabular-nums">{stats.draft}</div>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-white/[0.02] p-5">
+          <div class="label-xs text-ink-500">Live · GTM preview</div>
+          <div class="mt-2 font-light text-3xl text-ink-100 tabular-nums">{stats.livePreview}</div>
+          <p class="mt-2 text-[11px] text-ink-500"><span class="font-mono">gtmPhase: preview</span> (live agents)</p>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-white/[0.02] p-5">
+          <div class="label-xs text-ink-500">Live · GTM general availability</div>
+          <div class="mt-2 font-light text-3xl text-violet-300/90 tabular-nums">{stats.liveGa}</div>
+          <p class="mt-2 text-[11px] text-ink-500"><span class="font-mono">gtmPhase: general_availability</span></p>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-white/[0.02] p-5">
+          <div class="label-xs text-ink-500">With sellable SKU</div>
+          <div class="mt-2 font-light text-3xl text-white tabular-nums">{stats.sellableSkus}</div>
+          <p class="mt-2 text-[11px] text-ink-500">Excludes <span class="font-mono">skuMode: none</span> (default drafts)</p>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-white/[0.02] p-5">
+          <div class="label-xs text-ink-500">Marketplace listings</div>
+          <div class="mt-2 font-light text-3xl text-sky-300/90 tabular-nums">{stats.marketplaceListings}</div>
+          <p class="mt-2 text-[11px] text-ink-500">Agents with <span class="font-mono">marketplaceListingId</span> set</p>
+        </div>
+        <div class="rounded-lg border border-white/5 bg-white/[0.02] p-5">
+          <div class="label-xs text-ink-500">Deploy hints</div>
+          <div class="mt-2 font-light text-3xl text-white tabular-nums">{stats.deploymentHints}</div>
+          <p class="mt-2 text-[11px] text-ink-500">Agents with <span class="font-mono">deploymentHint</span> set</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="mx-auto max-w-[84rem] px-6 py-16">
+      <div class="kicker mb-3">By holding</div>
+      <p class="mb-10 max-w-2xl text-sm text-ink-400">
+        Defaults: <strong class="text-ink-200">live</strong> → preview + standalone/bundles; <strong class="text-ink-200">draft</strong> → roadmap + no SKU.
+        Holding-level defaults in <code class="text-ink-500">HOLDING_SERVICE_DEFAULTS</code>; per-agent overrides in{" "}
+        <code class="text-ink-500">OFFER_OVERRIDES</code> (<span class="font-mono text-ink-400">src/data/serviceCatalog.ts</span>).
+      </p>
+
+      {
+        holdingKeys.map((slug) => {
+          const rows = byHolding.get(slug)!;
+          const hname = rows[0]!.holdingName;
+          const code = rows[0]!.holdingCode;
+          return (
+            <div class="mb-16 border-b border-white/5 pb-16 last:mb-0 last:border-b-0 last:pb-0">
+              <h2 class="font-display text-xl font-light text-white">
+                {code} · {hname}
+                <span class="ml-2 font-mono text-[11px] font-normal text-ink-500">/{slug}</span>
+              </h2>
+              <div class="mt-6 overflow-x-auto">
+                <table class="w-full min-w-[960px] border-collapse text-left text-sm">
+                  <thead>
+                    <tr class="border-b border-white/10 text-[10px] uppercase tracking-wider text-ink-500">
+                      <th class="py-3 pr-4">Agent</th>
+                      <th class="py-3 pr-4">Atlas</th>
+                      <th class="py-3 pr-4">GTM</th>
+                      <th class="py-3 pr-4">SKU</th>
+                      <th class="py-3 pr-4">Integration targets</th>
+                      <th class="py-3 pr-4">Marketplace</th>
+                      <th class="py-3 pr-4">Deploy</th>
+                      <th class="py-3 pr-4">Hub API</th>
+                      <th class="py-3 pr-4">Bundles</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((o) => {
+                      const surface = `/api/hub/surface?holding=${encodeURIComponent(o.holdingSlug)}&agent=${encodeURIComponent(o.agentSlug)}`;
+                      const queue = `/api/hub/queue-preview?holding=${encodeURIComponent(o.holdingSlug)}&agent=${encodeURIComponent(o.agentSlug)}`;
+                      return (
+                      <tr class="border-b border-white/[0.06] text-ink-300">
+                        <td class="py-3 pr-4">
+                          <a href={o.path} class="text-ink-100 hover:text-white hover:underline">
+                            {o.agentName}
+                          </a>
+                          <div class="font-mono text-[10px] text-ink-500">{o.key}</div>
+                        </td>
+                        <td class="py-3 pr-4">
+                          <span class:list={[o.atlasStatus === "live" ? "text-emerald-300/85" : "text-amber-200/80"]}>{o.atlasStatus}</span>
+                          <span class="text-ink-600"> · {o.tier}</span>
+                        </td>
+                        <td class="py-3 pr-4 font-mono text-[11px] text-ink-400">{o.gtmPhase}</td>
+                        <td class="py-3 pr-4 font-mono text-[11px] text-ink-400">{o.skuMode}</td>
+                        <td class="py-3 pr-4 font-mono text-[10px] leading-relaxed text-ink-500">{o.integrationTargets.join(", ")}</td>
+                        <td class="py-3 pr-4 font-mono text-[10px] text-ink-500">
+                          {o.marketplaceListingId ?? "—"}
+                        </td>
+                        <td class="py-3 pr-4 font-mono text-[10px] text-ink-500">
+                          {o.deploymentHint ?? "—"}
+                        </td>
+                        <td class="py-3 pr-4 font-mono text-[10px]">
+                          <a href={surface} class="text-sky-300/90 hover:underline">
+                            surface
+                          </a>
+                          <span class="text-ink-600"> · </span>
+                          <a href={queue} class="text-sky-300/90 hover:underline">
+                            queue
+                          </a>
+                        </td>
+                        <td class="py-3 pr-4 font-mono text-[10px] text-ink-500">
+                          {o.linkedBundleSlugs.length ? o.linkedBundleSlugs.join(", ") : "—"}
+                        </td>
+                      </tr>
+                    );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+</AtlasLayout>

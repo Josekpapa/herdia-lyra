@@ -1,0 +1,144 @@
+---
+/**
+ * Seal · Stamp — attestation pipeline from `copy.steps` (Identify · Witness · Stamp · Prove).
+ */
+import type { Holding, Agent } from "../../../../data/atlas";
+import type { InterfacePreview } from "../../../../data/interfaceBatches";
+import type { SubAgentCopy } from "../../../../data/subAgentCopy/types";
+import { railStepsFromCopy } from "../../../../lib/interfaceRail";
+
+interface Props {
+  holding: Holding;
+  agent: Agent;
+  preview: InterfacePreview;
+  accent: string;
+  copy: SubAgentCopy;
+}
+
+const { holding, agent, preview, accent, copy } = Astro.props;
+
+const detailLines = ["PASS · 09:47:04Z", "CA remote · 14:10 PT", "Queued", "M-2046"];
+const rail = railStepsFromCopy(copy, ["done", "done", "active", "next"]);
+const pipeline = rail.map((r, i) => ({ ...r, detail: detailLines[i] ?? "—" }));
+---
+
+<div class="grid min-w-0 gap-0 lg:grid-cols-12">
+  <div class="min-w-0 border-b p-6 lg:col-span-5 lg:border-b-0 lg:border-r border-white/5">
+    <div class="label-xs text-ink-500" data-shell-i18n="iface.stamp.throughput">Throughput</div>
+    <div class="mt-6 grid grid-cols-3 gap-4">
+      {
+        preview.metrics.map((m) => (
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-ink-500">{m.label}</div>
+            <div class="mt-1 font-light text-white data-num text-xl">{m.value}</div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-10">
+      <div class="label-xs text-ink-500" data-shell-i18n="iface.stamp.pipeline">Pipeline</div>
+      <div class="mt-4 flex flex-col gap-0">
+        {
+          pipeline.map((p, i) => (
+            <div class="flex items-stretch gap-0">
+              <div class="flex w-8 flex-col items-center">
+                <div
+                  class:list={[
+                    "flex h-8 w-8 items-center justify-center rounded-full border font-mono text-[9px]",
+                    p.state === "done" && "border-emerald-500/40 bg-emerald-500/10 text-emerald-300",
+                    p.state === "active" && "text-white",
+                    p.state === "next" && "border-white/10 bg-white/[0.03] text-ink-500",
+                  ]}
+                  style={
+                    p.state === "active"
+                      ? `border-color: color-mix(in oklab, ${accent} 50%, transparent); background: color-mix(in oklab, ${accent} 16%, transparent)`
+                      : undefined
+                  }
+                >
+                  {p.state === "done" ? "✓" : p.id}
+                </div>
+                {i < pipeline.length - 1 ? <div class="min-h-[1.25rem] w-px grow bg-white/10" /> : null}
+              </div>
+              <div class:list={["flex-1 pl-3", i < pipeline.length - 1 ? "pb-6" : "pb-0"]}>
+                <div class:list={["text-sm", p.state === "active" ? "text-white" : "text-ink-300"]}>{p.label}</div>
+                <div class="mt-0.5 font-mono text-[10px] text-ink-500">{p.detail}</div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="min-w-0 p-6 lg:col-span-7">
+    <div
+      class="relative overflow-hidden rounded-lg border p-6"
+      style={`border-color: color-mix(in oklab, ${accent} 28%, rgba(255,255,255,0.08)); box-shadow: 0 0 0 1px color-mix(in oklab, ${accent} 12%, transparent);`}
+    >
+      <div class="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full opacity-[0.12]" style={`background: ${accent};`} />
+      <div class="relative flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <div class="font-mono text-[10px] tracking-[0.25em] text-ink-400" data-shell-i18n="iface.stamp.requestKicker">
+            STAMP REQUEST
+          </div>
+          <h3 class="mt-2 font-display text-2xl font-light text-white">S-20118</h3>
+          <p class="mt-1 text-sm text-ink-300">Mutual NDA · two signers · CA acknowledgment</p>
+        </div>
+        <div
+          class="flex h-16 w-16 items-center justify-center rounded-md border-2 border-dashed font-mono text-[9px] tracking-widest text-ink-400"
+          style={`border-color: color-mix(in oklab, ${accent} 35%, rgba(255,255,255,0.2)); color: color-mix(in oklab, ${accent} 90%, white);`}
+        >
+          <span data-shell-i18n="iface.stamp.badge">SEAL</span>
+        </div>
+      </div>
+      <dl class="relative mt-6 grid gap-3 border-t border-white/5 pt-6 font-mono text-[11px] sm:grid-cols-2">
+        <div>
+          <dt class="text-ink-500" data-shell-i18n="iface.stamp.hashTarget">Hash target</dt>
+          <dd class="mt-1 truncate text-ink-200">sha256:a1f4c7e2…8b3d</dd>
+        </div>
+        <div>
+          <dt class="text-ink-500" data-shell-i18n="iface.stamp.vaultRoute">Vault route</dt>
+          <dd class="mt-1 text-emerald-300/90">Fidelis · M-2046</dd>
+        </div>
+        <div>
+          <dt class="text-ink-500" data-shell-i18n="iface.stamp.jurisdiction">Jurisdiction</dt>
+          <dd class="mt-1 text-ink-200">California · remote</dd>
+        </div>
+        <div>
+          <dt class="text-ink-500" data-shell-i18n="iface.stamp.witnessWindow">Witness window</dt>
+          <dd class="mt-1 text-amber-200/90">Scheduled</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="mt-6 rounded-lg border border-white/5">
+      <div class="border-b border-white/5 px-4 py-2 font-mono text-[10px] text-ink-500" data-shell-i18n="iface.stamp.queue">
+        Queue
+      </div>
+      <ul class="divide-y divide-white/5" aria-label="Stamp queue">
+        {
+          preview.rows.map((row) => (
+            <li class="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+              <span class="text-sm text-ink-200">{row.key}</span>
+              <span
+                class:list={[
+                  "text-right font-mono text-[11px]",
+                  row.tone === "ok" && "text-emerald-300/90",
+                  row.tone === "warn" && "text-amber-200/90",
+                  (!row.tone || row.tone === "neutral") && "text-ink-400",
+                ]}
+              >
+                {row.value}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <p class="mt-6 font-mono text-[10px] text-ink-500">
+      {holding.code} · {agent.name} · <code class="text-ink-400">/api/hub/surface?holding={holding.slug}&amp;agent={agent.slug}</code>
+    </p>
+  </div>
+</div>
